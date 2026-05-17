@@ -1117,5 +1117,131 @@
       "noteDeleted": "Note deleted",
       "saveFailed": "Save failed"
     }
+  },
+  "hr": {
+    "title": "HR & org",
+    "subtitle": "Staff directory, org chart, job descriptions, certifications.",
+    "tabs": {
+      "directory": "Directory",
+      "orgChart": "Org chart",
+      "jds": "Job descriptions",
+      "certifications": "Certifications"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back",
+      "active": "Active",
+      "archived": "Archived",
+      "archive": "Archive"
+    },
+    "directory": {
+      "title": "Staff directory",
+      "subtitle": "Everyone on payroll. Set reporting lines from here.",
+      "newStaff": "Add staff",
+      "empty": "No staff yet. Add the first profile to start the org.",
+      "headers": {
+        "name": "Name",
+        "title": "Title",
+        "department": "Department",
+        "manager": "Reports to",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New staff",
+        "editTitle": "Edit staff",
+        "fullNameAr": "Full name (Arabic)",
+        "fullNameEn": "Full name (English)",
+        "titleAr": "Job title (Arabic)",
+        "titleEn": "Job title (English)",
+        "department": "Department",
+        "departmentNone": "—",
+        "email": "Email",
+        "phone": "Phone",
+        "manager": "Reports to (manager)",
+        "managerNone": "— No manager —",
+        "hireDate": "Hire date",
+        "bio": "Bio"
+      },
+      "errors": {
+        "selfManager": "A profile can't report to itself."
+      }
+    },
+    "orgChart": {
+      "title": "Organisation chart",
+      "subtitle": "Reporting lines (parent_id-based tree). Use the Directory tab to change a person's manager.",
+      "empty": "No staff to chart yet.",
+      "noManager": "No manager"
+    },
+    "jds": {
+      "title": "Job descriptions",
+      "subtitle": "Templates for current and future roles.",
+      "newJD": "New JD",
+      "empty": "No job descriptions yet.",
+      "headers": {
+        "title": "Title",
+        "department": "Department",
+        "level": "Level",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New job description",
+        "editTitle": "Edit job description",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "department": "Department",
+        "level": "Level (e.g. Junior, Mid, Senior)",
+        "responsibilitiesAr": "Responsibilities (Arabic)",
+        "responsibilitiesEn": "Responsibilities (English)",
+        "requirementsAr": "Requirements (Arabic)",
+        "requirementsEn": "Requirements (English)"
+      }
+    },
+    "certs": {
+      "title": "Certifications",
+      "subtitle": "Track expirations. Expired or near-expiry rows are flagged.",
+      "newCert": "Add certification",
+      "empty": "No certifications recorded yet.",
+      "headers": {
+        "staff": "Staff",
+        "name": "Certification",
+        "issuer": "Issuer",
+        "issued": "Issued",
+        "expires": "Expires",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "valid": "Valid",
+        "expiringSoon": "Expires soon",
+        "expired": "Expired",
+        "noExpiry": "No expiry"
+      },
+      "form": {
+        "createTitle": "Add certification",
+        "staff": "Staff member",
+        "name": "Certification name",
+        "issuer": "Issuer",
+        "issuedAt": "Issued at",
+        "expiresAt": "Expires at",
+        "notes": "Notes"
+      }
+    },
+    "toast": {
+      "staffAdded": "Staff added",
+      "staffUpdated": "Staff updated",
+      "staffArchived": "Staff archived",
+      "jdCreated": "Job description created",
+      "jdUpdated": "Job description updated",
+      "jdArchived": "Job description archived",
+      "certAdded": "Certification added",
+      "certDeleted": "Certification removed",
+      "saveFailed": "Save failed"
+    }
   }
 }

@@ -4,9 +4,9 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
 
-import { DirectoryClient, type StaffRow } from "./_components/DirectoryClient";
+import { JDsClient, type JDRow } from "./_components/JDsClient";
 
-export default async function HrDirectoryPage({
+export default async function JDsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -17,17 +17,15 @@ export default async function HrDirectoryPage({
 
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase
-    .from("staff_profiles")
+    .from("job_descriptions")
     .select(
-      "id, full_name_ar, full_name_en, job_title_ar, job_title_en, department, email, phone, manager_id, hire_date, bio, active",
+      "id, title_ar, title_en, department, level, responsibilities_ar, responsibilities_en, requirements_ar, requirements_en, active",
     )
     .order("created_at", { ascending: false });
 
-  const staff: StaffRow[] = (data ?? []) as StaffRow[];
-
   return (
-    <DirectoryClient
-      staff={staff}
+    <JDsClient
+      jds={(data ?? []) as JDRow[]}
       principal={{ role: tenant.user_role, department: tenant.department }}
       locale={locale as "ar" | "en"}
     />
