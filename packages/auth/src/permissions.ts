@@ -129,6 +129,12 @@ export type Resource =
   | "penalty"
   | "appeal"
   | "ministry_report"
+  | "public_page"
+  | "news_article"
+  | "broadcast"
+  | "notification_pref"
+  | "message_thread"
+  | "message"
   | "audit_log"
   | "revenue_summary"
   | "finance_summary"
@@ -428,6 +434,94 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       p.role === "super_admin" ||
       p.role === "club_admin" ||
       p.role === "auditor",
+  },
+  media: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "media"),
+  },
+  public_page: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "media"),
+  },
+  news_article: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "media"),
+  },
+  broadcast: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "media"),
+  },
+  notification_pref: {
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    read: (p) => canAccessModule(p, "media"),
+  },
+  message_thread: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "dept_manager" ||
+      p.role === "staff" ||
+      p.role === "member",
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "dept_manager" ||
+      p.role === "staff",
+    read: (p) =>
+      canAccessModule(p, "media") ||
+      p.role === "member" ||
+      p.role === "staff",
+  },
+  message: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "dept_manager" ||
+      p.role === "staff" ||
+      p.role === "member",
+    read: (p) =>
+      canAccessModule(p, "media") ||
+      p.role === "member" ||
+      p.role === "staff",
   },
 };
 

@@ -1395,5 +1395,189 @@
       "appealResolved": "Appeal resolved",
       "saveFailed": "Save failed"
     }
+  },
+  "media": {
+    "title": "Media & communications",
+    "subtitle": "Public club site, news, broadcasts, member messages, and notification preferences.",
+    "tabs": {
+      "pages": "Pages",
+      "news": "News",
+      "broadcasts": "Broadcasts",
+      "messages": "Messages",
+      "prefs": "Preferences"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "send": "Send",
+      "publish": "Publish",
+      "draft": "Draft",
+      "published": "Published",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "pages": {
+      "title": "Public pages",
+      "subtitle": "Static pages on your public club site (About, History, Sponsors, etc.).",
+      "newPage": "New page",
+      "empty": "No pages yet. Create your About page to get started.",
+      "headers": {
+        "title": "Title",
+        "slug": "URL slug",
+        "status": "Status",
+        "updatedAt": "Updated",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New page",
+        "editTitle": "Edit page",
+        "slug": "URL slug",
+        "slugHint": "Lowercase, hyphens only — appears in the URL.",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "bodyAr": "Body (Arabic)",
+        "bodyEn": "Body (English)",
+        "heroImage": "Hero image path",
+        "published": "Published"
+      },
+      "errors": {
+        "slugTaken": "That slug is already in use."
+      }
+    },
+    "news": {
+      "title": "News",
+      "subtitle": "Articles for the club site newsroom.",
+      "newArticle": "New article",
+      "empty": "No articles yet.",
+      "headers": {
+        "title": "Title",
+        "slug": "Slug",
+        "status": "Status",
+        "publishedAt": "Published",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New article",
+        "editTitle": "Edit article",
+        "slug": "URL slug",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "excerptAr": "Excerpt (Arabic)",
+        "excerptEn": "Excerpt (English)",
+        "bodyAr": "Body (Arabic)",
+        "bodyEn": "Body (English)",
+        "coverImage": "Cover image path",
+        "publishNow": "Publish now"
+      },
+      "errors": {
+        "slugTaken": "That slug is already in use."
+      }
+    },
+    "broadcasts": {
+      "title": "Broadcasts",
+      "subtitle": "Send SMS or email to members and staff. SMS sending requires Unifonic sender-ID approval.",
+      "newBroadcast": "New broadcast",
+      "empty": "No broadcasts yet.",
+      "headers": {
+        "channel": "Channel",
+        "audience": "Audience",
+        "subject": "Subject",
+        "recipients": "Recipients",
+        "status": "Status",
+        "createdAt": "Created",
+        "actions": "Actions"
+      },
+      "channels": {
+        "sms": "SMS",
+        "email": "Email",
+        "both": "SMS + Email"
+      },
+      "audiences": {
+        "members": "Members",
+        "staff": "Staff",
+        "all": "Members + staff"
+      },
+      "statuses": {
+        "draft": "Draft",
+        "queued": "Queued",
+        "sending": "Sending",
+        "sent": "Sent",
+        "failed": "Failed"
+      },
+      "form": {
+        "createTitle": "New broadcast",
+        "channel": "Channel",
+        "audience": "Audience",
+        "subject": "Subject (email only)",
+        "bodyAr": "Body (Arabic)",
+        "bodyEn": "Body (English, optional)"
+      },
+      "actions": {
+        "queue": "Queue for sending",
+        "queueHint": "Once Unifonic sender-ID is live the worker will send."
+      }
+    },
+    "messages": {
+      "title": "Member messages",
+      "subtitle": "1:1 conversations with members. Mark threads resolved when done.",
+      "newThread": "New thread",
+      "empty": "No threads yet.",
+      "noSelection": "Select a thread to view the conversation.",
+      "headers": {
+        "subject": "Subject",
+        "member": "Member",
+        "lastMessage": "Last message",
+        "status": "Status"
+      },
+      "statuses": {
+        "open": "Open",
+        "resolved": "Resolved",
+        "archived": "Archived"
+      },
+      "form": {
+        "createTitle": "Start thread",
+        "member": "Member (optional)",
+        "memberNone": "— Standalone thread —",
+        "subject": "Subject",
+        "initialBody": "Initial message"
+      },
+      "reply": {
+        "placeholder": "Type a reply…",
+        "send": "Send"
+      },
+      "actions": {
+        "resolve": "Mark resolved",
+        "reopen": "Reopen"
+      }
+    },
+    "prefs": {
+      "title": "Notification preferences",
+      "subtitle": "Per-member opt-in for email, SMS, and WhatsApp.",
+      "empty": "No members yet.",
+      "headers": {
+        "member": "Member",
+        "email": "Email",
+        "sms": "SMS",
+        "whatsapp": "WhatsApp"
+      }
+    },
+    "toast": {
+      "pageCreated": "Page created",
+      "pageUpdated": "Page updated",
+      "pageDeleted": "Page deleted",
+      "articleCreated": "Article created",
+      "articleUpdated": "Article updated",
+      "articleDeleted": "Article deleted",
+      "broadcastCreated": "Broadcast drafted",
+      "broadcastQueued": "Broadcast queued",
+      "messageSent": "Message sent",
+      "threadCreated": "Thread created",
+      "threadResolved": "Thread updated",
+      "prefsSaved": "Preferences saved",
+      "saveFailed": "Save failed"
+    }
   }
 }

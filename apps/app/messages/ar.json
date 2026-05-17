@@ -1395,5 +1395,189 @@
       "appealResolved": "تم حسم الاعتراض",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "media": {
+    "title": "الإعلام والتواصل",
+    "subtitle": "موقع النادي العام، الأخبار، البث الجماعي، رسائل الأعضاء، وتفضيلات التنبيهات.",
+    "tabs": {
+      "pages": "الصفحات",
+      "news": "الأخبار",
+      "broadcasts": "البث الجماعي",
+      "messages": "الرسائل",
+      "prefs": "التفضيلات"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "send": "إرسال",
+      "publish": "نشر",
+      "draft": "مسودة",
+      "published": "منشور",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "pages": {
+      "title": "الصفحات العامة",
+      "subtitle": "صفحات ثابتة على موقع النادي (نبذة، تاريخ، الرعاة، إلخ).",
+      "newPage": "صفحة جديدة",
+      "empty": "لا توجد صفحات بعد. ابدأ بإنشاء صفحة \"عن النادي\".",
+      "headers": {
+        "title": "العنوان",
+        "slug": "الرابط",
+        "status": "الحالة",
+        "updatedAt": "آخر تحديث",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "createTitle": "صفحة جديدة",
+        "editTitle": "تعديل الصفحة",
+        "slug": "الرابط",
+        "slugHint": "أحرف لاتينية صغيرة وشُرَط فقط — يظهر في عنوان URL.",
+        "titleAr": "العنوان (عربي)",
+        "titleEn": "العنوان (إنجليزي)",
+        "bodyAr": "المحتوى (عربي)",
+        "bodyEn": "المحتوى (إنجليزي)",
+        "heroImage": "مسار صورة الغلاف",
+        "published": "منشور"
+      },
+      "errors": {
+        "slugTaken": "هذا الرابط مستخدم بالفعل."
+      }
+    },
+    "news": {
+      "title": "الأخبار",
+      "subtitle": "مقالات قسم الأخبار في موقع النادي.",
+      "newArticle": "مقال جديد",
+      "empty": "لا توجد مقالات بعد.",
+      "headers": {
+        "title": "العنوان",
+        "slug": "الرابط",
+        "status": "الحالة",
+        "publishedAt": "تاريخ النشر",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "createTitle": "مقال جديد",
+        "editTitle": "تعديل المقال",
+        "slug": "الرابط",
+        "titleAr": "العنوان (عربي)",
+        "titleEn": "العنوان (إنجليزي)",
+        "excerptAr": "المقتطف (عربي)",
+        "excerptEn": "المقتطف (إنجليزي)",
+        "bodyAr": "المحتوى (عربي)",
+        "bodyEn": "المحتوى (إنجليزي)",
+        "coverImage": "مسار صورة الغلاف",
+        "publishNow": "نشر فوري"
+      },
+      "errors": {
+        "slugTaken": "هذا الرابط مستخدم بالفعل."
+      }
+    },
+    "broadcasts": {
+      "title": "البث الجماعي",
+      "subtitle": "إرسال رسائل SMS أو بريد إلكتروني للأعضاء والموظفين. إرسال SMS يتطلب اعتماد معرّف المرسل من Unifonic.",
+      "newBroadcast": "بث جديد",
+      "empty": "لا توجد رسائل بث.",
+      "headers": {
+        "channel": "القناة",
+        "audience": "الفئة",
+        "subject": "الموضوع",
+        "recipients": "المستلمون",
+        "status": "الحالة",
+        "createdAt": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+      },
+      "channels": {
+        "sms": "رسائل قصيرة",
+        "email": "بريد إلكتروني",
+        "both": "SMS + بريد"
+      },
+      "audiences": {
+        "members": "الأعضاء",
+        "staff": "الموظفون",
+        "all": "الأعضاء + الموظفون"
+      },
+      "statuses": {
+        "draft": "مسودة",
+        "queued": "في الطابور",
+        "sending": "جاري الإرسال",
+        "sent": "تم الإرسال",
+        "failed": "فشل"
+      },
+      "form": {
+        "createTitle": "بث جديد",
+        "channel": "القناة",
+        "audience": "الفئة",
+        "subject": "الموضوع (للبريد فقط)",
+        "bodyAr": "النص (عربي)",
+        "bodyEn": "النص (إنجليزي، اختياري)"
+      },
+      "actions": {
+        "queue": "وضع في طابور الإرسال",
+        "queueHint": "سيرسل العامل التلقائي فور تفعيل معرّف Unifonic."
+      }
+    },
+    "messages": {
+      "title": "رسائل الأعضاء",
+      "subtitle": "محادثات ثنائية مع الأعضاء. ضع علامة منجز عند انتهاء المحادثة.",
+      "newThread": "محادثة جديدة",
+      "empty": "لا توجد محادثات.",
+      "noSelection": "اختر محادثة لعرضها.",
+      "headers": {
+        "subject": "الموضوع",
+        "member": "العضو",
+        "lastMessage": "آخر رسالة",
+        "status": "الحالة"
+      },
+      "statuses": {
+        "open": "مفتوحة",
+        "resolved": "منجزة",
+        "archived": "مؤرشفة"
+      },
+      "form": {
+        "createTitle": "محادثة جديدة",
+        "member": "العضو (اختياري)",
+        "memberNone": "— محادثة مستقلة —",
+        "subject": "الموضوع",
+        "initialBody": "الرسالة الأولى"
+      },
+      "reply": {
+        "placeholder": "اكتب ردًا…",
+        "send": "إرسال"
+      },
+      "actions": {
+        "resolve": "وضع علامة منجز",
+        "reopen": "إعادة فتح"
+      }
+    },
+    "prefs": {
+      "title": "تفضيلات التنبيهات",
+      "subtitle": "اشتراك كل عضو في البريد و SMS و واتساب.",
+      "empty": "لا يوجد أعضاء.",
+      "headers": {
+        "member": "العضو",
+        "email": "بريد",
+        "sms": "SMS",
+        "whatsapp": "واتساب"
+      }
+    },
+    "toast": {
+      "pageCreated": "تم إنشاء الصفحة",
+      "pageUpdated": "تم تحديث الصفحة",
+      "pageDeleted": "تم حذف الصفحة",
+      "articleCreated": "تم إنشاء المقال",
+      "articleUpdated": "تم تحديث المقال",
+      "articleDeleted": "تم حذف المقال",
+      "broadcastCreated": "تم حفظ المسودة",
+      "broadcastQueued": "تم وضع البث في الطابور",
+      "messageSent": "تم إرسال الرسالة",
+      "threadCreated": "تم إنشاء المحادثة",
+      "threadResolved": "تم تحديث المحادثة",
+      "prefsSaved": "تم حفظ التفضيلات",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

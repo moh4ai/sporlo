@@ -109,6 +109,94 @@ export interface MinistryReport {
   submitted_at: string | null;
 }
 
+export interface PublicPage {
+  id: string;
+  org_id: string;
+  slug: string;
+  title_ar: string;
+  title_en: string;
+  body_ar: string | null;
+  body_en: string | null;
+  hero_image_path: string | null;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface NewsArticle {
+  id: string;
+  org_id: string;
+  slug: string;
+  title_ar: string;
+  title_en: string;
+  excerpt_ar: string | null;
+  excerpt_en: string | null;
+  body_ar: string | null;
+  body_en: string | null;
+  cover_image_path: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type BroadcastChannel = "sms" | "email" | "both";
+export type BroadcastAudience = "members" | "staff" | "all";
+export type BroadcastStatus = "draft" | "queued" | "sending" | "sent" | "failed";
+
+export interface Broadcast {
+  id: string;
+  org_id: string;
+  channel: BroadcastChannel;
+  audience: BroadcastAudience;
+  subject: string | null;
+  body_ar: string;
+  body_en: string | null;
+  status: BroadcastStatus;
+  recipient_count: number;
+  sent_count: number;
+  failed_count: number;
+  provider_log_jsonb: Record<string, unknown>;
+  sent_at: string | null;
+  created_by: string | null;
+  created_at: string;
+}
+
+export interface NotificationPref {
+  id: string;
+  org_id: string;
+  member_id: string;
+  email_opt_in: boolean;
+  sms_opt_in: boolean;
+  whatsapp_opt_in: boolean;
+  updated_at: string;
+}
+
+export type MessageThreadStatus = "open" | "resolved" | "archived";
+
+export interface MessageThread {
+  id: string;
+  org_id: string;
+  member_id: string | null;
+  staff_user_id: string | null;
+  subject: string;
+  status: MessageThreadStatus;
+  last_message_at: string;
+  created_at: string;
+}
+
+export type MessageSenderRole = "member" | "staff" | "system";
+
+export interface Message {
+  id: string;
+  org_id: string;
+  thread_id: string;
+  sender_role: MessageSenderRole;
+  sender_user_id: string | null;
+  body: string;
+  read_at: string | null;
+  created_at: string;
+}
+
 export interface Organization {
   id: string;
   slug: string;

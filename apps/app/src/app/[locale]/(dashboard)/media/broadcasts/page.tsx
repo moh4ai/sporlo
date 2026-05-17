@@ -4,9 +4,12 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
 
-import { PagesClient, type PageRow } from "./_components/PagesClient";
+import {
+  BroadcastsClient,
+  type BroadcastRow,
+} from "./_components/BroadcastsClient";
 
-export default async function MediaPagesPage({
+export default async function BroadcastsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -17,15 +20,15 @@ export default async function MediaPagesPage({
 
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase
-    .from("public_pages")
+    .from("broadcasts")
     .select(
-      "id, slug, title_ar, title_en, body_ar, body_en, hero_image_path, published, updated_at",
+      "id, channel, audience, subject, body_ar, status, recipient_count, sent_count, failed_count, sent_at, created_at",
     )
-    .order("updated_at", { ascending: false });
+    .order("created_at", { ascending: false });
 
   return (
-    <PagesClient
-      pages={(data ?? []) as PageRow[]}
+    <BroadcastsClient
+      broadcasts={(data ?? []) as BroadcastRow[]}
       principal={{ role: tenant.user_role, department: tenant.department }}
       locale={locale as "ar" | "en"}
     />
