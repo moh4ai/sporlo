@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+
+import { ToastProvider } from "@sporlo/ui";
 
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { routing, type Locale } from "@/i18n/routing";
@@ -30,6 +32,10 @@ const rubik = localFont({
   weight: "300 900",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#0f6e3f",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -47,7 +53,6 @@ export async function generateMetadata({
     },
     icons: { icon: "/favicon.ico" },
     manifest: "/manifest.webmanifest",
-    themeColor: "#0f6e3f",
   };
 }
 
@@ -77,7 +82,7 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen bg-spo-paper text-spo-ink antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
+          <ToastProvider>{children}</ToastProvider>
         </NextIntlClientProvider>
         <ServiceWorkerRegister />
       </body>

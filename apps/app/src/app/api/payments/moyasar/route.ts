@@ -2,9 +2,10 @@
 // here once payment is captured. We never trust URL params alone — we fetch
 // the payment via the REST API to confirm before finalising.
 //
-// Two kinds of payments funnel through this endpoint:
-//   - subscription (Memberships) — finalizeMoyasarPayment in memberships-finalize
-//   - ticket (Events) — finalizeTicketPayment in events-finalize
+// Three kinds of payments funnel through this endpoint:
+//   - subscription (Memberships) — finalizeMoyasarPayment
+//   - ticket (Events) — finalizeTicketPayment
+//   - order (Store) — finalizeOrderPayment
 
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -14,6 +15,7 @@ import {
   markMoyasarPaymentFailed,
 } from "@/lib/memberships-finalize";
 import { finalizeTicketPayment } from "@/lib/events-finalize";
+import { finalizeOrderPayment } from "@/lib/orders-finalize";
 
 export const dynamic = "force-dynamic";
 
@@ -33,15 +35,23 @@ export async function GET(req: NextRequest) {
   const redirectOnFinish =
     kind === "ticket" && fixtureId
       ? `/${locale}/fixtures/${fixtureId}`
-      : memberId
-        ? `/${locale}/memberships/members/${memberId}`
-        : `/${locale}`;
+      : kind === "order"
+        ? `/${locale}/shop`
+        : memberId
+          ? `/${locale}/memberships/members/${memberId}`
+          : `/${locale}`;
 
   try {
     const remote = await fetchPayment(moyasarPaymentId);
     if (remote.status === "paid" || remote.status === "captured") {
       if (kind === "ticket") {
         await finalizeTicketPayment({
+          paymentId: sporloPaymentId,
+          provider_payment_id: remote.id,
+          amount_sar: halalasToSar(remote.amount),
+        });
+      } else if (kind === "order") {
+        await finalizeOrderPayment({
           paymentId: sporloPaymentId,
           provider_payment_id: remote.id,
           amount_sar: halalasToSar(remote.amount),

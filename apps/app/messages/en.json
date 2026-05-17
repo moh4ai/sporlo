@@ -687,5 +687,152 @@
       "matchEventAdded": "Event added",
       "saveFailed": "Save failed"
     }
+  },
+  "store": {
+    "title": "Store",
+    "subtitle": "Products, orders, and member discounts.",
+    "tabs": {
+      "products": "Products",
+      "orders": "Orders"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back",
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "products": {
+      "title": "Products",
+      "subtitle": "Catalog. Click a product to manage variants and stock.",
+      "newProduct": "New product",
+      "empty": "No products yet. Add your first to start selling.",
+      "headers": {
+        "name": "Product",
+        "category": "Category",
+        "variants": "Variants",
+        "stock": "Stock",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New product",
+        "editTitle": "Edit product",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "descriptionAr": "Description (Arabic)",
+        "descriptionEn": "Description (English)",
+        "category": "Category",
+        "active": "Active"
+      }
+    },
+    "variants": {
+      "title": "Variants",
+      "addVariant": "Add variant",
+      "empty": "No variants yet. Add one to make this product sellable.",
+      "headers": {
+        "sku": "SKU",
+        "size": "Size",
+        "color": "Color",
+        "price": "Price",
+        "memberPrice": "Member price",
+        "stock": "Stock",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Add variant",
+        "editTitle": "Edit variant",
+        "sku": "SKU",
+        "size": "Size",
+        "color": "Color",
+        "price": "Price (SAR)",
+        "memberPrice": "Member price (SAR)",
+        "stock": "Stock"
+      },
+      "adjust": {
+        "title": "Adjust stock",
+        "delta": "Change (+ or -)",
+        "note": "Reason"
+      },
+      "errors": {
+        "skuExists": "A variant with this SKU already exists for this product."
+      }
+    },
+    "orders": {
+      "title": "Orders",
+      "subtitle": "Customer orders ready to fulfill.",
+      "empty": "No orders yet.",
+      "headers": {
+        "buyer": "Buyer",
+        "items": "Items",
+        "total": "Total",
+        "status": "Status",
+        "createdAt": "Placed",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "shipped": "Shipped",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "actions": {
+        "ship": "Ship",
+        "deliver": "Mark delivered"
+      },
+      "shipForm": {
+        "title": "Ship order",
+        "carrier": "Carrier (e.g. Aramex)",
+        "tracking": "Tracking number"
+      }
+    },
+    "shop": {
+      "title": "Shop",
+      "empty": "No products available right now.",
+      "viewDetails": "View",
+      "addToCart": "Add to cart",
+      "outOfStock": "Out of stock",
+      "memberDiscount": "Member price",
+      "regularPrice": "Regular price",
+      "cart": {
+        "title": "Your cart",
+        "empty": "Your cart is empty.",
+        "remove": "Remove",
+        "subtotal": "Subtotal",
+        "checkout": "Checkout"
+      },
+      "checkout": {
+        "title": "Checkout",
+        "email": "Email",
+        "emailHint": "We'll match this against active memberships for discounts.",
+        "phone": "Phone (optional)",
+        "address": "Shipping address",
+        "method": "Payment method",
+        "methodMoyasar": "Card / Mada / Apple Pay",
+        "methodManual": "Pay later at the club",
+        "moyasarUnavailable": "Card payment not configured; pay at the club.",
+        "submit": "Place order",
+        "memberDetected": "Member detected — discount applied.",
+        "outOfStock": "Sorry, one of the items just went out of stock.",
+        "successManual": "Order placed. Pay at the club to dispatch."
+      }
+    },
+    "toast": {
+      "productCreated": "Product added",
+      "productUpdated": "Product updated",
+      "productArchived": "Product archived",
+      "variantAdded": "Variant added",
+      "variantUpdated": "Variant updated",
+      "variantDeleted": "Variant deleted",
+      "stockAdjusted": "Stock adjusted",
+      "orderShipped": "Order shipped",
+      "orderDelivered": "Order delivered",
+      "saveFailed": "Save failed"
+    }
   }
 }

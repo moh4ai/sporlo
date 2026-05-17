@@ -10,6 +10,7 @@ import {
   markMoyasarPaymentFailed,
 } from "@/lib/memberships-finalize";
 import { finalizeTicketPayment } from "@/lib/events-finalize";
+import { finalizeOrderPayment } from "@/lib/orders-finalize";
 
 export const dynamic = "force-dynamic";
 
@@ -48,7 +49,11 @@ export async function POST(req: NextRequest) {
 
   if (paid) {
     const finalize =
-      kind === "ticket" ? finalizeTicketPayment : finalizeMoyasarPayment;
+      kind === "ticket"
+        ? finalizeTicketPayment
+        : kind === "order"
+          ? finalizeOrderPayment
+          : finalizeMoyasarPayment;
     const res = await finalize({
       paymentId: sporloPaymentId,
       provider_payment_id: body.data.id,

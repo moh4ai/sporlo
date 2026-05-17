@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
 import type { Principal } from "@sporlo/auth";
-import { ToastProvider } from "@sporlo/ui";
 
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
@@ -42,14 +41,12 @@ export default async function DashboardLayout({
   };
 
   return (
-    <ToastProvider>
-      <div className="flex min-h-screen">
-        <Sidebar principal={principal} />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <TopBar locale={locale as "ar" | "en"} />
-          <main className="flex-1 overflow-y-auto p-6">{children}</main>
-        </div>
+    <div className="flex min-h-screen">
+      <Sidebar principal={principal} />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <TopBar locale={locale as "ar" | "en"} />
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
-    </ToastProvider>
+    </div>
   );
 }

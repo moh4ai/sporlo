@@ -386,3 +386,104 @@ export interface MatchEvent {
   client_id: string | null;
   created_at: string;
 }
+
+// ─────────────────────────────────────────────
+// Store module (Phase 2)
+// ─────────────────────────────────────────────
+
+export interface Product {
+  id: string;
+  org_id: string;
+  name_ar: string;
+  name_en: string;
+  description_ar: string | null;
+  description_en: string | null;
+  category: string | null;
+  active: boolean;
+  archived_at: string | null;
+  created_at: string;
+}
+
+export interface ProductVariant {
+  id: string;
+  org_id: string;
+  product_id: string;
+  sku: string | null;
+  size: string | null;
+  color: string | null;
+  price_sar: number;
+  member_price_sar: number | null;
+  stock: number;
+  active: boolean;
+  created_at: string;
+}
+
+export type InventoryReason =
+  | "initial"
+  | "restock"
+  | "order_paid"
+  | "order_cancelled"
+  | "manual_adjustment";
+
+export interface InventoryMovement {
+  id: string;
+  org_id: string;
+  variant_id: string;
+  delta: number;
+  reason: InventoryReason;
+  order_id: string | null;
+  note: string | null;
+  created_at: string;
+}
+
+export type OrderStatus =
+  | "pending"
+  | "paid"
+  | "shipped"
+  | "delivered"
+  | "cancelled"
+  | "refunded";
+
+export interface Order {
+  id: string;
+  org_id: string;
+  buyer_member_id: string | null;
+  buyer_email: string;
+  buyer_phone: string | null;
+  shipping_address: string | null;
+  subtotal_sar: number;
+  discount_sar: number;
+  total_sar: number;
+  currency: string;
+  status: OrderStatus;
+  payment_id: string | null;
+  paid_at: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  created_at: string;
+}
+
+export interface OrderItem {
+  id: string;
+  org_id: string;
+  order_id: string;
+  product_id: string | null;
+  variant_id: string | null;
+  product_name: string;
+  variant_label: string | null;
+  quantity: number;
+  unit_price_sar: number;
+  subtotal_sar: number;
+  created_at: string;
+}
+
+export interface Shipment {
+  id: string;
+  org_id: string;
+  order_id: string;
+  carrier: string | null;
+  tracking_number: string | null;
+  shipped_at: string;
+  delivered_at: string | null;
+  notes: string | null;
+}
