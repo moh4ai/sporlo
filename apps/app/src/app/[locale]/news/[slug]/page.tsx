@@ -1,7 +1,9 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
+import { PublicShell } from "@/components/PublicShell";
 import { createServiceRoleClient } from "@/lib/supabase-server";
 import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
@@ -20,7 +22,9 @@ export default async function NewsArticlePage({
   const admin = createServiceRoleClient();
   const { data } = await admin
     .from("news_articles")
-    .select("title_ar, title_en, body_ar, body_en, cover_image_path, published_at")
+    .select(
+      "title_ar, title_en, body_ar, body_en, cover_image_path, published_at",
+    )
     .eq("org_id", tenant.org_id)
     .eq("slug", slug)
     .not("published_at", "is", null)
@@ -36,34 +40,50 @@ export default async function NewsArticlePage({
   });
   const title = locale === "ar" ? data.title_ar : data.title_en;
   const body = locale === "ar" ? data.body_ar : data.body_en;
-  const orgName = locale === "ar" ? tenant.name_ar : tenant.name_en;
+  const BackArrow = locale === "ar" ? ArrowRight : ArrowLeft;
 
   return (
-    <main className="mx-auto max-w-3xl space-y-6 p-6">
-      <p className="text-sm text-spo-muted">
-        <Link href="/news" className="hover:underline">
-          ← {orgName}
-        </Link>
-      </p>
-
-      <article className="space-y-4">
-        {data.published_at && (
-          <p className="text-xs uppercase tracking-wide text-spo-muted">
-            {dateFmt.format(new Date(data.published_at))}
-          </p>
-        )}
-        <h1
-          className="text-4xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
+    <PublicShell locale={locale} tenant={tenant}>
+      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <Link
+          href="/news"
+          className="mb-8 inline-flex items-center gap-1.5 text-sm text-spo-muted hover:text-spo-ink"
         >
-          {title}
-        </h1>
+          <BackArrow className="size-3.5" />
+          <span>{locale === "ar" ? tenant.name_ar : tenant.name_en}</span>
+        </Link>
+
+        <header className="space-y-4 pb-6">
+          {data.published_at && (
+            <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+              {dateFmt.format(new Date(data.published_at))}
+            </p>
+          )}
+          <h1
+            className="text-3xl font-semibold leading-tight text-spo-ink sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {title}
+          </h1>
+        </header>
+
+        {data.cover_image_path && (
+          <div className="-mx-4 mb-8 overflow-hidden rounded-card sm:mx-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={data.cover_image_path}
+              alt=""
+              className="aspect-[16/9] w-full object-cover"
+            />
+          </div>
+        )}
+
         {body && (
-          <div className="prose prose-spo max-w-none whitespace-pre-wrap text-spo-ink">
+          <div className="whitespace-pre-wrap text-lg leading-relaxed text-spo-ink-2">
             {body}
           </div>
         )}
       </article>
-    </main>
+    </PublicShell>
   );
 }

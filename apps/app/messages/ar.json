@@ -3,6 +3,23 @@
     "title": "سبورلو — لوحة تحكم النادي",
     "description": "منصة سعودية متعددة الأندية لإدارة المنشآت الرياضية"
   },
+  "publicShell": {
+    "nav": {
+      "home": "الرئيسية",
+      "news": "الأخبار",
+      "fixtures": "المباريات",
+      "squad": "الفريق",
+      "shop": "المتجر",
+      "memberPortal": "بوابة العضو"
+    },
+    "footer": {
+      "poweredBy": "مدعوم من سبورلو",
+      "rights": "جميع الحقوق محفوظة"
+    },
+    "switchLocale": "English",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
+  },
   "nav": {
     "switchLocale": "English",
     "branchPicker": "اختر الفرع",

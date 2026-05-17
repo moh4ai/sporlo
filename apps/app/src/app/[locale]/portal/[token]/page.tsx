@@ -1,7 +1,9 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CheckCircle2 } from "lucide-react";
 
-import { Badge, Card, CardHeader, CardTitle } from "@sporlo/ui";
+import { Badge } from "@sporlo/ui";
 
+import { PublicShell } from "@/components/PublicShell";
 import { createServiceRoleClient } from "@/lib/supabase-server";
 import type { Locale } from "@/i18n/routing";
 
@@ -26,38 +28,53 @@ export default async function PortalPage({
 
   if (!tokenRow || new Date(tokenRow.expires_at) < new Date()) {
     return (
-      <main className="mx-auto max-w-md p-6">
-        <Card>
-          <p className="text-sm text-spo-danger">{t("expiredOrInvalid")}</p>
-        </Card>
-      </main>
+      <PublicShell locale={locale} minimal>
+        <div className="mx-auto max-w-md px-4 py-16 sm:px-6">
+          <div className="rounded-card border border-spo-line bg-white p-6 text-center">
+            <p className="text-sm text-spo-danger">{t("expiredOrInvalid")}</p>
+          </div>
+        </div>
+      </PublicShell>
     );
   }
 
-  const { data: member } = await admin
-    .from("members")
-    .select("full_name_ar, full_name_en, member_number, email, status")
-    .eq("id", tokenRow.member_id)
-    .maybeSingle();
-  const { data: org } = await admin
-    .from("organizations")
-    .select("name_ar, name_en")
-    .eq("id", tokenRow.org_id)
-    .maybeSingle();
+  const [{ data: member }, { data: org }] = await Promise.all([
+    admin
+      .from("members")
+      .select("full_name_ar, full_name_en, member_number, email, status")
+      .eq("id", tokenRow.member_id)
+      .maybeSingle(),
+    admin
+      .from("organizations")
+      .select("id, slug, name_ar, name_en")
+      .eq("id", tokenRow.org_id)
+      .maybeSingle(),
+  ]);
 
   const memberName =
     locale === "ar"
       ? member?.full_name_ar
       : member?.full_name_en || member?.full_name_ar;
-  const clubName = locale === "ar" ? org?.name_ar : org?.name_en;
 
   const { data: subs } = await admin
     .from("subscriptions")
-    .select("id, status, starts_at, ends_at, plan:plans(name_ar, name_en, price_sar)")
+    .select(
+      "id, status, starts_at, ends_at, plan:plans(name_ar, name_en, price_sar)",
+    )
     .eq("member_id", tokenRow.member_id)
     .order("created_at", { ascending: false });
 
   const activeSub = subs?.find((s) => s.status === "active");
+  const activePlan = activeSub
+    ? Array.isArray(activeSub.plan)
+      ? activeSub.plan[0]
+      : activeSub.plan
+    : null;
+  const activePlanName = activePlan
+    ? locale === "ar"
+      ? activePlan.name_ar
+      : activePlan.name_en
+    : null;
 
   const { data: payments } = await admin
     .from("payments")
@@ -78,69 +95,137 @@ export default async function PortalPage({
     day: "numeric",
   });
 
+  const totalPaid =
+    payments?.reduce((acc, p) => acc + Number(p.amount_sar), 0) ?? 0;
+
+  const tenantForShell = org
+    ? {
+        org_id: org.id,
+        slug: org.slug,
+        name_ar: org.name_ar,
+        name_en: org.name_en,
+      }
+    : null;
+
   return (
-    <main className="mx-auto max-w-2xl space-y-6 p-6">
-      <header className="space-y-1">
-        <h1
-          className="text-2xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {t("publicTitle")} — {clubName}
-        </h1>
-        <p className="text-sm text-spo-muted">{t("publicSubtitle")}</p>
-      </header>
-
-      <Card className="space-y-2">
-        <CardHeader>
-          <CardTitle>{memberName}</CardTitle>
-          <code className="rounded bg-spo-paper px-1.5 py-0.5 text-xs">
-            {member?.member_number}
-          </code>
-        </CardHeader>
-        {activeSub ? (
-          (() => {
-            const plan = Array.isArray(activeSub.plan)
-              ? activeSub.plan[0]
-              : activeSub.plan;
-            const planName =
-              locale === "ar" ? plan?.name_ar : plan?.name_en;
-            return (
-              <div className="space-y-2 text-sm text-spo-ink-2">
-                <div className="flex items-center justify-between">
-                  <span>{planName}</span>
-                  <Badge tone="green">Active</Badge>
-                </div>
-                {activeSub.ends_at && (
-                  <div className="text-xs text-spo-muted">
-                    {dateFmt.format(new Date(activeSub.ends_at))}
-                  </div>
-                )}
+    <PublicShell locale={locale} tenant={tenantForShell} minimal>
+      <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:px-6">
+        {/* Member ID hero card */}
+        <div className="overflow-hidden rounded-card-lg border border-spo-green/30 bg-spo-ink text-white shadow-[var(--shadow-2)]">
+          <div className="relative space-y-6 p-6 sm:p-8">
+            <div
+              aria-hidden="true"
+              className="absolute -right-12 -top-12 size-48 rounded-full bg-spo-green/30 blur-3xl"
+            />
+            <div className="relative flex items-start justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-spo-green-soft/80">
+                  {t("publicTitle")}
+                </p>
+                <p className="text-sm text-white/70">
+                  {locale === "ar" ? org?.name_ar : org?.name_en}
+                </p>
               </div>
-            );
-          })()
-        ) : (
-          <p className="text-sm text-spo-muted">{t("noActiveSubscription")}</p>
-        )}
-      </Card>
-
-      {payments && payments.length > 0 && (
-        <Card>
-          <h3 className="mb-3 text-base font-semibold text-spo-ink">Payments</h3>
-          <ul className="space-y-1 text-sm">
-            {payments.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-center justify-between border-b border-spo-line py-1 last:border-0"
+              {activeSub ? (
+                <Badge tone="green">{t("publicSubtitle") ?? "Active"}</Badge>
+              ) : (
+                <Badge tone="neutral">{t("noActiveSubscription")}</Badge>
+              )}
+            </div>
+            <div className="relative space-y-1">
+              <h1
+                className="text-3xl font-semibold sm:text-4xl"
+                style={{ fontFamily: "var(--font-display)" }}
               >
-                <span>{sarFmt.format(Number(p.amount_sar))}</span>
-                <span className="text-xs text-spo-muted">
-                  {p.paid_at ? dateFmt.format(new Date(p.paid_at)) : "—"}
+                {memberName}
+              </h1>
+              {member?.member_number && (
+                <p className="font-mono text-sm tracking-wider text-spo-green-soft">
+                  {member.member_number}
+                </p>
+              )}
+            </div>
+            {activePlan && (
+              <div className="relative grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-3">
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider text-white/50">
+                    {locale === "ar" ? "الباقة" : "Plan"}
+                  </p>
+                  <p className="mt-0.5 font-medium">{activePlanName}</p>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider text-white/50">
+                    {locale === "ar" ? "تنتهي" : "Expires"}
+                  </p>
+                  <p className="mt-0.5 font-medium">
+                    {activeSub?.ends_at
+                      ? dateFmt.format(new Date(activeSub.ends_at))
+                      : "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wider text-white/50">
+                    {locale === "ar" ? "السعر" : "Price"}
+                  </p>
+                  <p className="mt-0.5 font-medium">
+                    {activePlan.price_sar
+                      ? sarFmt.format(Number(activePlan.price_sar))
+                      : "—"}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Payment timeline */}
+        {payments && payments.length > 0 && (
+          <section className="space-y-4">
+            <div className="flex items-baseline justify-between">
+              <h2 className="text-lg font-semibold text-spo-ink">
+                {locale === "ar" ? "سجل المدفوعات" : "Payments"}
+              </h2>
+              <p className="text-xs text-spo-muted">
+                {locale === "ar" ? "إجمالي" : "Total"} ·{" "}
+                <span className="font-semibold text-spo-ink-2">
+                  {sarFmt.format(totalPaid)}
                 </span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-    </main>
+              </p>
+            </div>
+            <ol className="relative space-y-0">
+              {payments.map((p, i) => (
+                <li
+                  key={p.id}
+                  className="relative flex items-start gap-4 ps-7 pb-4 last:pb-0"
+                >
+                  {i !== payments.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute start-[11px] top-6 h-full w-px bg-spo-line"
+                    />
+                  )}
+                  <span
+                    aria-hidden="true"
+                    className="absolute start-0 top-0.5 flex size-6 items-center justify-center rounded-full bg-spo-green-soft text-spo-green-deep"
+                  >
+                    <CheckCircle2 className="size-3.5" />
+                  </span>
+                  <div className="flex flex-1 items-center justify-between border-b border-spo-line pb-3 last:border-0">
+                    <div>
+                      <p className="text-sm font-medium text-spo-ink">
+                        {sarFmt.format(Number(p.amount_sar))}
+                      </p>
+                      <p className="text-xs text-spo-muted">
+                        {p.paid_at ? dateFmt.format(new Date(p.paid_at)) : "—"}
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+      </div>
+    </PublicShell>
   );
 }

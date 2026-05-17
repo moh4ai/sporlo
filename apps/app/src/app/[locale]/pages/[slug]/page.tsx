@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
+import { PublicShell } from "@/components/PublicShell";
 import { createServiceRoleClient } from "@/lib/supabase-server";
 import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
@@ -29,22 +30,36 @@ export default async function PublicStaticPage({
 
   const title = locale === "ar" ? data.title_ar : data.title_en;
   const body = locale === "ar" ? data.body_ar : data.body_en;
-  const orgName = locale === "ar" ? tenant.name_ar : tenant.name_en;
 
   return (
-    <main className="mx-auto max-w-3xl space-y-6 p-6">
-      <p className="text-sm text-spo-muted">{orgName}</p>
-      <article className="space-y-4">
-        <h1
-          className="text-4xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {title}
-        </h1>
+    <PublicShell locale={locale} tenant={tenant}>
+      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <header className="space-y-2 pb-6">
+          <h1
+            className="text-3xl font-semibold text-spo-ink sm:text-5xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {title}
+          </h1>
+        </header>
+
+        {data.hero_image_path && (
+          <div className="-mx-4 mb-8 overflow-hidden rounded-card sm:mx-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={data.hero_image_path}
+              alt=""
+              className="aspect-[16/9] w-full object-cover"
+            />
+          </div>
+        )}
+
         {body && (
-          <div className="whitespace-pre-wrap text-spo-ink">{body}</div>
+          <div className="whitespace-pre-wrap text-lg leading-relaxed text-spo-ink-2">
+            {body}
+          </div>
         )}
       </article>
-    </main>
+    </PublicShell>
   );
 }

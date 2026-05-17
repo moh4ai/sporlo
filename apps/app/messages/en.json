@@ -3,6 +3,23 @@
     "title": "Sporlo — Club Workspace",
     "description": "Multi-tenant SaaS for Saudi sports clubs"
   },
+  "publicShell": {
+    "nav": {
+      "home": "Home",
+      "news": "News",
+      "fixtures": "Fixtures",
+      "squad": "Squad",
+      "shop": "Shop",
+      "memberPortal": "Member portal"
+    },
+    "footer": {
+      "poweredBy": "Powered by Sporlo",
+      "rights": "All rights reserved"
+    },
+    "switchLocale": "العربية",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
   "nav": {
     "switchLocale": "العربية",
     "branchPicker": "Choose branch",
