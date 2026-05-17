@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { PageHeader } from "@/components/PageHeader";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
@@ -42,15 +43,7 @@ export default async function FacilitiesPage({
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <header className="space-y-1">
-        <h1
-          className="text-3xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {t("title")}
-        </h1>
-        <p className="text-sm text-spo-muted">{t("subtitle")}</p>
-      </header>
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
       <FacilitiesListClient
         facilities={rows}
         principal={{ role: tenant.user_role, department: tenant.department }}

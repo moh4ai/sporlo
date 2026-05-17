@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { PageHeader } from "@/components/PageHeader";
 import type { Locale } from "@/i18n/routing";
 
 import { TabNav } from "./_components/TabNav";
@@ -16,16 +17,11 @@ export default async function MediaLayout({
   const t = await getTranslations({ locale, namespace: "media" });
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <header className="space-y-1">
-        <h1
-          className="text-3xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {t("title")}
-        </h1>
-        <p className="text-sm text-spo-muted">{t("subtitle")}</p>
-      </header>
-      <TabNav />
+      <PageHeader
+        title={t("title")}
+        subtitle={t("subtitle")}
+        tabs={<TabNav />}
+      />
       {children}
     </div>
   );

@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { PageHeader } from "@/components/PageHeader";
 import type { Locale } from "@/i18n/routing";
 
 export default async function EventsLayout({
@@ -14,15 +15,7 @@ export default async function EventsLayout({
   const t = await getTranslations({ locale, namespace: "events" });
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <header className="space-y-1">
-        <h1
-          className="text-3xl font-semibold text-spo-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          {t("title")}
-        </h1>
-        <p className="text-sm text-spo-muted">{t("subtitle")}</p>
-      </header>
+      <PageHeader title={t("title")} subtitle={t("subtitle")} />
       {children}
     </div>
   );
