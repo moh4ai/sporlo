@@ -596,3 +596,64 @@ export interface PlayerStats {
   red_cards: number;
   created_at: string;
 }
+
+// ─────────────────────────────────────────────
+// Academy module (Phase 3)
+// ─────────────────────────────────────────────
+
+export interface Coach {
+  id: string;
+  org_id: string;
+  user_id: string | null;
+  full_name_ar: string;
+  full_name_en: string | null;
+  email: string | null;
+  phone: string | null;
+  certifications_jsonb: Array<{ name: string; expires_at?: string }>;
+  bio: string | null;
+  active: boolean;
+  created_at: string;
+}
+
+export interface AcademySession {
+  id: string;
+  org_id: string;
+  coach_id: string | null;
+  squad_id: string | null;
+  facility_id: string | null;
+  title_ar: string;
+  title_en: string;
+  scheduled_at: string;
+  duration_minutes: number;
+  age_group: string | null;
+  notes: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+}
+
+export interface SessionAttendance {
+  id: string;
+  org_id: string;
+  session_id: string;
+  member_id: string;
+  present: boolean;
+  note: string | null;
+  recorded_at: string;
+  recorded_by: string | null;
+  recorded_offline: boolean;
+  client_id: string | null;
+}
+
+export interface ProgressNote {
+  id: string;
+  org_id: string;
+  member_id: string;
+  coach_id: string | null;
+  session_id: string | null;
+  note_ar: string | null;
+  note_en: string | null;
+  rating: number | null;
+  parent_visible: boolean;
+  created_by: string | null;
+  created_at: string;
+}

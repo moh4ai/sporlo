@@ -1017,5 +1017,105 @@
       "trainingCancelled": "Training cancelled",
       "saveFailed": "Save failed"
     }
+  },
+  "academy": {
+    "title": "Academy",
+    "subtitle": "Coaches, session calendar, attendance, and progress notes.",
+    "tabs": {
+      "sessions": "Sessions",
+      "coaches": "Coaches"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "back": "Back",
+      "active": "Active",
+      "archived": "Archived",
+      "archive": "Archive"
+    },
+    "coaches": {
+      "title": "Coaches",
+      "subtitle": "Staff coaching academy sessions.",
+      "newCoach": "New coach",
+      "empty": "No coaches yet. Add coaches to assign them to sessions.",
+      "headers": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New coach",
+        "editTitle": "Edit coach",
+        "fullNameAr": "Full name (Arabic)",
+        "fullNameEn": "Full name (English)",
+        "email": "Email",
+        "phone": "Phone",
+        "bio": "Bio"
+      }
+    },
+    "sessions": {
+      "title": "Sessions",
+      "subtitle": "Upcoming + recent academy sessions.",
+      "newSession": "New session",
+      "empty": "No sessions scheduled.",
+      "headers": {
+        "scheduled": "When",
+        "title": "Title",
+        "coach": "Coach",
+        "duration": "Duration",
+        "ageGroup": "Age",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Schedule session",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "scheduledAt": "Start time",
+        "durationMinutes": "Duration (minutes)",
+        "coach": "Coach",
+        "facility": "Facility",
+        "ageGroup": "Age group (e.g. U10, U14)",
+        "notes": "Notes",
+        "noneCoach": "— No coach —",
+        "noneFacility": "— No facility —"
+      }
+    },
+    "attendance": {
+      "title": "Attendance",
+      "presentLabel": "Present",
+      "absentLabel": "Absent",
+      "noteLabel": "Note",
+      "offlineHint": "You're offline. Marks are queued and will sync automatically.",
+      "queueCount": "{n} attendance records pending sync",
+      "syncedNow": "Synced",
+      "empty": "No members in this org to record attendance for."
+    },
+    "notes": {
+      "title": "Progress notes",
+      "newNote": "Add note",
+      "noneYet": "No notes yet.",
+      "form": {
+        "title": "New progress note",
+        "noteAr": "Note (Arabic)",
+        "noteEn": "Note (English)",
+        "rating": "Rating (1-5)",
+        "parentVisible": "Visible to parents"
+      }
+    },
+    "toast": {
+      "coachCreated": "Coach added",
+      "coachUpdated": "Coach updated",
+      "coachArchived": "Coach archived",
+      "sessionCreated": "Session scheduled",
+      "sessionCancelled": "Session cancelled",
+      "attendanceSaved": "Attendance saved",
+      "noteAdded": "Note added",
+      "noteDeleted": "Note deleted",
+      "saveFailed": "Save failed"
+    }
   }
 }

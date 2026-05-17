@@ -1017,5 +1017,105 @@
       "trainingCancelled": "تم إلغاء التدريب",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "academy": {
+    "title": "الأكاديمية",
+    "subtitle": "المدربون، جدول الحصص، الحضور، وملاحظات التقدم.",
+    "tabs": {
+      "sessions": "الحصص",
+      "coaches": "المدربون"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "back": "عودة",
+      "active": "نشط",
+      "archived": "مؤرشف",
+      "archive": "أرشفة"
+    },
+    "coaches": {
+      "title": "المدربون",
+      "subtitle": "الكادر التدريبي للأكاديمية.",
+      "newCoach": "مدرب جديد",
+      "empty": "لا يوجد مدربون بعد.",
+      "headers": {
+        "name": "الاسم",
+        "email": "البريد",
+        "phone": "الجوال",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "مدرب جديد",
+        "editTitle": "تعديل المدرب",
+        "fullNameAr": "الاسم الكامل (عربي)",
+        "fullNameEn": "الاسم الكامل (إنجليزي)",
+        "email": "البريد",
+        "phone": "الجوال",
+        "bio": "نبذة"
+      }
+    },
+    "sessions": {
+      "title": "الحصص",
+      "subtitle": "الحصص القادمة والأخيرة.",
+      "newSession": "حصة جديدة",
+      "empty": "لا توجد حصص مجدولة.",
+      "headers": {
+        "scheduled": "الموعد",
+        "title": "العنوان",
+        "coach": "المدرب",
+        "duration": "المدة",
+        "ageGroup": "الفئة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "title": "جدولة حصة",
+        "titleAr": "العنوان (عربي)",
+        "titleEn": "العنوان (إنجليزي)",
+        "scheduledAt": "وقت البدء",
+        "durationMinutes": "المدة (دقائق)",
+        "coach": "المدرب",
+        "facility": "المنشأة",
+        "ageGroup": "الفئة العمرية (U10، U14…)",
+        "notes": "ملاحظات",
+        "noneCoach": "— بدون مدرب —",
+        "noneFacility": "— بدون منشأة —"
+      }
+    },
+    "attendance": {
+      "title": "الحضور",
+      "presentLabel": "حاضر",
+      "absentLabel": "غائب",
+      "noteLabel": "ملاحظة",
+      "offlineHint": "أنت بدون اتصال. السجلات في الانتظار وستتزامن تلقائياً.",
+      "queueCount": "{n} سجل حضور بانتظار المزامنة",
+      "syncedNow": "تم التزامن",
+      "empty": "لا يوجد أعضاء لتسجيل حضورهم."
+    },
+    "notes": {
+      "title": "ملاحظات التقدم",
+      "newNote": "إضافة ملاحظة",
+      "noneYet": "لا توجد ملاحظات بعد.",
+      "form": {
+        "title": "ملاحظة جديدة",
+        "noteAr": "الملاحظة (عربي)",
+        "noteEn": "الملاحظة (إنجليزي)",
+        "rating": "التقييم (1-5)",
+        "parentVisible": "ظاهرة لأولياء الأمور"
+      }
+    },
+    "toast": {
+      "coachCreated": "تمت إضافة المدرب",
+      "coachUpdated": "تم تحديث المدرب",
+      "coachArchived": "تمت أرشفة المدرب",
+      "sessionCreated": "تمت جدولة الحصة",
+      "sessionCancelled": "تم إلغاء الحصة",
+      "attendanceSaved": "تم حفظ الحضور",
+      "noteAdded": "تمت إضافة الملاحظة",
+      "noteDeleted": "تم حذف الملاحظة",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }
