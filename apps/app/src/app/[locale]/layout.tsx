@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { routing, type Locale } from "@/i18n/routing";
 import "../globals.css";
 
@@ -45,6 +46,8 @@ export async function generateMetadata({
       languages: { ar: "/ar", en: "/en" },
     },
     icons: { icon: "/favicon.ico" },
+    manifest: "/manifest.webmanifest",
+    themeColor: "#0f6e3f",
   };
 }
 
@@ -76,6 +79,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}
         </NextIntlClientProvider>
+        <ServiceWorkerRegister />
       </body>
     </html>
   );

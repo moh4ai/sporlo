@@ -1,0 +1,25 @@
+{
+  "name": "@sporlo/governance",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./kpi-engine": "./src/kpi-engine.ts",
+    "./events": "./src/events.ts",
+    "./scoring": "./src/scoring.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@sporlo/db": "workspace:*",
+    "@sporlo/shared": "workspace:*",
+    "@supabase/supabase-js": "^2.45.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

@@ -90,7 +90,222 @@ export function canAccessModule(p: Principal, mod: ModuleKey): boolean {
   return visibleModules(p).includes(mod);
 }
 
-// Coarse write capability — full per-action ACLs land in Phase 1.
+// ─────────────────────────────────────────────
+// Fine-grained ACL — Phase 1+
+// ─────────────────────────────────────────────
+
+export type Action =
+  | "create"
+  | "read"
+  | "update"
+  | "delete"
+  | "approve"
+  | "refund"
+  | "export";
+
+// Logical resource keys. Most are entity-level; a few are aggregate views
+// (revenue_summary, finance_summary, member_pii).
+export type Resource =
+  | ModuleKey
+  | "member"
+  | "plan"
+  | "subscription"
+  | "payment"
+  | "refund"
+  | "coupon"
+  | "fixture"
+  | "ticket"
+  | "product"
+  | "order"
+  | "facility"
+  | "booking"
+  | "session"
+  | "squad_entry"
+  | "staff_profile"
+  | "certification"
+  | "kpi_event"
+  | "governance_document"
+  | "governance_deadline"
+  | "audit_log"
+  | "revenue_summary"
+  | "finance_summary"
+  | "member_pii";
+
+type Allow = Role[] | "*";
+type RoleRule = Allow | ((p: Principal) => boolean);
+
+// "*" means every role (including super_admin). Function rules let us scope
+// by department (e.g. only dept_manager:finance can refund payments).
+const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
+  // Membership module entities
+  plan: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "finance" || p.department === "marketing")),
+  },
+  member: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "dept_manager",
+  },
+  subscription: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+  },
+  payment: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+    refund: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+  },
+  coupon: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    delete: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "marketing"),
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "finance")),
+  },
+  revenue_summary: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor" ||
+      (p.role === "dept_manager" &&
+        (p.department === "finance" || p.department === "marketing")),
+    export: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+  },
+  // Aggregate finance view — never PII.
+  finance_summary: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+  },
+  // Member PII — strictly limited.
+  member_pii: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "finance" || p.department === "hr")),
+    export: ["super_admin", "club_admin"],
+  },
+  // KPI events: emitted server-side from any module; read by anyone with
+  // governance visibility. Direct mutation is governance/super_admin only.
+  kpi_event: {
+    read: (p) => canAccessModule(p, "governance"),
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin"],
+    delete: ["super_admin"],
+  },
+  governance_document: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "governance"),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+    export: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor",
+  },
+  audit_log: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor",
+  },
+};
+
+function matchAllow(allow: Allow, p: Principal): boolean {
+  return allow === "*" || allow.includes(p.role);
+}
+
+export function canPerform(
+  p: Principal,
+  action: Action,
+  resource: Resource,
+): boolean {
+  if (p.role === "super_admin") return true;
+
+  // Module-level read is the fallback for resources without explicit rules.
+  const rules = ACL[resource];
+  if (!rules || !rules[action]) {
+    if (action === "read" && isModuleKey(resource)) {
+      return canAccessModule(p, resource);
+    }
+    return false;
+  }
+
+  const rule = rules[action]!;
+  return typeof rule === "function" ? rule(p) : matchAllow(rule, p);
+}
+
+function isModuleKey(r: Resource): r is ModuleKey {
+  return (ALL_MODULES as ReadonlyArray<string>).includes(r);
+}
+
+// Server guard — call from a Server Action; throws on denial. The thrown
+// error message is safe to surface as the ActionResult error.
+export class PermissionDeniedError extends Error {
+  constructor(action: Action, resource: Resource) {
+    super(`permission-denied:${action}:${resource}`);
+    this.name = "PermissionDeniedError";
+  }
+}
+
+export function requirePrincipal(
+  p: Principal | null,
+  action: Action,
+  resource: Resource,
+): asserts p is Principal {
+  if (!p) throw new PermissionDeniedError(action, resource);
+  if (!canPerform(p, action, resource)) {
+    throw new PermissionDeniedError(action, resource);
+  }
+}
+
+// Coarse helpers kept for backward compatibility (callers still in the codebase).
 export function canWriteOrg(p: Principal): boolean {
   return p.role === "super_admin" || p.role === "club_admin";
 }

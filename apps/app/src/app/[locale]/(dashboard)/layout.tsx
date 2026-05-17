@@ -1,11 +1,15 @@
 import { redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
-import { parseClaims, type Principal } from "@sporlo/auth";
+import type { Principal } from "@sporlo/auth";
 
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+import {
+  enforceHostMatchesOrg,
+  getActiveTenant,
+  TenantError,
+} from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
 
 export default async function DashboardLayout({
@@ -18,25 +22,22 @@ export default async function DashboardLayout({
   const { locale } = await params;
   setRequestLocale(locale as Locale);
 
-  const supabase = await createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect(`/${locale}/sign-in`);
-
-  // Decode the JWT to read the auth-hook-injected claims.
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  const claims = session ? parseClaims(session.access_token) : null;
-
-  if (!claims?.org_id || !claims.role) {
-    redirect(`/${locale}/onboarding`);
+  let tenant;
+  try {
+    tenant = await getActiveTenant();
+    await enforceHostMatchesOrg(tenant);
+  } catch (err) {
+    if (err instanceof TenantError) {
+      if (err.message === "no-session") redirect(`/${locale}/sign-in`);
+      if (err.message === "no-org-claim") redirect(`/${locale}/onboarding`);
+      if (err.message === "host-org-mismatch") redirect(`/${locale}/sign-in`);
+    }
+    throw err;
   }
 
   const principal: Principal = {
-    role: claims.role,
-    department: claims.department,
+    role: tenant.user_role,
+    department: tenant.department,
   };
 
   return (

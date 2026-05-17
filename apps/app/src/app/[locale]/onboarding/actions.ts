@@ -1,75 +1,77 @@
 "use server";
 
 import {
+  actionError,
+  actionOkVoid,
+  BilingualNameSchema,
+  SlugSchema,
+  z,
+  type ActionResult,
+} from "@sporlo/shared";
+
+import {
   createServiceRoleClient,
   createSupabaseServerClient,
 } from "@/lib/supabase-server";
 
-export interface OnboardingPayload {
-  slug: string;
-  name_ar: string;
-  name_en: string;
-  primary_color: string | null;
-  departments: string[];
-}
+const OnboardingSchema = BilingualNameSchema.extend({
+  slug: SlugSchema,
+  primary_color: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .nullable(),
+  departments: z.array(z.string()),
+});
 
-export interface OnboardingResult {
-  ok: boolean;
-  error?: string;
-}
+export type OnboardingPayload = z.infer<typeof OnboardingSchema>;
 
 export async function completeOnboarding(
   payload: OnboardingPayload,
-): Promise<OnboardingResult> {
+): Promise<ActionResult<void>> {
+  const parsed = OnboardingSchema.safeParse(payload);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return actionError(first?.message ?? "invalid-payload", first?.path?.[0]?.toString());
+  }
+  const { slug, name_ar, name_en, primary_color } = parsed.data;
+
   const ssr = await createSupabaseServerClient();
   const {
     data: { user },
   } = await ssr.auth.getUser();
-  if (!user) return { ok: false, error: "no-session" };
+  if (!user) return actionError("no-session");
 
-  if (!/^[a-z0-9-]{3,40}$/.test(payload.slug)) {
-    return { ok: false, error: "invalid-slug" };
-  }
-  if (!payload.name_ar.trim() || !payload.name_en.trim()) {
-    return { ok: false, error: "missing-name" };
-  }
-
-  // Service role bypasses RLS — required because the new user has no org_id
-  // claim yet, so the tenant_isolation policy would block their first inserts.
   const admin = createServiceRoleClient();
 
-  // Block duplicate slugs early to give a clean error message.
   const { data: clash } = await admin
     .from("organizations")
     .select("id")
-    .eq("slug", payload.slug)
+    .eq("slug", slug)
     .maybeSingle();
-  if (clash) return { ok: false, error: "slug-taken" };
+  if (clash) return actionError("slug-taken", "slug");
 
   const branding =
-    payload.primary_color && payload.primary_color !== ""
-      ? { primary_color: payload.primary_color }
-      : {};
+    primary_color && primary_color !== "" ? { primary_color } : {};
 
   const { data: org, error: orgErr } = await admin
     .from("organizations")
     .insert({
-      slug: payload.slug,
-      name_ar: payload.name_ar.trim(),
-      name_en: payload.name_en.trim(),
-      subdomain: payload.slug,
+      slug,
+      name_ar,
+      name_en,
+      subdomain: slug,
       branding_overrides_jsonb: branding,
     })
     .select("id")
     .single();
-  if (orgErr || !org) return { ok: false, error: "org-insert-failed" };
+  if (orgErr || !org) return actionError("org-insert-failed");
 
   const { error: branchErr } = await admin.from("branches").insert({
     org_id: org.id,
-    name_ar: payload.name_ar.trim(),
-    name_en: payload.name_en.trim(),
+    name_ar,
+    name_en,
   });
-  if (branchErr) return { ok: false, error: "branch-insert-failed" };
+  if (branchErr) return actionError("branch-insert-failed");
 
   const { error: userErr } = await admin.from("users").insert({
     id: user.id,
@@ -77,10 +79,7 @@ export async function completeOnboarding(
     email: user.email ?? null,
     role: "club_admin",
   });
-  if (userErr) return { ok: false, error: "user-insert-failed" };
+  if (userErr) return actionError("user-insert-failed");
 
-  // Force the access token to refresh on the next sign-in so the auth hook
-  // picks up the new org_id/role. The simplest way is to ask the client to
-  // call supabase.auth.refreshSession() — the wizard does this before redirect.
-  return { ok: true };
+  return actionOkVoid();
 }

@@ -13,6 +13,7 @@
     "@sporlo/auth": "workspace:*",
     "@sporlo/db": "workspace:*",
     "@sporlo/i18n": "workspace:*",
+    "@sporlo/shared": "workspace:*",
     "@sporlo/ui": "workspace:*",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.45.6",

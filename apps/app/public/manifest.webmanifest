@@ -1,0 +1,25 @@
+{
+  "name": "Sporlo",
+  "short_name": "Sporlo",
+  "description": "Sporlo club workspace",
+  "start_url": "/ar",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#0f6e3f",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/brand/sporlo-logo-green.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/sporlo-logo-green.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
