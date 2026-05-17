@@ -536,3 +536,63 @@ export interface MaintenanceWindow {
   reason: string | null;
   created_at: string;
 }
+
+// ─────────────────────────────────────────────
+// Team module (Phase 3)
+// ─────────────────────────────────────────────
+
+export interface Squad {
+  id: string;
+  org_id: string;
+  branch_id: string | null;
+  name_ar: string;
+  name_en: string;
+  season: string | null;
+  sport_type: string;
+  coach_user_id: string | null;
+  active: boolean;
+  created_at: string;
+}
+
+export interface RosterEntry {
+  id: string;
+  org_id: string;
+  squad_id: string;
+  member_id: string | null;
+  full_name_ar: string;
+  full_name_en: string | null;
+  jersey_number: number | null;
+  position: string | null;
+  date_of_birth: string | null;
+  nationality: string | null;
+  photo_path: string | null;
+  active: boolean;
+  created_at: string;
+}
+
+export interface TrainingPlan {
+  id: string;
+  org_id: string;
+  squad_id: string;
+  title_ar: string;
+  title_en: string;
+  scheduled_at: string;
+  duration_minutes: number;
+  facility_id: string | null;
+  notes: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+}
+
+export interface PlayerStats {
+  id: string;
+  org_id: string;
+  roster_entry_id: string;
+  fixture_id: string | null;
+  minutes_played: number;
+  goals: number;
+  assists: number;
+  yellow_cards: number;
+  red_cards: number;
+  created_at: string;
+}

@@ -916,5 +916,106 @@
       "maintenanceRemoved": "تم حذف الصيانة",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "team": {
+    "title": "الفريق الأول",
+    "subtitle": "الفِرَق، القوائم، وخطة التدريب.",
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "remove": "إزالة",
+      "back": "عودة",
+      "active": "نشط",
+      "archived": "مؤرشف",
+      "archive": "أرشفة"
+    },
+    "squads": {
+      "title": "الفِرَق",
+      "subtitle": "اضغط فريقاً لإدارة القائمة والتدريب.",
+      "newSquad": "فريق جديد",
+      "empty": "لا توجد فرق بعد. أضف أول فريق لبناء القائمة.",
+      "headers": {
+        "name": "الفريق",
+        "season": "الموسم",
+        "sportType": "الرياضة",
+        "players": "اللاعبون",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "فريق جديد",
+        "editTitle": "تعديل الفريق",
+        "nameAr": "الاسم (عربي)",
+        "nameEn": "الاسم (إنجليزي)",
+        "season": "الموسم (مثلاً 2025-26)",
+        "sportType": "الرياضة"
+      }
+    },
+    "roster": {
+      "title": "القائمة",
+      "addPlayer": "إضافة لاعب",
+      "empty": "لا يوجد لاعبون بعد.",
+      "headers": {
+        "name": "اللاعب",
+        "jersey": "الرقم",
+        "position": "المركز",
+        "nationality": "الجنسية",
+        "dob": "تاريخ الميلاد",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "إضافة لاعب",
+        "editTitle": "تعديل اللاعب",
+        "fullNameAr": "الاسم الكامل (عربي)",
+        "fullNameEn": "الاسم الكامل (إنجليزي)",
+        "jerseyNumber": "رقم القميص",
+        "position": "المركز (مثلاً مهاجم، مدافع)",
+        "dateOfBirth": "تاريخ الميلاد",
+        "nationality": "الجنسية"
+      },
+      "errors": {
+        "jerseyTaken": "رقم القميص محجوز في هذا الفريق."
+      }
+    },
+    "training": {
+      "title": "خطة التدريب",
+      "newSession": "إضافة حصة",
+      "empty": "لا توجد حصص تدريبية مجدولة.",
+      "headers": {
+        "scheduled": "الموعد",
+        "duration": "المدة",
+        "title": "العنوان",
+        "facility": "المنشأة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "title": "جدولة تدريب",
+        "titleAr": "العنوان (عربي)",
+        "titleEn": "العنوان (إنجليزي)",
+        "scheduledAt": "وقت البدء",
+        "durationMinutes": "المدة (دقائق)",
+        "notes": "ملاحظات"
+      }
+    },
+    "public": {
+      "title": "الفِرَق",
+      "empty": "لا توجد فرق نشطة بعد.",
+      "season": "الموسم",
+      "view": "عرض القائمة",
+      "noPlayers": "لم يُعلَن عن اللاعبين بعد."
+    },
+    "toast": {
+      "squadCreated": "تمت إضافة الفريق",
+      "squadUpdated": "تم تحديث الفريق",
+      "squadArchived": "تمت أرشفة الفريق",
+      "playerAdded": "تمت إضافة اللاعب",
+      "playerUpdated": "تم تحديث اللاعب",
+      "playerRemoved": "تمت إزالة اللاعب",
+      "trainingAdded": "تمت جدولة التدريب",
+      "trainingCancelled": "تم إلغاء التدريب",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

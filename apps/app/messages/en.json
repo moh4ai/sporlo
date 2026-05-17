@@ -916,5 +916,106 @@
       "maintenanceRemoved": "Maintenance removed",
       "saveFailed": "Save failed"
     }
+  },
+  "team": {
+    "title": "First team",
+    "subtitle": "Squads, rosters, training schedule.",
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "remove": "Remove",
+      "back": "Back",
+      "active": "Active",
+      "archived": "Archived",
+      "archive": "Archive"
+    },
+    "squads": {
+      "title": "Squads",
+      "subtitle": "Click a squad to manage its roster and training plan.",
+      "newSquad": "New squad",
+      "empty": "No squads yet. Add your first squad to start building a roster.",
+      "headers": {
+        "name": "Squad",
+        "season": "Season",
+        "sportType": "Sport",
+        "players": "Players",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New squad",
+        "editTitle": "Edit squad",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "season": "Season (e.g. 2025-26)",
+        "sportType": "Sport"
+      }
+    },
+    "roster": {
+      "title": "Roster",
+      "addPlayer": "Add player",
+      "empty": "No players yet.",
+      "headers": {
+        "name": "Player",
+        "jersey": "#",
+        "position": "Position",
+        "nationality": "Nationality",
+        "dob": "DOB",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "Add player",
+        "editTitle": "Edit player",
+        "fullNameAr": "Full name (Arabic)",
+        "fullNameEn": "Full name (English)",
+        "jerseyNumber": "Jersey number",
+        "position": "Position (e.g. striker, defender)",
+        "dateOfBirth": "Date of birth",
+        "nationality": "Nationality"
+      },
+      "errors": {
+        "jerseyTaken": "That jersey number is already taken in this squad."
+      }
+    },
+    "training": {
+      "title": "Training plan",
+      "newSession": "Add session",
+      "empty": "No training sessions scheduled.",
+      "headers": {
+        "scheduled": "When",
+        "duration": "Duration",
+        "title": "Title",
+        "facility": "Facility",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Schedule training",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "scheduledAt": "Start time",
+        "durationMinutes": "Duration (minutes)",
+        "notes": "Notes"
+      }
+    },
+    "public": {
+      "title": "Squads",
+      "empty": "No active squads yet.",
+      "season": "Season",
+      "view": "View roster",
+      "noPlayers": "No players announced yet."
+    },
+    "toast": {
+      "squadCreated": "Squad added",
+      "squadUpdated": "Squad updated",
+      "squadArchived": "Squad archived",
+      "playerAdded": "Player added",
+      "playerUpdated": "Player updated",
+      "playerRemoved": "Player removed",
+      "trainingAdded": "Training scheduled",
+      "trainingCancelled": "Training cancelled",
+      "saveFailed": "Save failed"
+    }
   }
 }
