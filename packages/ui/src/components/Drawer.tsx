@@ -23,6 +23,7 @@ export function Drawer({
   className,
   widthClassName = "max-w-md",
 }: DrawerProps) {
+  const titleId = React.useId();
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -31,9 +32,11 @@ export function Drawer({
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const opener = document.activeElement as HTMLElement | null;
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      opener?.focus?.();
     };
   }, [open, onClose]);
 
@@ -43,6 +46,7 @@ export function Drawer({
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby={title ? titleId : undefined}
       className="fixed inset-0 z-50 flex bg-spo-ink/40"
       onClick={onClose}
     >
@@ -57,12 +61,17 @@ export function Drawer({
       >
         {title && (
           <div className="flex items-center justify-between border-b border-spo-line px-5 py-4">
-            <h2 className="text-lg font-semibold text-spo-ink">{title}</h2>
+            <h2
+              id={titleId}
+              className="text-lg font-semibold text-spo-ink"
+            >
+              {title}
+            </h2>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="text-spo-muted hover:text-spo-ink"
+              className="flex size-9 items-center justify-center rounded-md text-spo-muted transition-colors hover:bg-spo-paper hover:text-spo-ink"
             >
               ×
             </button>

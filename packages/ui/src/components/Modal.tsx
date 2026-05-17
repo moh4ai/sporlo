@@ -12,6 +12,7 @@ export interface ModalProps {
 }
 
 export function Modal({ open, onClose, title, children, className }: ModalProps) {
+  const titleId = React.useId();
   React.useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -20,9 +21,12 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    // Capture the opener so we can restore focus when the modal closes.
+    const opener = document.activeElement as HTMLElement | null;
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      opener?.focus?.();
     };
   }, [open, onClose]);
 
@@ -32,6 +36,7 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby={title ? titleId : undefined}
       className="fixed inset-0 z-50 flex items-center justify-center bg-spo-ink/40 p-4"
       onClick={onClose}
     >
@@ -43,7 +48,9 @@ export function Modal({ open, onClose, title, children, className }: ModalProps)
         )}
       >
         {title && (
-          <h2 className="mb-4 text-lg font-semibold text-spo-ink">{title}</h2>
+          <h2 id={titleId} className="mb-4 text-lg font-semibold text-spo-ink">
+            {title}
+          </h2>
         )}
         {children}
       </div>

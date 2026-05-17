@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { ArrowRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
 import { PublicShell } from "@/components/PublicShell";
@@ -96,8 +97,9 @@ export default async function PublicSquadsPage({
                       </>
                     )}
                   </div>
-                  <p className="mt-auto text-sm font-medium text-spo-green-deep">
-                    {t("view")} →
+                  <p className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-spo-green-deep">
+                    {t("view")}
+                    <ArrowRight className="rtl-flip size-3.5" aria-hidden="true" />
                   </p>
                 </Link>
               </li>

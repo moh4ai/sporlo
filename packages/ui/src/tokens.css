@@ -137,6 +137,13 @@ html[lang="en"] body {
   }
 }
 
+/* RTL-mirror utility — apply to directional icons (arrows, chevrons) so
+   they flip horizontally in Arabic. Non-directional icons (search, settings,
+   etc.) should NOT use this. Use as: <Icon className="rtl-flip" /> */
+[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
 /* Responsive Table card-stack — opt-in via <Table responsive>.
    Below md, each row becomes a card and each cell becomes a labelled row.
    The td::before content comes from data-label on the TD. */

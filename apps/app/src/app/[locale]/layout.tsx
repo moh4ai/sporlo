@@ -7,6 +7,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 
 import { ToastProvider } from "@sporlo/ui";
 
+import { AxeReporter } from "@/components/AxeReporter";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { routing, type Locale } from "@/i18n/routing";
 import "../globals.css";
@@ -85,6 +86,7 @@ export default async function LocaleLayout({
           <ToastProvider>{children}</ToastProvider>
         </NextIntlClientProvider>
         <ServiceWorkerRegister />
+        <AxeReporter />
       </body>
     </html>
   );
