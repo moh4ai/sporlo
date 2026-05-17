@@ -170,6 +170,60 @@ export interface MemberPortalToken {
   created_at: string;
 }
 
+// ─────────────────────────────────────────────
+// Finance module (Phase 1 + 3 carry)
+// ─────────────────────────────────────────────
+
+export type PaymentMethodType =
+  | "cash"
+  | "bank_transfer"
+  | "pos_terminal"
+  | "moyasar"
+  | "other";
+
+export interface PaymentMethodRow {
+  id: string;
+  org_id: string;
+  label: string;
+  type: PaymentMethodType;
+  details_jsonb: Record<string, unknown>;
+  active: boolean;
+  created_at: string;
+}
+
+export type RefundStatus =
+  | "requested"
+  | "approved"
+  | "rejected"
+  | "completed"
+  | "failed";
+
+export interface Refund {
+  id: string;
+  org_id: string;
+  payment_id: string;
+  amount_sar: number;
+  reason: string | null;
+  status: RefundStatus;
+  requested_by: string | null;
+  approved_by: string | null;
+  processed_at: string | null;
+  failure_reason: string | null;
+  created_at: string;
+}
+
+export interface QuarterlyDisclosure {
+  id: string;
+  org_id: string;
+  quarter: string;
+  totals_jsonb: Record<string, unknown>;
+  document_id: string | null;
+  submitted_at: string | null;
+  submitted_by: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
 export interface KpiCategoryRow {
   code: string;
   category: KpiCategory;

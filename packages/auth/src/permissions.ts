@@ -237,17 +237,30 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       p.role === "super_admin" ||
       p.role === "club_admin" ||
       (p.role === "dept_manager" &&
-        (p.department === "governance" || p.department === "legal")),
+        (p.department === "governance" ||
+          p.department === "legal" ||
+          p.department === "finance")),
     update: (p) =>
       p.role === "super_admin" ||
       p.role === "club_admin" ||
-      (p.role === "dept_manager" && p.department === "governance"),
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "finance")),
     delete: ["super_admin", "club_admin"],
     read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
     export: (p) =>
       p.role === "super_admin" ||
       p.role === "club_admin" ||
       p.role === "auditor",
+  },
+  // Refund approval workflow: anyone with refund permission on payment can
+  // request; only club_admin / super_admin can approve. Finance manager can
+  // request but not self-approve (avoid one-person-circumvention).
+  refund: {
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+    approve: ["super_admin", "club_admin"],
   },
   audit_log: {
     read: (p) =>

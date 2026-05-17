@@ -391,5 +391,140 @@
       "archiveFailed": "فشلت الأرشفة",
       "refundFailed": "فشل الاسترداد"
     }
+  },
+  "finance": {
+    "title": "المالية",
+    "subtitle": "الإيرادات، الاستردادات، طرق الدفع، والإفصاحات الفصلية.",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "methods": "طرق الدفع",
+      "refunds": "الاستردادات",
+      "disclosures": "الإفصاحات"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "active": "نشط",
+      "disabled": "معطّل"
+    },
+    "overview": {
+      "thisMonth": "إجمالي الشهر",
+      "thisMonthRefunds": "استردادات الشهر",
+      "thisMonthNet": "صافي الشهر",
+      "last12Gross": "إجمالي آخر ١٢ شهر",
+      "last12Refunds": "استردادات آخر ١٢ شهر",
+      "last12Net": "صافي آخر ١٢ شهر",
+      "byProviderTitle": "الإيراد حسب القناة",
+      "byProviderEmpty": "لا توجد إيرادات مدفوعة بعد."
+    },
+    "methods": {
+      "title": "طرق الدفع",
+      "subtitle": "قنوات استلام المبالغ. للتسميات والتدقيق فقط على المدفوعات اليدوية.",
+      "newMethod": "طريقة جديدة",
+      "empty": "لا توجد طرق بعد.",
+      "headers": {
+        "label": "التسمية",
+        "type": "النوع",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "types": {
+        "cash": "نقد",
+        "bank_transfer": "تحويل بنكي",
+        "pos_terminal": "نقطة بيع",
+        "moyasar": "ميسر",
+        "other": "أخرى"
+      },
+      "form": {
+        "createTitle": "طريقة دفع جديدة",
+        "editTitle": "تعديل طريقة الدفع",
+        "label": "التسمية",
+        "type": "النوع",
+        "details": "تفاصيل (ملاحظات، رقم حساب…)",
+        "active": "نشطة"
+      },
+      "errors": {
+        "labelExists": "توجد طريقة بنفس التسمية."
+      }
+    },
+    "refunds": {
+      "title": "الاستردادات",
+      "subtitle": "طلب الاستردادات والموافقة عليها وتنفيذها. الاعتماد يتطلب club_admin.",
+      "newRequest": "طلب استرداد",
+      "empty": "لا توجد استردادات بعد.",
+      "headers": {
+        "payment": "الدفعة",
+        "amount": "المبلغ",
+        "status": "الحالة",
+        "requestedBy": "طلب بواسطة",
+        "createdAt": "التاريخ",
+        "actions": "إجراءات"
+      },
+      "statuses": {
+        "requested": "مطلوب",
+        "approved": "معتمد",
+        "rejected": "مرفوض",
+        "completed": "مكتمل",
+        "failed": "فشل"
+      },
+      "actions": {
+        "approve": "اعتماد",
+        "reject": "رفض"
+      },
+      "requestForm": {
+        "title": "طلب استرداد",
+        "paymentLabel": "الدفعة",
+        "noPayments": "لا توجد دفعات مدفوعة قابلة للاسترداد.",
+        "amount": "المبلغ (ر.س)",
+        "reason": "السبب"
+      },
+      "rejectForm": {
+        "title": "رفض الاسترداد",
+        "reason": "السبب"
+      },
+      "errors": {
+        "amountExceeds": "مبلغ الاسترداد لا يمكن أن يتجاوز قيمة الدفعة.",
+        "notPending": "هذا الاسترداد لم يعد بانتظار الاعتماد.",
+        "moyasarFailed": "فشل الاسترداد عبر ميسر."
+      }
+    },
+    "disclosures": {
+      "title": "الإفصاحات الفصلية",
+      "subtitle": "إفصاحات مالية فصلية مطابقة لتعليمات الوزارة.",
+      "newDisclosure": "إفصاح جديد",
+      "empty": "لم يُقدَّم أي إفصاح بعد.",
+      "headers": {
+        "quarter": "الربع",
+        "submittedAt": "تاريخ التقديم",
+        "document": "المستند",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "title": "تقديم إفصاح فصلي",
+        "quarter": "الربع (YYYY-Qn)",
+        "quarterHint": "مثلاً 2026-Q2 لربع أبريل-يونيو.",
+        "file": "رفع PDF / Excel",
+        "totals": "الإجماليات (JSON اختياري)",
+        "totalsHint": "JSON اختياري للأرقام الرئيسية.",
+        "notes": "ملاحظات (اختياري)"
+      },
+      "errors": {
+        "invalidQuarter": "صيغة الربع مثل 2026-Q2.",
+        "uploadFailed": "فشل رفع الملف."
+      }
+    },
+    "toast": {
+      "methodCreated": "تمت إضافة الطريقة",
+      "methodUpdated": "تم تحديث الطريقة",
+      "methodEnabled": "تم تفعيل الطريقة",
+      "methodDisabled": "تم تعطيل الطريقة",
+      "refundRequested": "تم طلب الاسترداد",
+      "refundApproved": "تم اعتماد الاسترداد",
+      "refundRejected": "تم رفض الاسترداد",
+      "disclosureSubmitted": "تم تقديم الإفصاح",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

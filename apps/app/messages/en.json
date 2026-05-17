@@ -391,5 +391,140 @@
       "archiveFailed": "Archive failed",
       "refundFailed": "Refund failed"
     }
+  },
+  "finance": {
+    "title": "Finance",
+    "subtitle": "Revenue, refunds, payment methods, and quarterly disclosures.",
+    "tabs": {
+      "overview": "Overview",
+      "methods": "Payment methods",
+      "refunds": "Refunds",
+      "disclosures": "Disclosures"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "active": "Active",
+      "disabled": "Disabled"
+    },
+    "overview": {
+      "thisMonth": "This month gross",
+      "thisMonthRefunds": "This month refunds",
+      "thisMonthNet": "This month net",
+      "last12Gross": "Last 12 months gross",
+      "last12Refunds": "Last 12 months refunds",
+      "last12Net": "Last 12 months net",
+      "byProviderTitle": "Revenue by provider",
+      "byProviderEmpty": "No paid revenue yet."
+    },
+    "methods": {
+      "title": "Payment methods",
+      "subtitle": "Channels for receiving money. Used as audit-only labels on manual payments.",
+      "newMethod": "New method",
+      "empty": "No methods yet.",
+      "headers": {
+        "label": "Label",
+        "type": "Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "types": {
+        "cash": "Cash",
+        "bank_transfer": "Bank transfer",
+        "pos_terminal": "POS terminal",
+        "moyasar": "Moyasar",
+        "other": "Other"
+      },
+      "form": {
+        "createTitle": "New payment method",
+        "editTitle": "Edit payment method",
+        "label": "Label",
+        "type": "Type",
+        "details": "Details (notes, account no., etc.)",
+        "active": "Active"
+      },
+      "errors": {
+        "labelExists": "A method with this label already exists."
+      }
+    },
+    "refunds": {
+      "title": "Refunds",
+      "subtitle": "Request, approve, and execute refunds. Approvals require club_admin.",
+      "newRequest": "Request refund",
+      "empty": "No refunds yet.",
+      "headers": {
+        "payment": "Payment",
+        "amount": "Amount",
+        "status": "Status",
+        "requestedBy": "Requested by",
+        "createdAt": "Created",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "requested": "Requested",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "actions": {
+        "approve": "Approve",
+        "reject": "Reject"
+      },
+      "requestForm": {
+        "title": "Request refund",
+        "paymentLabel": "Payment",
+        "noPayments": "No paid payments available to refund.",
+        "amount": "Amount (SAR)",
+        "reason": "Reason"
+      },
+      "rejectForm": {
+        "title": "Reject refund",
+        "reason": "Reason"
+      },
+      "errors": {
+        "amountExceeds": "Refund amount can't exceed the original payment.",
+        "notPending": "This refund is no longer pending.",
+        "moyasarFailed": "Moyasar refund failed. The refund stays in failed status; retry from the dashboard."
+      }
+    },
+    "disclosures": {
+      "title": "Quarterly disclosures",
+      "subtitle": "Ministry-compliant quarterly financial filings.",
+      "newDisclosure": "New disclosure",
+      "empty": "No disclosures filed yet.",
+      "headers": {
+        "quarter": "Quarter",
+        "submittedAt": "Submitted",
+        "document": "Document",
+        "actions": "Actions"
+      },
+      "form": {
+        "title": "Submit quarterly disclosure",
+        "quarter": "Quarter (YYYY-Qn)",
+        "quarterHint": "E.g. 2026-Q2 for April-June 2026.",
+        "file": "Upload PDF / Excel",
+        "totals": "Totals (JSON, optional)",
+        "totalsHint": "Optional JSON of headline numbers. E.g. {\"revenue\":0,\"expenses\":0}",
+        "notes": "Notes (optional)"
+      },
+      "errors": {
+        "invalidQuarter": "Quarter must look like YYYY-Qn (e.g. 2026-Q2).",
+        "uploadFailed": "File upload failed."
+      }
+    },
+    "toast": {
+      "methodCreated": "Method added",
+      "methodUpdated": "Method updated",
+      "methodEnabled": "Method enabled",
+      "methodDisabled": "Method disabled",
+      "refundRequested": "Refund requested",
+      "refundApproved": "Refund approved",
+      "refundRejected": "Refund rejected",
+      "disclosureSubmitted": "Disclosure submitted",
+      "saveFailed": "Save failed"
+    }
   }
 }
