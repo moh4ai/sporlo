@@ -49,7 +49,8 @@
     "store": "Store",
     "media": "Comms & media",
     "hr": "HR & org",
-    "account": "Account"
+    "account": "Account",
+    "users": "Team & invites"
   },
   "dashboard": {
     "welcome": "Welcome to Sporlo",
@@ -224,6 +225,119 @@
       "archived": "Club archived",
       "unarchived": "Club restored",
       "saveFailed": "Couldn't save changes"
+    }
+  },
+  "users": {
+    "title": "Team & invites",
+    "subtitle": "Invite teammates, set their role and department, and revoke access when they leave.",
+    "actions": {
+      "invite": "Invite teammate"
+    },
+    "headers": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "department": "Department",
+      "status": "Status",
+      "lastSeen": "Last seen",
+      "actions": "Actions"
+    },
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "archived": "Archived",
+      "expired": "Expired",
+      "neverSignedIn": "Never"
+    },
+    "empty": "No teammates yet. Invite someone to get started.",
+    "roles": {
+      "club_admin": "Club admin",
+      "dept_manager": "Department manager",
+      "staff": "Staff",
+      "coach": "Coach",
+      "auditor": "Auditor",
+      "member": "Member"
+    },
+    "departments": {
+      "none": "No department",
+      "finance": "Finance",
+      "hr": "HR",
+      "marketing": "Marketing",
+      "sports": "Sports",
+      "legal": "Legal",
+      "it": "IT",
+      "academy": "Academy",
+      "events": "Events",
+      "csr": "CSR",
+      "governance": "Governance"
+    },
+    "invite": {
+      "title": "Invite a teammate",
+      "subtitle": "We'll email them a one-click sign-in link.",
+      "email": "Email",
+      "role": "Role",
+      "department": "Department",
+      "submit": "Send invite",
+      "submitting": "Sending…",
+      "linkReady": "Invite created. Email delivery is off — copy this link and send it yourself:",
+      "copy": "Copy link",
+      "copied": "Copied",
+      "errors": {
+        "alreadyMember": "That email is already a teammate on this club.",
+        "alreadyInvited": "That email already has a pending invite. Revoke the existing one first.",
+        "invalid": "Some fields don't look right — check the highlighted ones."
+      }
+    },
+    "edit": {
+      "title": "Edit teammate",
+      "subtitle": "Role and department changes take effect the next time this teammate signs in.",
+      "submit": "Save changes",
+      "submitting": "Saving…",
+      "archive": "Archive teammate",
+      "restore": "Restore teammate",
+      "archiveTitle": "Archive this teammate?",
+      "archiveBody": "They'll lose access on their next sign-in. You can restore them later.",
+      "restoreTitle": "Restore this teammate?",
+      "restoreBody": "They'll get their previous access back on their next sign-in.",
+      "cantArchiveSelf": "You can't archive yourself."
+    },
+    "invitation": {
+      "expiresIn": "Expires {when}",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke this invite?",
+      "revokeBody": "The link will stop working immediately. You can send a new invite anytime.",
+      "copyLink": "Copy link"
+    },
+    "confirm": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "toast": {
+      "invited": "Invite sent",
+      "inviteCreatedNoEmail": "Invite created (email not configured)",
+      "revoked": "Invite revoked",
+      "updated": "Teammate updated",
+      "archived": "Teammate archived",
+      "restored": "Teammate restored",
+      "linkCopied": "Link copied",
+      "saveFailed": "Something went wrong"
+    }
+  },
+  "acceptInvite": {
+    "title": "Join {club}",
+    "subtitle": "You've been invited to join {club} as {role}.",
+    "signedInAs": "Signed in as {email}",
+    "wrongAccount": "This invite was sent to {expected}. Sign out and sign in with that account to accept.",
+    "signOut": "Sign out",
+    "signInRequired": "Sign in or create an account with {expected} to accept this invite.",
+    "signIn": "Continue to sign in",
+    "accept": "Accept invitation",
+    "accepting": "Accepting…",
+    "errors": {
+      "invalidToken": "This invite link is invalid or has been revoked.",
+      "expired": "This invite has expired. Ask your admin to send a new one.",
+      "accepted": "This invite has already been used.",
+      "generic": "Couldn't accept the invite — try again or contact your admin."
     }
   },
   "memberships": {

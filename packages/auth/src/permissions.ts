@@ -34,7 +34,8 @@ export type ModuleKey =
   | "store"
   | "media"
   | "hr"
-  | "account";
+  | "account"
+  | "users";
 
 // Department -> which modules they can OPEN (read). Dept managers see a scoped
 // subset; club_admin always sees all; auditor sees governance only.
@@ -63,6 +64,7 @@ const ALL_MODULES: ReadonlyArray<ModuleKey> = [
   "media",
   "hr",
   "account",
+  "users",
 ];
 
 export interface Principal {
@@ -140,7 +142,9 @@ export type Resource =
   | "audit_log"
   | "revenue_summary"
   | "finance_summary"
-  | "member_pii";
+  | "member_pii"
+  | "user"
+  | "invitation";
 
 type Allow = Role[] | "*";
 type RoleRule = Allow | ((p: Principal) => boolean);
@@ -445,6 +449,29 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
     read: ["super_admin", "club_admin"],
     update: ["super_admin", "club_admin"],
     delete: ["super_admin"],
+  },
+  // Users module entry visibility — only club_admin + super_admin see the
+  // sidebar link. dept_manager keeps a read scope on individual `user`
+  // resources below (to power a future dept-scoped roster view).
+  users: {
+    read: ["super_admin", "club_admin"],
+  },
+  // Per-user row CRUD. Invitations are a separate resource so revoking
+  // doesn't require the same blast radius as editing a teammate.
+  user: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "dept_manager",
+  },
+  invitation: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: ["super_admin", "club_admin"],
   },
   media: {
     create: (p) =>

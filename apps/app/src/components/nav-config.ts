@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   ShoppingBag,
   UserCog,
+  UserPlus,
   Users,
   Wallet,
   type LucideIcon,
@@ -45,6 +46,7 @@ export const NAV_MODULES: NavModule[] = [
   { key: "media", icon: Megaphone, section: "site" },
 
   { key: "account", icon: SettingsIcon, section: "configuration" },
+  { key: "users", icon: UserPlus, section: "configuration" },
 ];
 
 export const SECTION_ORDER: NavSectionKey[] = [

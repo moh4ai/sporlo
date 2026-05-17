@@ -10,6 +10,7 @@ export const MODULES = [
   "media",
   "hr",
   "account",
+  "users",
 ] as const;
 
 export type ModuleKey = (typeof MODULES)[number];
