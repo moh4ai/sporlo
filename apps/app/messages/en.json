@@ -1,0 +1,133 @@
+{
+  "meta": {
+    "title": "Sporlo — Club Workspace",
+    "description": "Multi-tenant SaaS for Saudi sports clubs"
+  },
+  "nav": {
+    "switchLocale": "العربية",
+    "branchPicker": "Choose branch",
+    "search": "Search",
+    "signOut": "Sign out"
+  },
+  "modules": {
+    "governance": "Governance",
+    "team": "First team",
+    "memberships": "Memberships",
+    "finance": "Finance",
+    "facilities": "Facilities",
+    "academy": "Academy",
+    "events": "Matches & events",
+    "store": "Store",
+    "media": "Comms & media",
+    "hr": "HR & org"
+  },
+  "dashboard": {
+    "welcome": "Welcome to Sporlo",
+    "intro": "Sprint 0 walking skeleton. Each module lights up in a later phase.",
+    "tier": "Current tier",
+    "tierValue": "Not set",
+    "lastSync": "Last sync",
+    "activeMembers": "Active members"
+  },
+  "signIn": {
+    "headlineSignIn": "Sign in to Sporlo",
+    "headlineSignUp": "Create your account",
+    "email": "Email",
+    "password": "Password",
+    "submitSignIn": "Sign in",
+    "submitSignUp": "Create account",
+    "switchToSignUp": "No account? Sign up",
+    "switchToSignIn": "Have an account? Sign in",
+    "errorGeneric": "Couldn't complete that. Try again.",
+    "checkEmail": "Check your inbox to confirm, then come back to finish setup."
+  },
+  "onboarding": {
+    "title": "Set up your club",
+    "stepCounter": "Step {current} of {total}",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Finish setup",
+    "errorGeneric": "Couldn't save setup. Try again.",
+    "profile": {
+      "title": "Club profile",
+      "subtitle": "Your club's name and platform identifier.",
+      "nameAr": "Club name (Arabic)",
+      "nameEn": "Club name (English)",
+      "slug": "Slug",
+      "slugHint": "Shown in URL: [slug].sporlo.net"
+    },
+    "branding": {
+      "title": "Branding",
+      "subtitle": "Primary color can be tweaked later.",
+      "primaryColor": "Primary color",
+      "skip": "Skip — use Sporlo defaults"
+    },
+    "departments": {
+      "title": "Departments",
+      "subtitle": "Mark which departments are active. Editable later.",
+      "finance": "Finance",
+      "hr": "HR",
+      "marketing": "Marketing",
+      "sports": "Sports",
+      "legal": "Legal",
+      "it": "IT",
+      "academy": "Academy",
+      "events": "Events",
+      "csr": "CSR",
+      "governance": "Governance"
+    },
+    "users": {
+      "title": "Admins",
+      "subtitle": "You're the club admin for now. Invite teammates later.",
+      "youAreAdmin": "You'll be the Club Admin with full access."
+    },
+    "done": {
+      "title": "Done!",
+      "subtitle": "Your club is ready. Taking you to the governance dashboard."
+    }
+  },
+  "empty": {
+    "ctaAddFirst": "Add the first item",
+    "comingSoon": "Available in a later phase",
+    "governance": {
+      "title": "Governance",
+      "body": "Ministry KPI engine. Data flow starts in week 9."
+    },
+    "team": {
+      "title": "First team",
+      "body": "Squad, training plans, performance stats. Phase 3."
+    },
+    "memberships": {
+      "title": "Memberships",
+      "body": "Members, plans, renewals via Moyasar. Phase 1."
+    },
+    "finance": {
+      "title": "Finance",
+      "body": "Revenue, payments, quarterly reports. Phases 1 and 3."
+    },
+    "facilities": {
+      "title": "Facilities",
+      "body": "Booking, maintenance, utilization. Phase 3."
+    },
+    "academy": {
+      "title": "Academy",
+      "body": "Coaches, sessions, attendance, parent reports. Phase 3."
+    },
+    "events": {
+      "title": "Matches & events",
+      "body": "Fixture schedule, tickets, gate QR. Phase 2."
+    },
+    "store": {
+      "title": "Store",
+      "body": "Product catalog, orders, member discounts. Phase 2."
+    },
+    "media": {
+      "title": "Comms & media",
+      "body": "Public club site, broadcasts, newsletters. Phase 4."
+    },
+    "hr": {
+      "title": "HR & org",
+      "body": "Staff directory, org chart, certifications. Phase 3."
+    }
+  }
+}

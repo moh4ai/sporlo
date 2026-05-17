@@ -1,0 +1,17 @@
+{
+  "name": "sporlo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sporlo multi-tenant SaaS — product monorepo. Landing page lives in the separate sporlo-web repo.",
+  "scripts": {
+    "dev:app": "pnpm --filter @sporlo/app dev",
+    "build:app": "pnpm --filter @sporlo/app build",
+    "lint": "pnpm -r --parallel lint",
+    "typecheck": "pnpm -r --parallel typecheck"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.15.0"
+}

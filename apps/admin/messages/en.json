@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "title": "Sporlo HQ",
+    "description": "Sporlo internal admin"
+  },
+  "nav": {
+    "switchLocale": "العربية",
+    "signOut": "Sign out",
+    "clubs": "Clubs"
+  },
+  "signIn": {
+    "headline": "Sign in to Sporlo HQ",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "errorGeneric": "Couldn't complete that. Try again.",
+    "notAuthorized": "This account isn't a Sporlo HQ user. Sign in with a super_admin account.",
+    "instructionsTitle": "How do I become a super_admin?",
+    "instructionsBody": "Run the SQL snippet in your Supabase project to promote your user. Details in packages/db/README.md."
+  },
+  "clubs": {
+    "title": "Clubs",
+    "subtitle": "Every club provisioned on the platform.",
+    "empty": "No clubs yet.",
+    "headerName": "Club",
+    "headerSlug": "Slug",
+    "headerMembers": "Members",
+    "headerCreated": "Created",
+    "headerActions": "Actions",
+    "open": "Open",
+    "tier": "Tier"
+  },
+  "club": {
+    "createdAt": "Created at",
+    "tier": "Ministry tier",
+    "members": "Members count",
+    "subscription": "Subscription",
+    "subdomain": "Subdomain",
+    "impersonate": "Impersonate club admin",
+    "impersonateNote": "This action is logged to audit_logs.",
+    "impersonateSuccess": "Logged an impersonation attempt for {clubName} in audit_logs.",
+    "back": "Back to list"
+  }
+}

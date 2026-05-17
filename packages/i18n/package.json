@@ -1,0 +1,21 @@
+{
+  "name": "@sporlo/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./routing": "./src/routing.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "next-intl": "^4"
+  },
+  "devDependencies": {
+    "next-intl": "^4.12.0",
+    "typescript": "^5"
+  }
+}

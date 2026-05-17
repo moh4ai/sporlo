@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   Sporlo Brand System — single source of truth
+   Ported from sporlo-web/src/app/globals.css, which itself was
+   ported from <OneDrive>/Sporlo/Business Development/عروض كلود/Sporlo/brand.css.
+
+   This file is the AUTHORITATIVE token set for the product monorepo.
+   apps/app/src/app/globals.css imports it; do not redefine tokens there.
+   ───────────────────────────────────────────── */
+
+@theme {
+  /* Core palette */
+  --color-spo-green: #0f6e3f;
+  --color-spo-green-deep: #094e2c;
+  --color-spo-green-soft: #e6f2ec;
+  --color-spo-ink: #0e1626;
+  --color-spo-ink-2: #1b2435;
+  --color-spo-paper: #f4f5f7;
+  --color-spo-paper-warm: #faf8f4;
+  --color-spo-line: #e4e6ea;
+  /* Muted bumped from brand spec #8a92a3 — that value fails AA on Paper */
+  --color-spo-muted: #5b6373;
+
+  /* Data accents — chips/badges/deltas only, never large surfaces */
+  --color-spo-pink: #ec4899;
+  --color-spo-blue: #3b82f6;
+  --color-spo-purple: #7c3aed;
+  --color-spo-amber: #f59e0b;
+
+  /* Status semantic colors */
+  --color-spo-success: #15803d;
+  --color-spo-warning: #b45309;
+  --color-spo-danger: #b91c1c;
+
+  /* Type stacks — actual font files loaded via next/font in app layout */
+  --font-display: var(--font-baumans), "Manrope", system-ui, sans-serif;
+  --font-body: var(--font-manrope), system-ui, sans-serif;
+  --font-ar: var(--font-rubik), "Tajawal", "Segoe UI", system-ui, sans-serif;
+
+  /* Radii (brand spec: pills 9999, cards 20-28) */
+  --radius-card: 1.25rem;
+  --radius-card-lg: 1.75rem;
+  --radius-pill: 9999px;
+}
+
+/* High-contrast mode — opt-in via [data-contrast="high"] on <html>.
+   Cheap to ship now while the design system is small; expensive to retrofit.
+   See PRODUCT-REBUILD plan Phase 0 task 7. */
+html[data-contrast="high"] {
+  --color-spo-paper: #ffffff;
+  --color-spo-paper-warm: #ffffff;
+  --color-spo-ink: #000000;
+  --color-spo-ink-2: #000000;
+  --color-spo-line: #000000;
+  --color-spo-muted: #1f2937;
+  --color-spo-green: #064e2a;
+  --color-spo-green-deep: #03351a;
+}
+
+html,
+body {
+  background: var(--color-spo-paper);
+  color: var(--color-spo-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html[lang="ar"] body {
+  font-family: var(--font-ar);
+  line-height: 1.7;
+}
+
+html[lang="en"] body {
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+::selection {
+  background: var(--color-spo-green);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-spo-green);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

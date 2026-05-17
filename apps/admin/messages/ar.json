@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "title": "سبورلو الإدارة",
+    "description": "لوحة تحكم سبورلو الداخلية"
+  },
+  "nav": {
+    "switchLocale": "English",
+    "signOut": "تسجيل الخروج",
+    "clubs": "الأندية"
+  },
+  "signIn": {
+    "headline": "تسجيل الدخول إلى سبورلو الإدارة",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "submit": "دخول",
+    "errorGeneric": "تعذّر إتمام الطلب.",
+    "notAuthorized": "هذا الحساب لا يملك صلاحية سبورلو الإدارة. يرجى استخدام حساب super_admin.",
+    "instructionsTitle": "كيف تصبح super_admin؟",
+    "instructionsBody": "قم بتشغيل تعليمة SQL في مشروع Supabase لرفع صلاحياتك. التفاصيل في packages/db/README.md."
+  },
+  "clubs": {
+    "title": "الأندية",
+    "subtitle": "كل الأندية المسجلة على المنصة.",
+    "empty": "لا توجد أندية بعد.",
+    "headerName": "النادي",
+    "headerSlug": "المعرّف",
+    "headerMembers": "عدد الأعضاء",
+    "headerCreated": "تاريخ الإنشاء",
+    "headerActions": "إجراءات",
+    "open": "فتح",
+    "tier": "التصنيف"
+  },
+  "club": {
+    "createdAt": "تاريخ الإنشاء",
+    "tier": "التصنيف الوزاري",
+    "members": "عدد الأعضاء",
+    "subscription": "نوع الاشتراك",
+    "subdomain": "النطاق الفرعي",
+    "impersonate": "الدخول كمدير النادي",
+    "impersonateNote": "سيُسجّل هذا الإجراء في سجل التدقيق.",
+    "impersonateSuccess": "تم تسجيل محاولة الدخول كمدير {clubName} في سجل التدقيق.",
+    "back": "عودة إلى القائمة"
+  }
+}
