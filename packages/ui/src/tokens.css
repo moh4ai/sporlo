@@ -137,6 +137,16 @@ html[lang="en"] body {
   }
 }
 
+/* App-level opt-in mirror of prefers-reduced-motion. Driven by the Settings
+   → Appearance toggle which sets `data-motion="reduced"` on <html>. */
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+}
+
 /* RTL-mirror utility — apply to directional icons (arrows, chevrons) so
    they flip horizontally in Arabic. Non-directional icons (search, settings,
    etc.) should NOT use this. Use as: <Icon className="rtl-flip" /> */

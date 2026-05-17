@@ -50,7 +50,8 @@
     "media": "Comms & media",
     "hr": "HR & org",
     "account": "Account",
-    "users": "Team & invites"
+    "users": "Team & invites",
+    "settings": "Settings"
   },
   "dashboard": {
     "welcome": "Welcome to Sporlo",
@@ -338,6 +339,69 @@
       "expired": "This invite has expired. Ask your admin to send a new one.",
       "accepted": "This invite has already been used.",
       "generic": "Couldn't accept the invite — try again or contact your admin."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Your personal preferences. Each section saves independently.",
+    "sections": {
+      "profile": "Profile",
+      "profileHint": "How your name and contact show up to teammates.",
+      "localisation": "Language & region",
+      "localisationHint": "Used across the dashboard and outbound emails.",
+      "notifications": "Notifications",
+      "notificationsHint": "Choose how Sporlo reaches you. Suppressed channels stay silent.",
+      "appearance": "Appearance",
+      "appearanceHint": "Display tweaks for comfort and accessibility.",
+      "sessions": "Sessions",
+      "sessionsHint": "Sign yourself out from every browser you've used."
+    },
+    "fields": {
+      "fullNameAr": "Full name (Arabic)",
+      "fullNameEn": "Full name (English)",
+      "email": "Email",
+      "phone": "Phone",
+      "preferredLocale": "Preferred language",
+      "dateFormat": "Date format",
+      "highContrast": "High-contrast mode",
+      "highContrastHint": "Boosts borders and text contrast for better readability.",
+      "reducedMotion": "Reduce motion",
+      "reducedMotionHint": "Respect prefers-reduced-motion is already on; this also dampens in-app transitions."
+    },
+    "locales": {
+      "ar": "العربية",
+      "en": "English"
+    },
+    "dateFormats": {
+      "iso": "2026-01-31",
+      "long": "31 January 2026",
+      "short": "31/01/2026",
+      "hijri": "1447/07/12 هـ"
+    },
+    "channels": {
+      "email": "Email",
+      "in_app": "In-app"
+    },
+    "events": {
+      "subscription_renewed": "Membership renewed",
+      "refund_requested": "Refund requested",
+      "booking_conflict": "Booking conflict detected",
+      "deadline_approaching": "Ministry deadline approaching",
+      "certification_expiring": "Staff certification expiring"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving…",
+      "signOutEverywhere": "Sign out everywhere",
+      "signingOut": "Signing out…"
+    },
+    "toast": {
+      "saved": "Settings updated",
+      "saveFailed": "Couldn't save",
+      "signedOut": "Signed out of all sessions"
+    },
+    "errors": {
+      "invalid": "Some fields don't look right — check the highlighted ones."
     }
   },
   "memberships": {

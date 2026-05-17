@@ -3,8 +3,10 @@ import { setRequestLocale } from "next-intl/server";
 
 import type { Principal } from "@sporlo/auth";
 
+import { PrefsInit } from "@/components/PrefsInit";
 import { Sidebar } from "@/components/Sidebar";
 import { TopBar } from "@/components/TopBar";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
 import {
   enforceHostMatchesOrg,
   getActiveTenant,
@@ -40,8 +42,21 @@ export default async function DashboardLayout({
     department: tenant.department,
   };
 
+  // Pull just the appearance prefs needed to seed PrefsInit on first paint.
+  // Notification + locale prefs are read on the /settings page itself.
+  const supabase = await createSupabaseServerClient();
+  const { data: settings } = await supabase
+    .from("user_settings")
+    .select("prefs_jsonb")
+    .eq("user_id", tenant.user_id)
+    .maybeSingle();
+  const prefs = (settings?.prefs_jsonb ?? {}) as Record<string, unknown>;
+  const highContrast = prefs.high_contrast === true;
+  const reducedMotion = prefs.reduced_motion === true;
+
   return (
     <div className="flex min-h-screen">
+      <PrefsInit highContrast={highContrast} reducedMotion={reducedMotion} />
       <Sidebar principal={principal} />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar locale={locale as "ar" | "en"} principal={principal} />

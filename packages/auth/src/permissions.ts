@@ -35,7 +35,8 @@ export type ModuleKey =
   | "media"
   | "hr"
   | "account"
-  | "users";
+  | "users"
+  | "settings";
 
 // Department -> which modules they can OPEN (read). Dept managers see a scoped
 // subset; club_admin always sees all; auditor sees governance only.
@@ -65,6 +66,7 @@ const ALL_MODULES: ReadonlyArray<ModuleKey> = [
   "hr",
   "account",
   "users",
+  "settings",
 ];
 
 export interface Principal {
@@ -73,18 +75,23 @@ export interface Principal {
 }
 
 export function visibleModules(p: Principal): ReadonlyArray<ModuleKey> {
+  // Every staff role gets the personal Settings entry. Members are excluded
+  // — they live in the member portal, not the dashboard.
+  const withSettings = (mods: ReadonlyArray<ModuleKey>): ReadonlyArray<ModuleKey> =>
+    mods.includes("settings") ? mods : [...mods, "settings"];
+
   switch (p.role) {
     case "super_admin":
     case "club_admin":
       return ALL_MODULES;
     case "auditor":
-      return ["governance"];
+      return withSettings(["governance"]);
     case "dept_manager":
-      return p.department ? DEPT_MODULES[p.department] : [];
+      return withSettings(p.department ? DEPT_MODULES[p.department] : []);
     case "coach":
-      return ["team", "academy"];
+      return withSettings(["team", "academy"]);
     case "staff":
-      return ["governance"];
+      return withSettings(["governance"]);
     case "member":
       return [];
   }
@@ -472,6 +479,13 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
     update: ["super_admin", "club_admin"],
     delete: ["super_admin", "club_admin"],
     read: ["super_admin", "club_admin"],
+  },
+  // Settings — everyone with a dashboard seat can read/update their own
+  // settings row. The Server Action enforces "you can only touch your own
+  // user_id" so coarse-grained "*" is safe here.
+  settings: {
+    read: "*",
+    update: "*",
   },
   media: {
     create: (p) =>

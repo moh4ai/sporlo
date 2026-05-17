@@ -8,6 +8,7 @@ import {
   Settings as SettingsIcon,
   ShieldCheck,
   ShoppingBag,
+  Sliders,
   UserCog,
   UserPlus,
   Users,
@@ -47,6 +48,7 @@ export const NAV_MODULES: NavModule[] = [
 
   { key: "account", icon: SettingsIcon, section: "configuration" },
   { key: "users", icon: UserPlus, section: "configuration" },
+  { key: "settings", icon: Sliders, section: "configuration" },
 ];
 
 export const SECTION_ORDER: NavSectionKey[] = [

@@ -11,6 +11,7 @@ export const MODULES = [
   "hr",
   "account",
   "users",
+  "settings",
 ] as const;
 
 export type ModuleKey = (typeof MODULES)[number];
