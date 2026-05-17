@@ -15,7 +15,6 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         className={cn(
           "w-full rounded-xl border bg-white px-3 py-2 text-base text-spo-ink",
           "placeholder:text-spo-muted",
-          "focus:outline-none",
           invalid ? "border-spo-danger" : "border-spo-line",
           className,
         )}

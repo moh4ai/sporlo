@@ -44,7 +44,7 @@ export function Drawer({
       <div
         onClick={(e) => e.stopPropagation()}
         className={cn(
-          "ms-auto flex h-full w-full flex-col bg-white shadow-2xl",
+          "ms-auto flex h-full w-full flex-col bg-white shadow-[var(--shadow-3)]",
           widthClassName,
           side === "start" && "me-auto ms-0",
           className,
