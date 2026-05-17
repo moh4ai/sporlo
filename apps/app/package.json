@@ -12,6 +12,7 @@
   "dependencies": {
     "@sporlo/auth": "workspace:*",
     "@sporlo/db": "workspace:*",
+    "@sporlo/governance": "workspace:*",
     "@sporlo/i18n": "workspace:*",
     "@sporlo/shared": "workspace:*",
     "@sporlo/ui": "workspace:*",

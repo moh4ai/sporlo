@@ -129,5 +129,267 @@
       "title": "HR & org",
       "body": "Staff directory, org chart, certifications. Phase 3."
     }
+  },
+  "memberships": {
+    "title": "Memberships",
+    "subtitle": "Plans, members, subscriptions, and revenue.",
+    "tabs": {
+      "plans": "Plans",
+      "members": "Members",
+      "subscriptions": "Subscriptions",
+      "coupons": "Coupons",
+      "revenue": "Revenue"
+    },
+    "common": {
+      "comingNext": "Available next in this module's build",
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "archive": "Archive",
+      "unarchive": "Unarchive",
+      "confirm": "Confirm",
+      "active": "Active",
+      "archived": "Archived"
+    },
+    "plans": {
+      "title": "Plans",
+      "subtitle": "What members can buy. Edit pricing and durations here.",
+      "newPlan": "New plan",
+      "empty": "No plans yet. Create your first one to start selling memberships.",
+      "headers": {
+        "name": "Plan",
+        "code": "Code",
+        "duration": "Duration",
+        "price": "Price",
+        "discount": "Store discount",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New plan",
+        "editTitle": "Edit plan",
+        "code": "Code",
+        "codeHint": "Internal reference, e.g. \"gold-12mo\"",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "durationMonths": "Duration (months)",
+        "priceSar": "Price (SAR)",
+        "discountPct": "Member store discount (%)",
+        "discountHint": "Applied to the Store module checkout. Set 0 if not a member-discount plan."
+      },
+      "errors": {
+        "codeExists": "A plan with this code already exists.",
+        "invalid": "Some fields look wrong. Please check and try again."
+      },
+      "archive": {
+        "title": "Archive plan?",
+        "body": "Archived plans don't accept new subscriptions. Existing subscriptions keep running until they end."
+      }
+    },
+    "members": {
+      "title": "Members",
+      "subtitle": "Every person registered to the club.",
+      "newMember": "Add member",
+      "backToList": "Back to members",
+      "empty": "No members yet. Add your first member to get started.",
+      "filters": {
+        "all": "All",
+        "status": "Status",
+        "search": "Search by name / number / phone"
+      },
+      "statuses": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "prospect": "Prospect"
+      },
+      "headers": {
+        "name": "Name",
+        "memberNumber": "Member #",
+        "status": "Status",
+        "phone": "Phone",
+        "email": "Email",
+        "joined": "Joined",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New member",
+        "editTitle": "Edit member",
+        "fullNameAr": "Full name (Arabic)",
+        "fullNameEn": "Full name (English)",
+        "email": "Email",
+        "phone": "Phone",
+        "phoneHint": "+9665… or 05…",
+        "nationalId": "National ID",
+        "nationalIdHint": "10 digits starting with 1 or 2",
+        "dateOfBirth": "Date of birth",
+        "status": "Status"
+      },
+      "detail": {
+        "subscriptionsTitle": "Subscriptions",
+        "subscriptionsEmpty": "No subscriptions yet.",
+        "paymentsTitle": "Payments",
+        "paymentsEmpty": "No payments recorded yet.",
+        "couponsTitle": "Coupon redemptions",
+        "couponsEmpty": "No coupon redemptions."
+      },
+      "errors": {
+        "invalid": "Some fields are invalid. Please check and retry.",
+        "nationalIdInvalid": "National ID must be 10 digits starting with 1 or 2.",
+        "phoneInvalid": "Saudi mobile must start with +9665… or 05…."
+      }
+    },
+    "subscriptions": {
+      "title": "Subscriptions",
+      "subtitle": "Active subscriptions, pending payments, and history.",
+      "empty": "No subscriptions yet. Subscribe a member to a plan to start.",
+      "filters": {
+        "all": "All",
+        "status": "Status"
+      },
+      "statuses": {
+        "pending": "Pending",
+        "active": "Active",
+        "frozen": "Frozen",
+        "cancelled": "Cancelled",
+        "expired": "Expired"
+      },
+      "headers": {
+        "member": "Member",
+        "plan": "Plan",
+        "status": "Status",
+        "starts": "Starts",
+        "ends": "Ends",
+        "actions": "Actions"
+      },
+      "actions": {
+        "subscribe": "Subscribe to a plan",
+        "recordManualPayment": "Record manual payment",
+        "freeze": "Freeze",
+        "unfreeze": "Unfreeze",
+        "cancel": "Cancel",
+        "refund": "Refund"
+      },
+      "subscribe": {
+        "title": "Subscribe to a plan",
+        "selectPlan": "Choose plan",
+        "noActivePlans": "No active plans available. Create one in the Plans tab first.",
+        "couponLabel": "Coupon code (optional)",
+        "methodLabel": "Payment method",
+        "methodManual": "Manual (record now)",
+        "methodMoyasar": "Card / Mada / Apple Pay (Moyasar)",
+        "moyasarUnavailable": "Moyasar is not configured. Add MOYASAR_SECRET_KEY and NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY to your env.",
+        "submit": "Start subscription"
+      },
+      "checkout": {
+        "title": "Complete payment",
+        "subtitle": "You'll be charged for the membership. The form below is hosted by Moyasar.",
+        "missingKey": "Moyasar publishable key is not set. Add NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY and redeploy.",
+        "backToMember": "Back to member"
+      },
+      "freezeForm": {
+        "title": "Freeze subscription",
+        "from": "Freeze from",
+        "to": "Freeze until"
+      },
+      "cancelForm": {
+        "title": "Cancel subscription",
+        "body": "This stops the subscription immediately. The member keeps access through any already-recorded paid period.",
+        "reason": "Reason (optional)"
+      },
+      "errors": {
+        "planNotFound": "Plan not found.",
+        "planArchived": "This plan is archived.",
+        "memberNotFound": "Member not found.",
+        "couponInvalid": "Coupon code is invalid.",
+        "couponExpired": "Coupon has expired.",
+        "couponExhausted": "Coupon usage limit reached.",
+        "moyasarMissing": "Moyasar keys missing — see env."
+      }
+    },
+    "manualPayment": {
+      "title": "Record manual payment",
+      "subtitle": "Use for cash, bank transfer, or Moyasar test mode without redirecting.",
+      "amount": "Amount (SAR)",
+      "note": "Note (optional)",
+      "submit": "Mark as paid"
+    },
+    "refundForm": {
+      "title": "Refund payment",
+      "body": "If this was a Moyasar payment, the refund is sent to Moyasar and reflected here once they confirm.",
+      "reason": "Reason (optional)"
+    },
+    "coupons": {
+      "title": "Coupons",
+      "subtitle": "Discount codes a member can apply at subscription time.",
+      "newCoupon": "New coupon",
+      "empty": "No coupons yet.",
+      "headers": {
+        "code": "Code",
+        "percent": "Discount",
+        "uses": "Uses",
+        "validFrom": "Valid from",
+        "validTo": "Valid to",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New coupon",
+        "editTitle": "Edit coupon",
+        "code": "Code",
+        "codeHint": "Uppercase letters, digits, hyphens. E.g. \"WELCOME20\".",
+        "percent": "Discount (%)",
+        "maxUses": "Maximum redemptions (blank = unlimited)",
+        "validFrom": "Valid from",
+        "validTo": "Valid until (blank = no expiry)",
+        "active": "Active"
+      },
+      "errors": {
+        "codeExists": "A coupon with this code already exists."
+      }
+    },
+    "revenue": {
+      "title": "Revenue",
+      "subtitle": "Money in. Excludes refunds.",
+      "thisMonth": "This month",
+      "last12Months": "Last 12 months",
+      "activeSubscriptions": "Active subscriptions",
+      "pendingPayments": "Pending payments",
+      "byMonthTitle": "Last 12 months",
+      "noData": "No revenue yet. Record a manual payment or run a Moyasar test charge to populate."
+    },
+    "portal": {
+      "sendLink": "Send portal link",
+      "linkCopied": "Portal link generated",
+      "linkCopiedDesc": "We've also emailed it if the member has an address.",
+      "linkFailed": "Could not generate portal link",
+      "publicTitle": "Member portal",
+      "publicSubtitle": "Your subscriptions, payments and member card.",
+      "expiredOrInvalid": "This link has expired or is no longer valid. Ask your club admin for a new one.",
+      "noActiveSubscription": "You don't have an active subscription right now."
+    },
+    "toast": {
+      "planCreated": "Plan created",
+      "planUpdated": "Plan updated",
+      "planArchived": "Plan archived",
+      "planUnarchived": "Plan unarchived",
+      "memberCreated": "Member added",
+      "memberUpdated": "Member updated",
+      "memberStatusChanged": "Member status changed",
+      "subscriptionStarted": "Subscription started",
+      "subscriptionFrozen": "Subscription frozen",
+      "subscriptionUnfrozen": "Subscription resumed",
+      "subscriptionCancelled": "Subscription cancelled",
+      "paymentRecorded": "Payment recorded",
+      "paymentRefunded": "Payment refunded",
+      "couponCreated": "Coupon created",
+      "couponUpdated": "Coupon updated",
+      "couponDisabled": "Coupon disabled",
+      "couponEnabled": "Coupon enabled",
+      "portalLinkIssued": "Portal link issued",
+      "saveFailed": "Save failed",
+      "archiveFailed": "Archive failed",
+      "refundFailed": "Refund failed"
+    }
   }
 }

@@ -129,5 +129,267 @@
       "title": "الموارد والهيكل",
       "body": "دليل الموظفين، الهيكل التنظيمي، الشهادات. الطور الثالث."
     }
+  },
+  "memberships": {
+    "title": "الاشتراكات",
+    "subtitle": "الباقات، الأعضاء، الاشتراكات، والإيرادات.",
+    "tabs": {
+      "plans": "الباقات",
+      "members": "الأعضاء",
+      "subscriptions": "الاشتراكات",
+      "coupons": "كوبونات الخصم",
+      "revenue": "الإيرادات"
+    },
+    "common": {
+      "comingNext": "ميزة قادمة في هذه الوحدة",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "archive": "أرشفة",
+      "unarchive": "إلغاء الأرشفة",
+      "confirm": "تأكيد",
+      "active": "نشطة",
+      "archived": "مؤرشفة"
+    },
+    "plans": {
+      "title": "الباقات",
+      "subtitle": "ما يمكن للأعضاء شراؤه. أدر التسعير والمدد هنا.",
+      "newPlan": "باقة جديدة",
+      "empty": "لا توجد باقات بعد. أنشئ أول باقة لتبدأ بيع الاشتراكات.",
+      "headers": {
+        "name": "الباقة",
+        "code": "الرمز",
+        "duration": "المدة",
+        "price": "السعر",
+        "discount": "خصم المتجر",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "باقة جديدة",
+        "editTitle": "تعديل الباقة",
+        "code": "الرمز",
+        "codeHint": "مرجع داخلي، مثل \"gold-12mo\"",
+        "nameAr": "الاسم (عربي)",
+        "nameEn": "الاسم (إنجليزي)",
+        "durationMonths": "المدة (أشهر)",
+        "priceSar": "السعر (ر.س)",
+        "discountPct": "خصم المتجر للأعضاء (%)",
+        "discountHint": "يطبق على الدفع في المتجر. اضبط 0 إذا لم تكن باقة تخفيضات."
+      },
+      "errors": {
+        "codeExists": "يوجد باقة بنفس الرمز.",
+        "invalid": "بعض الحقول غير صحيحة. تحقق وأعد المحاولة."
+      },
+      "archive": {
+        "title": "أرشفة الباقة؟",
+        "body": "الباقات المؤرشفة لا تقبل اشتراكات جديدة. تستمر الاشتراكات الحالية حتى نهاية مدتها."
+      }
+    },
+    "members": {
+      "title": "الأعضاء",
+      "subtitle": "كل من سُجّل في النادي.",
+      "newMember": "إضافة عضو",
+      "backToList": "عودة إلى الأعضاء",
+      "empty": "لا يوجد أعضاء بعد. أضف أول عضو لتبدأ.",
+      "filters": {
+        "all": "الكل",
+        "status": "الحالة",
+        "search": "بحث بالاسم/الرقم/الهاتف"
+      },
+      "statuses": {
+        "active": "نشط",
+        "inactive": "غير نشط",
+        "prospect": "مرشح"
+      },
+      "headers": {
+        "name": "الاسم",
+        "memberNumber": "رقم العضوية",
+        "status": "الحالة",
+        "phone": "الجوال",
+        "email": "البريد",
+        "joined": "تاريخ الانضمام",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "عضو جديد",
+        "editTitle": "تعديل العضو",
+        "fullNameAr": "الاسم الكامل (عربي)",
+        "fullNameEn": "الاسم الكامل (إنجليزي)",
+        "email": "البريد الإلكتروني",
+        "phone": "الجوال",
+        "phoneHint": "+9665… أو 05…",
+        "nationalId": "الهوية الوطنية",
+        "nationalIdHint": "10 أرقام تبدأ بـ 1 أو 2",
+        "dateOfBirth": "تاريخ الميلاد",
+        "status": "الحالة"
+      },
+      "detail": {
+        "subscriptionsTitle": "الاشتراكات",
+        "subscriptionsEmpty": "لا توجد اشتراكات بعد.",
+        "paymentsTitle": "المدفوعات",
+        "paymentsEmpty": "لا توجد مدفوعات مسجلة بعد.",
+        "couponsTitle": "كوبونات الخصم المستخدمة",
+        "couponsEmpty": "لا توجد كوبونات مستخدمة."
+      },
+      "errors": {
+        "invalid": "بعض الحقول غير صحيحة.",
+        "nationalIdInvalid": "الهوية الوطنية: 10 أرقام تبدأ بـ 1 أو 2.",
+        "phoneInvalid": "الجوال يبدأ بـ +9665… أو 05…."
+      }
+    },
+    "subscriptions": {
+      "title": "الاشتراكات",
+      "subtitle": "الاشتراكات النشطة، المدفوعات المعلقة، والسجل.",
+      "empty": "لا توجد اشتراكات بعد. اشترك بأي عضو على باقة لتبدأ.",
+      "filters": {
+        "all": "الكل",
+        "status": "الحالة"
+      },
+      "statuses": {
+        "pending": "بانتظار الدفع",
+        "active": "نشط",
+        "frozen": "مجمّد",
+        "cancelled": "ملغى",
+        "expired": "منتهٍ"
+      },
+      "headers": {
+        "member": "العضو",
+        "plan": "الباقة",
+        "status": "الحالة",
+        "starts": "البدء",
+        "ends": "الانتهاء",
+        "actions": "إجراءات"
+      },
+      "actions": {
+        "subscribe": "اشتراك في باقة",
+        "recordManualPayment": "تسجيل دفعة يدوية",
+        "freeze": "تجميد",
+        "unfreeze": "إلغاء التجميد",
+        "cancel": "إلغاء",
+        "refund": "استرداد"
+      },
+      "subscribe": {
+        "title": "الاشتراك في باقة",
+        "selectPlan": "اختر الباقة",
+        "noActivePlans": "لا توجد باقات نشطة. أنشئ واحدة من تبويب الباقات أولاً.",
+        "couponLabel": "كود خصم (اختياري)",
+        "methodLabel": "طريقة الدفع",
+        "methodManual": "يدوي (تسجيل الآن)",
+        "methodMoyasar": "بطاقة / مدى / Apple Pay عبر ميسر",
+        "moyasarUnavailable": "ميسر غير مفعّل. أضف مفاتيح ميسر لتفعيله.",
+        "submit": "بدء الاشتراك"
+      },
+      "checkout": {
+        "title": "إتمام الدفع",
+        "subtitle": "سيتم خصم قيمة الاشتراك عبر النموذج أدناه المستضاف بواسطة ميسر.",
+        "missingKey": "مفتاح ميسر العلني غير مضبوط. أضف NEXT_PUBLIC_MOYASAR_PUBLISHABLE_KEY ثم انشر.",
+        "backToMember": "العودة إلى العضو"
+      },
+      "freezeForm": {
+        "title": "تجميد الاشتراك",
+        "from": "تجميد من",
+        "to": "تجميد حتى"
+      },
+      "cancelForm": {
+        "title": "إلغاء الاشتراك",
+        "body": "يوقف الاشتراك فوراً. يحتفظ العضو بالوصول حتى نهاية ما تم دفعه.",
+        "reason": "السبب (اختياري)"
+      },
+      "errors": {
+        "planNotFound": "الباقة غير موجودة.",
+        "planArchived": "هذه الباقة مؤرشفة.",
+        "memberNotFound": "العضو غير موجود.",
+        "couponInvalid": "كود الخصم غير صالح.",
+        "couponExpired": "انتهت صلاحية كود الخصم.",
+        "couponExhausted": "تم استنفاد كود الخصم.",
+        "moyasarMissing": "مفاتيح ميسر مفقودة."
+      }
+    },
+    "manualPayment": {
+      "title": "تسجيل دفعة يدوية",
+      "subtitle": "للنقد، التحويل البنكي، أو وضع ميسر التجريبي بدون إعادة توجيه.",
+      "amount": "المبلغ (ر.س)",
+      "note": "ملاحظة (اختياري)",
+      "submit": "تسجيل كمدفوعة"
+    },
+    "refundForm": {
+      "title": "استرداد الدفعة",
+      "body": "إذا كانت دفعة عبر ميسر، يُرسل الاسترداد إليه ويُعكس هنا فور تأكيده.",
+      "reason": "السبب (اختياري)"
+    },
+    "coupons": {
+      "title": "كوبونات الخصم",
+      "subtitle": "أكواد خصم يطبّقها الأعضاء عند الاشتراك.",
+      "newCoupon": "كوبون جديد",
+      "empty": "لا توجد كوبونات بعد.",
+      "headers": {
+        "code": "الكود",
+        "percent": "الخصم",
+        "uses": "الاستخدام",
+        "validFrom": "ساري من",
+        "validTo": "ساري حتى",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "كوبون جديد",
+        "editTitle": "تعديل الكوبون",
+        "code": "الكود",
+        "codeHint": "أحرف كبيرة، أرقام، شُرَط. مثلاً \"WELCOME20\".",
+        "percent": "نسبة الخصم (%)",
+        "maxUses": "الحد الأقصى للاستخدام (فارغ = بلا حد)",
+        "validFrom": "ساري من",
+        "validTo": "ساري حتى (فارغ = بلا انتهاء)",
+        "active": "نشط"
+      },
+      "errors": {
+        "codeExists": "يوجد كوبون بنفس الكود."
+      }
+    },
+    "revenue": {
+      "title": "الإيرادات",
+      "subtitle": "المبالغ المُحصَّلة. الاستردادات مستثناة.",
+      "thisMonth": "هذا الشهر",
+      "last12Months": "آخر ١٢ شهر",
+      "activeSubscriptions": "اشتراكات نشطة",
+      "pendingPayments": "مدفوعات معلقة",
+      "byMonthTitle": "آخر ١٢ شهر",
+      "noData": "لا توجد إيرادات بعد. سجّل دفعة يدوية أو نفّذ دفعة اختبارية عبر ميسر."
+    },
+    "portal": {
+      "sendLink": "إرسال رابط البوابة",
+      "linkCopied": "تم إنشاء رابط البوابة",
+      "linkCopiedDesc": "أُرسل أيضاً إلى البريد إن وُجد.",
+      "linkFailed": "تعذّر إنشاء رابط البوابة",
+      "publicTitle": "بوابة العضو",
+      "publicSubtitle": "اشتراكاتك، مدفوعاتك، وبطاقتك.",
+      "expiredOrInvalid": "هذا الرابط منتهٍ أو غير صالح. اطلب رابطاً جديداً من إدارة النادي.",
+      "noActiveSubscription": "لا يوجد اشتراك نشط حالياً."
+    },
+    "toast": {
+      "planCreated": "تم إنشاء الباقة",
+      "planUpdated": "تم تحديث الباقة",
+      "planArchived": "تمت أرشفة الباقة",
+      "planUnarchived": "تم إلغاء أرشفة الباقة",
+      "memberCreated": "تمت إضافة العضو",
+      "memberUpdated": "تم تحديث العضو",
+      "memberStatusChanged": "تم تغيير حالة العضو",
+      "subscriptionStarted": "بدأ الاشتراك",
+      "subscriptionFrozen": "تم تجميد الاشتراك",
+      "subscriptionUnfrozen": "تم استئناف الاشتراك",
+      "subscriptionCancelled": "تم إلغاء الاشتراك",
+      "paymentRecorded": "تم تسجيل الدفعة",
+      "paymentRefunded": "تم استرداد الدفعة",
+      "couponCreated": "تم إنشاء الكوبون",
+      "couponUpdated": "تم تحديث الكوبون",
+      "couponDisabled": "تم تعطيل الكوبون",
+      "couponEnabled": "تم تفعيل الكوبون",
+      "portalLinkIssued": "تم إصدار رابط البوابة",
+      "saveFailed": "فشل الحفظ",
+      "archiveFailed": "فشلت الأرشفة",
+      "refundFailed": "فشل الاسترداد"
+    }
   }
 }

@@ -60,6 +60,8 @@ export interface User {
   created_at: string;
 }
 
+export type MemberStatus = "active" | "inactive" | "prospect";
+
 export interface Member {
   id: string;
   org_id: string;
@@ -70,6 +72,101 @@ export interface Member {
   phone: string | null;
   national_id: string | null;
   date_of_birth: string | null;
+  member_number: string | null;
+  status: MemberStatus;
+  joined_at: string;
+  created_at: string;
+}
+
+// ─────────────────────────────────────────────
+// Memberships module (Phase 1)
+// ─────────────────────────────────────────────
+
+export interface Plan {
+  id: string;
+  org_id: string;
+  code: string;
+  name_ar: string;
+  name_en: string;
+  duration_months: number;
+  price_sar: number;
+  member_only_store_discount_pct: number;
+  includes_jsonb: Record<string, unknown>;
+  active: boolean;
+  archived_at: string | null;
+  created_at: string;
+}
+
+export type SubscriptionStatus =
+  | "pending"
+  | "active"
+  | "frozen"
+  | "cancelled"
+  | "expired";
+
+export interface Subscription {
+  id: string;
+  org_id: string;
+  member_id: string;
+  plan_id: string;
+  status: SubscriptionStatus;
+  starts_at: string | null;
+  ends_at: string | null;
+  frozen_from: string | null;
+  frozen_to: string | null;
+  moyasar_subscription_id: string | null;
+  created_at: string;
+  cancelled_at: string | null;
+}
+
+export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
+
+export interface Payment {
+  id: string;
+  org_id: string;
+  subscription_id: string | null;
+  member_id: string | null;
+  amount_sar: number;
+  currency: string;
+  status: PaymentStatus;
+  provider: string;
+  provider_payment_id: string | null;
+  paid_at: string | null;
+  failure_reason: string | null;
+  idempotency_key: string | null;
+  created_at: string;
+}
+
+export interface DiscountCoupon {
+  id: string;
+  org_id: string;
+  code: string;
+  percent_off: number;
+  max_uses: number | null;
+  used_count: number;
+  valid_from: string;
+  valid_to: string | null;
+  plan_scope_jsonb: string[];
+  active: boolean;
+  created_at: string;
+}
+
+export interface CouponRedemption {
+  id: string;
+  org_id: string;
+  coupon_id: string;
+  subscription_id: string | null;
+  member_id: string | null;
+  redeemed_at: string;
+}
+
+export interface MemberPortalToken {
+  id: string;
+  org_id: string;
+  member_id: string;
+  token: string;
+  expires_at: string;
+  consumed_at: string | null;
   created_at: string;
 }
 

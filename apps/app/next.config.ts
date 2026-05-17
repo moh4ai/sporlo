@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     "@sporlo/ui",
     "@sporlo/auth",
     "@sporlo/db",
+    "@sporlo/governance",
     "@sporlo/i18n",
     "@sporlo/shared",
   ],

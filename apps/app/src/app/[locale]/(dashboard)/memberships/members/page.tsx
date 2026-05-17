@@ -4,32 +4,31 @@ import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
 
-import { PlansClient } from "./_components/PlansClient";
+import {
+  MembersListClient,
+  type MemberRow,
+} from "./_components/MembersListClient";
 
-export default async function PlansPage({
+export default async function MembersPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-
   const tenant = await getActiveTenant();
+
   const supabase = await createSupabaseServerClient();
-  const { data: plans } = await supabase
-    .from("plans")
+  const { data } = await supabase
+    .from("members")
     .select(
-      "id, code, name_ar, name_en, duration_months, price_sar, member_only_store_discount_pct, active",
+      "id, full_name_ar, full_name_en, member_number, status, email, phone, joined_at",
     )
-    .order("created_at", { ascending: false });
+    .order("joined_at", { ascending: false });
 
   return (
-    <PlansClient
-      initialPlans={(plans ?? []).map((p) => ({
-        ...p,
-        price_sar: Number(p.price_sar),
-        member_only_store_discount_pct: Number(p.member_only_store_discount_pct),
-      }))}
+    <MembersListClient
+      members={(data ?? []) as MemberRow[]}
       principal={{
         role: tenant.user_role,
         department: tenant.department,
