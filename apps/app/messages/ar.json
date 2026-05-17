@@ -834,5 +834,87 @@
       "orderDelivered": "تم تسليم الطلب",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "facilities": {
+    "title": "المنشآت",
+    "subtitle": "الملاعب، الصالات، والمرافق. حجز جلسات بدون تعارض.",
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "back": "عودة",
+      "active": "نشط",
+      "archived": "مؤرشف",
+      "archive": "أرشفة",
+      "delete": "حذف"
+    },
+    "list": {
+      "title": "المنشآت",
+      "subtitle": "اضغط منشأة لعرض الجدول وحجز جلسات.",
+      "newFacility": "منشأة جديدة",
+      "empty": "لا توجد منشآت بعد. أضف أول منشأة لتبدأ الحجوزات.",
+      "headers": {
+        "name": "المنشأة",
+        "type": "النوع",
+        "capacity": "السعة",
+        "rate": "السعر/الساعة",
+        "status": "الحالة",
+        "actions": "إجراءات"
+      }
+    },
+    "form": {
+      "createTitle": "منشأة جديدة",
+      "editTitle": "تعديل المنشأة",
+      "nameAr": "الاسم (عربي)",
+      "nameEn": "الاسم (إنجليزي)",
+      "type": "النوع (مثلاً football، gym، pool)",
+      "capacity": "السعة",
+      "rate": "السعر بالساعة (ر.س)",
+      "memberRate": "سعر الأعضاء بالساعة (ر.س)",
+      "notes": "ملاحظات"
+    },
+    "detail": {
+      "schedule": "الجدول",
+      "bookings": "الحجوزات",
+      "maintenance": "نوافذ الصيانة",
+      "newBooking": "حجز جديد",
+      "newMaintenance": "جدولة صيانة",
+      "emptyBookings": "لا توجد حجوزات للأسبوع القادم.",
+      "emptyMaintenance": "لا توجد صيانة مجدولة."
+    },
+    "booking": {
+      "title": "حجز جديد",
+      "startsAt": "البداية",
+      "endsAt": "النهاية",
+      "name": "اسم الحاجز",
+      "email": "البريد",
+      "phone": "الجوال",
+      "notes": "ملاحظات",
+      "submit": "حجز"
+    },
+    "maintenance": {
+      "title": "جدولة صيانة",
+      "startsAt": "البداية",
+      "endsAt": "النهاية",
+      "reason": "السبب",
+      "submit": "جدولة"
+    },
+    "errors": {
+      "invalidRange": "النهاية يجب أن تكون بعد البداية.",
+      "timeConflict": "هذه الفترة محجوزة. اختر وقتاً آخر.",
+      "maintenanceConflict": "هناك صيانة مجدولة في هذه الفترة.",
+      "bookingConflict": "يوجد حجز نشط في هذه الفترة. ألغ الحجز أولاً."
+    },
+    "toast": {
+      "facilityCreated": "تمت إضافة المنشأة",
+      "facilityUpdated": "تم تحديث المنشأة",
+      "facilityArchived": "تمت أرشفة المنشأة",
+      "bookingCreated": "تم تأكيد الحجز",
+      "bookingCancelled": "تم إلغاء الحجز",
+      "maintenanceScheduled": "تمت جدولة الصيانة",
+      "maintenanceRemoved": "تم حذف الصيانة",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

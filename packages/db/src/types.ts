@@ -487,3 +487,52 @@ export interface Shipment {
   delivered_at: string | null;
   notes: string | null;
 }
+
+// ─────────────────────────────────────────────
+// Facilities module (Phase 3)
+// ─────────────────────────────────────────────
+
+export interface Facility {
+  id: string;
+  org_id: string;
+  branch_id: string | null;
+  name_ar: string;
+  name_en: string;
+  facility_type: string | null;
+  capacity: number | null;
+  hourly_rate_sar: number | null;
+  member_hourly_rate_sar: number | null;
+  notes: string | null;
+  active: boolean;
+  created_at: string;
+}
+
+export type FacilityBookingStatus =
+  | "held"
+  | "confirmed"
+  | "cancelled"
+  | "completed";
+
+export interface FacilityBooking {
+  id: string;
+  org_id: string;
+  facility_id: string;
+  member_id: string | null;
+  booked_by_name: string | null;
+  booked_by_email: string | null;
+  booked_by_phone: string | null;
+  /** Postgres tstzrange — serialised as "[lower,upper)" string. */
+  time_range: string;
+  status: FacilityBookingStatus;
+  notes: string | null;
+  created_at: string;
+}
+
+export interface MaintenanceWindow {
+  id: string;
+  org_id: string;
+  facility_id: string;
+  time_range: string;
+  reason: string | null;
+  created_at: string;
+}

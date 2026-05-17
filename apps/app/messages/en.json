@@ -834,5 +834,87 @@
       "orderDelivered": "Order delivered",
       "saveFailed": "Save failed"
     }
+  },
+  "facilities": {
+    "title": "Facilities",
+    "subtitle": "Pitches, courts, and venues. Book sessions with conflict-free scheduling.",
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "back": "Back",
+      "active": "Active",
+      "archived": "Archived",
+      "archive": "Archive",
+      "delete": "Delete"
+    },
+    "list": {
+      "title": "Facilities",
+      "subtitle": "Click a facility to view its schedule + book sessions.",
+      "newFacility": "New facility",
+      "empty": "No facilities yet. Add your first to start booking.",
+      "headers": {
+        "name": "Facility",
+        "type": "Type",
+        "capacity": "Capacity",
+        "rate": "Hourly rate",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "form": {
+      "createTitle": "New facility",
+      "editTitle": "Edit facility",
+      "nameAr": "Name (Arabic)",
+      "nameEn": "Name (English)",
+      "type": "Type (e.g. football, gym, pool)",
+      "capacity": "Capacity",
+      "rate": "Hourly rate (SAR)",
+      "memberRate": "Member hourly rate (SAR)",
+      "notes": "Notes"
+    },
+    "detail": {
+      "schedule": "Schedule",
+      "bookings": "Bookings",
+      "maintenance": "Maintenance windows",
+      "newBooking": "New booking",
+      "newMaintenance": "Schedule maintenance",
+      "emptyBookings": "No bookings yet for the next week.",
+      "emptyMaintenance": "No maintenance scheduled."
+    },
+    "booking": {
+      "title": "New booking",
+      "startsAt": "Start",
+      "endsAt": "End",
+      "name": "Booked by (name)",
+      "email": "Email",
+      "phone": "Phone",
+      "notes": "Notes",
+      "submit": "Book"
+    },
+    "maintenance": {
+      "title": "Schedule maintenance",
+      "startsAt": "Start",
+      "endsAt": "End",
+      "reason": "Reason",
+      "submit": "Schedule"
+    },
+    "errors": {
+      "invalidRange": "End must be after start.",
+      "timeConflict": "That slot is already booked. Pick another time.",
+      "maintenanceConflict": "Maintenance is scheduled in that window. Pick another time.",
+      "bookingConflict": "An active booking falls in that window. Cancel the booking first."
+    },
+    "toast": {
+      "facilityCreated": "Facility added",
+      "facilityUpdated": "Facility updated",
+      "facilityArchived": "Facility archived",
+      "bookingCreated": "Booking confirmed",
+      "bookingCancelled": "Booking cancelled",
+      "maintenanceScheduled": "Maintenance scheduled",
+      "maintenanceRemoved": "Maintenance removed",
+      "saveFailed": "Save failed"
+    }
   }
 }
