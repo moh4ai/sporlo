@@ -83,6 +83,9 @@ importers:
       '@sporlo/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@sporlo/offline':
+        specifier: workspace:*
+        version: link:../../packages/offline
       '@sporlo/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -182,6 +185,12 @@ importers:
       next-intl:
         specifier: ^4.12.0
         version: 4.12.0(next@16.2.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)(typescript@5.9.3)
+      typescript:
+        specifier: ^5
+        version: 5.9.3
+
+  packages/offline:
+    devDependencies:
       typescript:
         specifier: ^5
         version: 5.9.3

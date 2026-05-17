@@ -1,22 +1,38 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
-import { EmptyState } from "@/components/EmptyState";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
 
-export default async function EventsPage({
+import { FixturesListClient, type FixtureRow } from "./_components/FixturesListClient";
+
+export default async function FixturesPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const t = await getTranslations({ locale, namespace: "empty" });
+  const tenant = await getActiveTenant();
+
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("fixtures")
+    .select(
+      "id, opponent_ar, opponent_en, kickoff_at, venue, status, home_score, away_score",
+    )
+    .order("kickoff_at", { ascending: false });
+
+  const fixtures: FixtureRow[] = (data ?? []) as FixtureRow[];
+
   return (
-    <EmptyState
-      title={t("events.title")}
-      body={t("events.body")}
-      ctaLabel={t("ctaAddFirst")}
-      comingSoonLabel={t("comingSoon")}
+    <FixturesListClient
+      fixtures={fixtures}
+      principal={{
+        role: tenant.user_role,
+        department: tenant.department,
+      }}
+      locale={locale as "ar" | "en"}
     />
   );
 }

@@ -14,6 +14,7 @@
     "@sporlo/db": "workspace:*",
     "@sporlo/governance": "workspace:*",
     "@sporlo/i18n": "workspace:*",
+    "@sporlo/offline": "workspace:*",
     "@sporlo/shared": "workspace:*",
     "@sporlo/ui": "workspace:*",
     "@supabase/ssr": "^0.5.2",

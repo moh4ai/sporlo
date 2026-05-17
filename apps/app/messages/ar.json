@@ -526,5 +526,166 @@
       "disclosureSubmitted": "تم تقديم الإفصاح",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "events": {
+    "title": "المباريات والفعاليات",
+    "subtitle": "الجدول، التذاكر، مسح البوابة، وأحداث المباراة المباشرة.",
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "back": "عودة",
+      "scanner": "ماسح البوابة",
+      "report": "مسجل المباراة"
+    },
+    "fixtures": {
+      "title": "المباريات",
+      "subtitle": "جدول المباريات. اضغط مباراة لإدارة المقاعد والتذاكر.",
+      "newFixture": "مباراة جديدة",
+      "empty": "لا توجد مباريات بعد. أنشئ واحدة لتبدأ.",
+      "headers": {
+        "opponent": "الفريق المنافس",
+        "kickoff": "موعد البداية",
+        "venue": "الملعب",
+        "status": "الحالة",
+        "score": "النتيجة",
+        "actions": "إجراءات"
+      },
+      "statuses": {
+        "scheduled": "مجدولة",
+        "in_progress": "جارية",
+        "completed": "منتهية",
+        "cancelled": "ملغاة"
+      },
+      "form": {
+        "createTitle": "مباراة جديدة",
+        "editTitle": "تعديل المباراة",
+        "opponentAr": "المنافس (عربي)",
+        "opponentEn": "المنافس (إنجليزي)",
+        "kickoffAt": "تاريخ ووقت البداية",
+        "venue": "الملعب",
+        "sportType": "الرياضة",
+        "status": "الحالة",
+        "homeScore": "نتيجة المضيف",
+        "awayScore": "نتيجة الضيف"
+      },
+      "errors": {
+        "invalid": "بعض الحقول غير صحيحة."
+      }
+    },
+    "detail": {
+      "scanner": "ماسح البوابة",
+      "report": "مسجل المباراة",
+      "publicLink": "رابط الشراء العام",
+      "ticketsSold": "تذاكر مباعة",
+      "ticketsAvailable": "السعة",
+      "ticketsScanned": "ممسوحة"
+    },
+    "sections": {
+      "title": "أقسام المقاعد",
+      "empty": "لا توجد أقسام بعد. أضف قسماً لبدء بناء المقاعد.",
+      "add": "إضافة قسم",
+      "remove": "حذف",
+      "headers": {
+        "label": "القسم",
+        "size": "صفوف × مقاعد",
+        "capacity": "السعة",
+        "pricing": "التسعير"
+      },
+      "form": {
+        "title": "إضافة قسم",
+        "label": "التسمية (مثل \"VIP\" أو \"A\")",
+        "rows": "الصفوف",
+        "seatsPerRow": "المقاعد لكل صف"
+      },
+      "errors": {
+        "labelExists": "يوجد قسم بنفس التسمية لهذه المباراة."
+      }
+    },
+    "pricing": {
+      "title": "تسعير المقاعد",
+      "headers": {
+        "section": "القسم",
+        "label": "تسمية الفئة",
+        "price": "السعر (ر.س)",
+        "memberPrice": "سعر الأعضاء (ر.س)",
+        "actions": "حفظ"
+      },
+      "form": {
+        "label": "التسمية",
+        "price": "السعر (ر.س)",
+        "memberPrice": "سعر الأعضاء (اختياري)"
+      }
+    },
+    "publicListing": {
+      "title": "المباريات القادمة",
+      "empty": "لا توجد مباريات قادمة.",
+      "buy": "شراء التذاكر"
+    },
+    "publicBuy": {
+      "title": "شراء التذاكر",
+      "section": "القسم",
+      "quantity": "عدد التذاكر",
+      "email": "البريد الإلكتروني",
+      "phone": "الجوال (اختياري)",
+      "method": "طريقة الدفع",
+      "methodManual": "يدوي / عند البوابة",
+      "methodMoyasar": "بطاقة / مدى / Apple Pay",
+      "submit": "متابعة الدفع",
+      "noPricing": "لم يُحدَّد سعر لهذا القسم.",
+      "noSeats": "لا توجد مقاعد كافية في هذا القسم.",
+      "successManual": "تم الحجز. أحضر هذه التأكيد إلى البوابة.",
+      "moyasarUnavailable": "الدفع بالبطاقة غير مفعّل. ادفع عند البوابة."
+    },
+    "scan": {
+      "title": "ماسح البوابة",
+      "subtitle": "وجّه الكاميرا نحو رمز QR للتذكرة.",
+      "manualLabel": "أو أدخل الرمز يدوياً",
+      "scanBtn": "تحقق",
+      "noCamera": "الكاميرا غير متاحة. استخدم الإدخال اليدوي أدناه.",
+      "resultValid": "صالحة — أول مسح",
+      "resultAlready": "تم المسح مسبقاً في",
+      "resultInvalid": "تذكرة غير صالحة"
+    },
+    "report": {
+      "title": "مسجل المباراة",
+      "subtitle": "سجل الأحداث أثناء المباراة. يعمل بدون اتصال؛ يتزامن عند العودة.",
+      "addEvent": "إضافة حدث",
+      "minute": "الدقيقة",
+      "type": "النوع",
+      "team": "الفريق",
+      "player": "اللاعب",
+      "offlineNote": "أنت بدون اتصال. الأحداث في قائمة الانتظار وستتزامن تلقائياً.",
+      "queueCount": "{n} حدث بانتظار المزامنة",
+      "syncedNow": "تم التزامن",
+      "teams": {
+        "home": "المضيف",
+        "away": "الضيف"
+      },
+      "types": {
+        "goal": "هدف",
+        "own_goal": "هدف عكسي",
+        "penalty": "ركلة جزاء",
+        "yellow_card": "بطاقة صفراء",
+        "red_card": "بطاقة حمراء",
+        "substitution": "تبديل",
+        "injury": "إصابة",
+        "note": "ملاحظة"
+      }
+    },
+    "toast": {
+      "fixtureCreated": "تم إنشاء المباراة",
+      "fixtureUpdated": "تم تحديث المباراة",
+      "fixtureCancelled": "تم إلغاء المباراة",
+      "sectionAdded": "تم إضافة القسم",
+      "sectionRemoved": "تم حذف القسم",
+      "pricingSaved": "تم حفظ التسعير",
+      "ticketsBooked": "تم حجز التذاكر",
+      "scanRecorded": "تم تسجيل المسح",
+      "matchEventAdded": "تم إضافة الحدث",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

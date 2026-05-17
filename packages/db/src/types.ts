@@ -280,3 +280,109 @@ export interface AuditLog {
   payload_jsonb: Record<string, unknown>;
   created_at: string;
 }
+
+// ─────────────────────────────────────────────
+// Events module (Phase 2)
+// ─────────────────────────────────────────────
+
+export type FixtureStatus =
+  | "scheduled"
+  | "in_progress"
+  | "completed"
+  | "cancelled";
+
+export interface Fixture {
+  id: string;
+  org_id: string;
+  branch_id: string | null;
+  opponent_ar: string;
+  opponent_en: string;
+  kickoff_at: string;
+  venue: string | null;
+  sport_type: string;
+  status: FixtureStatus;
+  home_score: number | null;
+  away_score: number | null;
+  created_at: string;
+}
+
+export interface VenueSection {
+  id: string;
+  org_id: string;
+  fixture_id: string;
+  label: string;
+  rows_count: number;
+  seats_per_row: number;
+  capacity: number;
+  display_order: number;
+  created_at: string;
+}
+
+export type SeatStatus = "available" | "held" | "sold" | "blocked";
+
+export interface Seat {
+  id: string;
+  org_id: string;
+  section_id: string;
+  row_label: string;
+  seat_number: number;
+  status: SeatStatus;
+  held_until: string | null;
+  created_at: string;
+}
+
+export interface PricingTier {
+  id: string;
+  org_id: string;
+  fixture_id: string;
+  section_id: string;
+  label: string;
+  price_sar: number;
+  member_price_sar: number | null;
+  created_at: string;
+}
+
+export type TicketStatus = "pending" | "paid" | "cancelled" | "refunded";
+
+export interface Ticket {
+  id: string;
+  org_id: string;
+  fixture_id: string;
+  seat_id: string | null;
+  buyer_member_id: string | null;
+  buyer_email: string | null;
+  buyer_phone: string | null;
+  qr_code: string;
+  price_sar: number;
+  status: TicketStatus;
+  payment_id: string | null;
+  sold_at: string | null;
+  scanned_at: string | null;
+  scanned_by: string | null;
+  created_at: string;
+}
+
+export type MatchEventType =
+  | "goal"
+  | "own_goal"
+  | "penalty"
+  | "yellow_card"
+  | "red_card"
+  | "substitution"
+  | "injury"
+  | "note";
+
+export interface MatchEvent {
+  id: string;
+  org_id: string;
+  fixture_id: string;
+  minute: number;
+  type: MatchEventType;
+  team: "home" | "away";
+  player_name: string | null;
+  payload_jsonb: Record<string, unknown>;
+  recorded_offline: boolean;
+  recorded_by: string | null;
+  client_id: string | null;
+  created_at: string;
+}

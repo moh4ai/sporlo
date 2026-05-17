@@ -262,6 +262,33 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       (p.role === "dept_manager" && p.department === "finance"),
     approve: ["super_admin", "club_admin"],
   },
+  events: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "sports" || p.department === "events")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "coach" ||
+      (p.role === "dept_manager" &&
+        (p.department === "sports" || p.department === "events")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "events"),
+  },
+  finance: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" && p.department === "finance"),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "finance"),
+  },
   audit_log: {
     read: (p) =>
       p.role === "super_admin" ||

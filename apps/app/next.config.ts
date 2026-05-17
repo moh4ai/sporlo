@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     "@sporlo/db",
     "@sporlo/governance",
     "@sporlo/i18n",
+    "@sporlo/offline",
     "@sporlo/shared",
   ],
 };

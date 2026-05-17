@@ -1,6 +1,6 @@
 // Moyasar webhook handler. Configure in the Moyasar dashboard with this URL
-// and a shared-secret header (we read it from MOYASAR_WEBHOOK_SECRET). We
-// process every event idempotently — repeat deliveries are fine.
+// and a shared-secret header (we read from MOYASAR_WEBHOOK_SECRET). Every
+// event is processed idempotently — repeat deliveries are fine.
 
 import { NextResponse, type NextRequest } from "next/server";
 
@@ -9,6 +9,7 @@ import {
   finalizeMoyasarPayment,
   markMoyasarPaymentFailed,
 } from "@/lib/memberships-finalize";
+import { finalizeTicketPayment } from "@/lib/events-finalize";
 
 export const dynamic = "force-dynamic";
 
@@ -31,15 +32,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "bad-json" }, { status: 400 });
   }
 
-  const sporloPaymentId =
-    body.data.metadata?.sporlo_payment_id ?? body.data.metadata?.payment_id;
+  const md = body.data.metadata ?? {};
+  const sporloPaymentId = md.sporlo_payment_id ?? md.payment_id;
+  const kind = md.kind ?? "subscription";
+
   if (!sporloPaymentId) {
-    // Not a Sporlo-originated payment — accept and ignore.
     return NextResponse.json({ ok: true, ignored: "no-metadata" });
   }
 
-  if (body.type === "payment_paid" || body.data.status === "paid" || body.data.status === "captured") {
-    const res = await finalizeMoyasarPayment({
+  const paid =
+    body.type === "payment_paid" ||
+    body.data.status === "paid" ||
+    body.data.status === "captured";
+  const failed = body.type === "payment_failed" || body.data.status === "failed";
+
+  if (paid) {
+    const finalize =
+      kind === "ticket" ? finalizeTicketPayment : finalizeMoyasarPayment;
+    const res = await finalize({
       paymentId: sporloPaymentId,
       provider_payment_id: body.data.id,
       amount_sar: halalasToSar(body.data.amount),
@@ -47,7 +57,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(res);
   }
 
-  if (body.type === "payment_failed" || body.data.status === "failed") {
+  if (failed) {
     await markMoyasarPaymentFailed({
       paymentId: sporloPaymentId,
       reason: body.data.source?.message ?? body.data.status,
@@ -55,7 +65,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  // Other event types: refunded, voided, etc. Ignored for Sprint 0;
-  // production wires them once we have the Moyasar dashboard test data.
   return NextResponse.json({ ok: true, ignored: body.type });
 }

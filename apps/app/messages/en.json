@@ -526,5 +526,166 @@
       "disclosureSubmitted": "Disclosure submitted",
       "saveFailed": "Save failed"
     }
+  },
+  "events": {
+    "title": "Matches & events",
+    "subtitle": "Fixtures, ticket inventory, gate scanning, and live match events.",
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "back": "Back",
+      "scanner": "Gate scanner",
+      "report": "Match reporter"
+    },
+    "fixtures": {
+      "title": "Fixtures",
+      "subtitle": "Match schedule. Click a fixture to manage inventory + tickets.",
+      "newFixture": "New fixture",
+      "empty": "No fixtures yet. Create one to start selling tickets.",
+      "headers": {
+        "opponent": "Opponent",
+        "kickoff": "Kickoff",
+        "venue": "Venue",
+        "status": "Status",
+        "score": "Score",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "scheduled": "Scheduled",
+        "in_progress": "Live",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "form": {
+        "createTitle": "New fixture",
+        "editTitle": "Edit fixture",
+        "opponentAr": "Opponent (Arabic)",
+        "opponentEn": "Opponent (English)",
+        "kickoffAt": "Kickoff date & time",
+        "venue": "Venue",
+        "sportType": "Sport",
+        "status": "Status",
+        "homeScore": "Home score",
+        "awayScore": "Away score"
+      },
+      "errors": {
+        "invalid": "Some fields are invalid."
+      }
+    },
+    "detail": {
+      "scanner": "Gate scanner",
+      "report": "Match reporter",
+      "publicLink": "Public buy URL",
+      "ticketsSold": "Tickets sold",
+      "ticketsAvailable": "Capacity",
+      "ticketsScanned": "Scanned"
+    },
+    "sections": {
+      "title": "Seating sections",
+      "empty": "No sections yet. Add one to start building inventory.",
+      "add": "Add section",
+      "remove": "Remove",
+      "headers": {
+        "label": "Section",
+        "size": "Rows × Seats",
+        "capacity": "Capacity",
+        "pricing": "Pricing"
+      },
+      "form": {
+        "title": "Add section",
+        "label": "Label (e.g. \"VIP\", \"A\")",
+        "rows": "Rows",
+        "seatsPerRow": "Seats per row"
+      },
+      "errors": {
+        "labelExists": "A section with this label already exists for this fixture."
+      }
+    },
+    "pricing": {
+      "title": "Pricing per section",
+      "headers": {
+        "section": "Section",
+        "label": "Tier label",
+        "price": "Price (SAR)",
+        "memberPrice": "Member price (SAR)",
+        "actions": "Save"
+      },
+      "form": {
+        "label": "Label",
+        "price": "Price (SAR)",
+        "memberPrice": "Member price (optional)"
+      }
+    },
+    "publicListing": {
+      "title": "Upcoming fixtures",
+      "empty": "No upcoming fixtures.",
+      "buy": "Buy tickets"
+    },
+    "publicBuy": {
+      "title": "Buy tickets",
+      "section": "Section",
+      "quantity": "Tickets",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "method": "Payment method",
+      "methodManual": "Manual / at gate",
+      "methodMoyasar": "Card / Mada / Apple Pay",
+      "submit": "Continue to payment",
+      "noPricing": "Pricing not set for this section.",
+      "noSeats": "Not enough seats available in this section.",
+      "successManual": "Booked. Bring this confirmation to the gate.",
+      "moyasarUnavailable": "Card payment is not configured. Pay at the gate instead."
+    },
+    "scan": {
+      "title": "Gate scanner",
+      "subtitle": "Point the camera at a ticket QR code.",
+      "manualLabel": "Or enter the code manually",
+      "scanBtn": "Validate",
+      "noCamera": "Camera unavailable. Use manual input below.",
+      "resultValid": "Valid — first scan",
+      "resultAlready": "Already scanned at",
+      "resultInvalid": "Invalid ticket"
+    },
+    "report": {
+      "title": "Match reporter",
+      "subtitle": "Record events as the match plays. Works offline; syncs when you reconnect.",
+      "addEvent": "Add event",
+      "minute": "Minute",
+      "type": "Type",
+      "team": "Team",
+      "player": "Player",
+      "offlineNote": "You're offline. Events are queued and will sync automatically.",
+      "queueCount": "{n} events pending sync",
+      "syncedNow": "Synced",
+      "teams": {
+        "home": "Home",
+        "away": "Away"
+      },
+      "types": {
+        "goal": "Goal",
+        "own_goal": "Own goal",
+        "penalty": "Penalty",
+        "yellow_card": "Yellow card",
+        "red_card": "Red card",
+        "substitution": "Substitution",
+        "injury": "Injury",
+        "note": "Note"
+      }
+    },
+    "toast": {
+      "fixtureCreated": "Fixture created",
+      "fixtureUpdated": "Fixture updated",
+      "fixtureCancelled": "Fixture cancelled",
+      "sectionAdded": "Section added",
+      "sectionRemoved": "Section removed",
+      "pricingSaved": "Pricing saved",
+      "ticketsBooked": "Tickets booked",
+      "scanRecorded": "Scan recorded",
+      "matchEventAdded": "Event added",
+      "saveFailed": "Save failed"
+    }
   }
 }
