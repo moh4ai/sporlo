@@ -1243,5 +1243,157 @@
       "certDeleted": "Certification removed",
       "saveFailed": "Save failed"
     }
+  },
+  "governance": {
+    "title": "Governance & KPI",
+    "subtitle": "Ministry KPI scoring, deadlines, penalties, appeals, and Ministry reports.",
+    "tabs": {
+      "scores": "Scores",
+      "deadlines": "Deadlines",
+      "events": "Event log",
+      "appeals": "Appeals",
+      "reports": "Reports"
+    },
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "delete": "Delete",
+      "recompute": "Recompute",
+      "quarter": "Quarter",
+      "category": "Category",
+      "amount_sar": "Amount (SAR)",
+      "status": "Status",
+      "createdAt": "Created at"
+    },
+    "scores": {
+      "title": "Quarterly KPI score",
+      "subtitle": "Tier-weighted score per Ministry criterion. Recompute snapshots penalty + financial-support estimates.",
+      "totalScore": "Total score",
+      "tier": "Tier",
+      "supportEstimate": "Financial support estimate",
+      "penaltyEstimate": "Penalty estimate",
+      "headers": {
+        "criterion": "Criterion",
+        "category": "Category",
+        "weight": "Weight",
+        "events": "Events",
+        "weightedScore": "Weighted score"
+      },
+      "empty": "No KPI events recorded for this quarter yet. Modules will emit events as they're used.",
+      "categories": {
+        "b": "B — Governance & finance",
+        "c": "C — Sports & academy",
+        "d": "D — Community",
+        "e": "E — Infrastructure"
+      },
+      "recomputed": "Score recomputed",
+      "recomputeFailed": "Recompute failed"
+    },
+    "deadlines": {
+      "title": "Governance deadlines",
+      "subtitle": "Ministry deadlines for disclosures, reports, and submissions.",
+      "newDeadline": "Add deadline",
+      "empty": "No active deadlines.",
+      "headers": {
+        "title": "Title",
+        "dueAt": "Due",
+        "warningAt": "Warning",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "satisfied": "Satisfied",
+        "overdue": "Overdue",
+        "upcoming": "Upcoming"
+      },
+      "form": {
+        "createTitle": "New deadline",
+        "titleAr": "Title",
+        "dueAt": "Due at",
+        "warningAt": "Warning at (optional)"
+      },
+      "actions": {
+        "satisfy": "Mark satisfied",
+        "delete": "Delete"
+      }
+    },
+    "events": {
+      "title": "KPI event log",
+      "subtitle": "Append-only log of every event emitted by Sporlo modules. Read-only.",
+      "empty": "No events recorded yet.",
+      "headers": {
+        "occurredAt": "Occurred",
+        "module": "Module",
+        "eventType": "Event",
+        "criterion": "Criterion",
+        "category": "Category"
+      }
+    },
+    "appeals": {
+      "title": "Appeals",
+      "subtitle": "Appeal a penalty estimate. Ministry reviews and resolves.",
+      "newAppeal": "File appeal",
+      "empty": "No appeals filed.",
+      "headers": {
+        "filedAt": "Filed",
+        "penalty": "Penalty",
+        "narrative": "Narrative",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "open": "Open",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "withdrawn": "Withdrawn"
+      },
+      "form": {
+        "createTitle": "File appeal",
+        "penalty": "Related penalty (optional)",
+        "penaltyNone": "— Standalone appeal —",
+        "narrative": "Narrative"
+      },
+      "resolve": {
+        "title": "Resolve appeal",
+        "status": "Resolution",
+        "notes": "Resolution notes",
+        "approved": "Approve",
+        "rejected": "Reject",
+        "withdrawn": "Withdraw"
+      }
+    },
+    "reports": {
+      "title": "Ministry reports",
+      "subtitle": "Generate quarterly PDF or Excel for Ministry submission.",
+      "generate": "Generate report",
+      "empty": "No reports generated yet.",
+      "headers": {
+        "quarter": "Quarter",
+        "format": "Format",
+        "totalScore": "Total score",
+        "generatedAt": "Generated",
+        "submittedAt": "Submitted",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "Generate Ministry report",
+        "quarter": "Quarter",
+        "format": "Format"
+      },
+      "actions": {
+        "markSubmitted": "Mark submitted"
+      },
+      "generated": "Report record created",
+      "submitted": "Marked submitted"
+    },
+    "toast": {
+      "deadlineCreated": "Deadline created",
+      "deadlineSatisfied": "Deadline marked satisfied",
+      "deadlineDeleted": "Deadline deleted",
+      "appealFiled": "Appeal filed",
+      "appealResolved": "Appeal resolved",
+      "saveFailed": "Save failed"
+    }
   }
 }

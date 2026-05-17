@@ -4,10 +4,16 @@ export {
   listDeadlines,
   estimatePenalty,
   estimateFinancialSupport,
+  quarterBounds,
+  currentQuarter,
+  previousQuarters,
   type RecordEventInput,
   type RecordEventResult,
   type QuarterlyScoreInput,
   type QuarterlyScoreResult,
+  type PenaltyEstimate,
+  type PenaltyLine,
+  type FinancialSupportEstimate,
 } from "./kpi-engine";
 export {
   EVT,

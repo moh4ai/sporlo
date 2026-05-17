@@ -26,6 +26,89 @@ export type Department =
 
 export type KpiCategory = "b" | "c" | "d" | "e";
 
+export interface KpiCategoryRow {
+  code: string;
+  category: KpiCategory;
+  title_ar: string;
+  title_en: string;
+  weight: number;
+}
+
+export interface KpiEvent {
+  id: string;
+  org_id: string;
+  branch_id: string | null;
+  category: KpiCategory | null;
+  criterion_code: string | null;
+  event_type: string;
+  quantitative_value: number | null;
+  qualitative_payload_jsonb: Record<string, unknown>;
+  source_module: string;
+  occurred_at: string;
+  recorded_at: string;
+}
+
+export interface GovernanceDeadline {
+  id: string;
+  org_id: string;
+  title_ar: string;
+  due_at: string;
+  warning_at: string | null;
+  satisfied_at: string | null;
+  created_at: string;
+}
+
+export type PenaltyStatus = "estimated" | "confirmed" | "waived" | "appealed";
+
+export interface PenaltyLog {
+  id: string;
+  org_id: string;
+  quarter: string;
+  criterion_code: string | null;
+  percent_deducted: number;
+  amount_sar: number;
+  reason: string;
+  status: PenaltyStatus;
+  created_at: string;
+}
+
+export type AppealStatus = "open" | "approved" | "rejected" | "withdrawn";
+
+export interface AppealLog {
+  id: string;
+  org_id: string;
+  penalty_log_id: string | null;
+  filed_by: string | null;
+  filed_at: string;
+  narrative: string;
+  status: AppealStatus;
+  resolved_at: string | null;
+  resolution_notes: string | null;
+}
+
+export interface FinancialSupportEstimate {
+  id: string;
+  org_id: string;
+  quarter: string;
+  tier: Tier | null;
+  amount_sar: number;
+  total_score: number | null;
+  basis_jsonb: Record<string, unknown>;
+  created_at: string;
+}
+
+export interface MinistryReport {
+  id: string;
+  org_id: string;
+  quarter: string;
+  format: "pdf" | "xlsx";
+  storage_path: string | null;
+  total_score: number | null;
+  generated_by: string | null;
+  generated_at: string;
+  submitted_at: string | null;
+}
+
 export interface Organization {
   id: string;
   slug: string;
@@ -224,28 +307,6 @@ export interface QuarterlyDisclosure {
   created_at: string;
 }
 
-export interface KpiCategoryRow {
-  code: string;
-  category: KpiCategory;
-  title_ar: string;
-  title_en: string;
-  weight: number;
-}
-
-export interface KpiEvent {
-  id: string;
-  org_id: string;
-  branch_id: string | null;
-  category: KpiCategory;
-  criterion_code: string;
-  event_type: string;
-  quantitative_value: number | null;
-  qualitative_payload_jsonb: Record<string, unknown>;
-  source_module: string;
-  occurred_at: string;
-  recorded_at: string;
-}
-
 export interface GovernanceDocument {
   id: string;
   org_id: string;
@@ -256,16 +317,6 @@ export interface GovernanceDocument {
   submitted_at: string | null;
   validated_at: string | null;
   completeness_score: number | null;
-  created_at: string;
-}
-
-export interface GovernanceDeadline {
-  id: string;
-  org_id: string;
-  title_ar: string;
-  due_at: string;
-  warning_at: string | null;
-  satisfied_at: string | null;
   created_at: string;
 }
 

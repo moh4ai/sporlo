@@ -6,9 +6,7 @@ import { computeScores, type CategoryScore } from "./scoring";
 // Sporlo Ministry KPI engine — single API surface every module imports.
 //
 // Per the master plan, modules emit typed events via `recordEvent(...)`. The
-// engine never modifies them; computed views derive everything. Until
-// `kpi_scores_quarterly` materialized view ships (Phase 3), `computeQuarterlyScore`
-// computes on the fly from raw events.
+// engine never modifies them; computed views derive everything.
 
 export interface RecordEventInput {
   client: SupabaseClient;
@@ -73,8 +71,6 @@ export interface QuarterlyScoreResult {
   total_score: number;
 }
 
-// Phase-1 placeholder: counts events per criterion within the quarter.
-// Phase-3 will switch to the materialized view + weight-based formula.
 export async function computeQuarterlyScore(
   input: QuarterlyScoreInput,
 ): Promise<QuarterlyScoreResult> {
@@ -110,33 +106,155 @@ export async function listDeadlines({ client, org_id }: DeadlineInput) {
   return data ?? [];
 }
 
-// Penalty + financial support estimates — Phase 4 fills the formulas. The
-// master plan describes 20-60% deductions per category violation and up to
-// 2.5M SAR/quarter financial support for Category ب clubs.
+// ─────────────────────────────────────────────
+// Penalty estimation
+//
+// Master plan describes 20-60% category deductions per violation. Our Phase-3
+// MVP rule: any criterion that recorded zero events in the quarter gets a 20%
+// deduction tied to that criterion's weight. Missed deadlines stack another
+// 10% per missed deadline up to 40%.
+// ─────────────────────────────────────────────
+
+export interface PenaltyEstimate {
+  amount_sar: number;
+  reasons: string[];
+  breakdown: PenaltyLine[];
+}
+
+export interface PenaltyLine {
+  criterion_code: string | null;
+  percent: number;
+  reason: string;
+}
+
 export async function estimatePenalty(input: {
   client: SupabaseClient;
   org_id: string;
   quarter: string;
-}): Promise<{ amount_sar: number; reasons: string[] }> {
-  void input;
-  return { amount_sar: 0, reasons: [] };
+}): Promise<PenaltyEstimate> {
+  const { client, org_id, quarter } = input;
+  const score = await computeQuarterlyScore({ client, org_id, quarter });
+
+  const breakdown: PenaltyLine[] = [];
+  for (const cat of score.categories) {
+    for (const c of cat.criteria) {
+      if (c.event_count === 0) {
+        breakdown.push({
+          criterion_code: c.code,
+          percent: 20,
+          reason: `No events recorded for ${c.code}`,
+        });
+      }
+    }
+  }
+
+  // Missed deadlines (overdue, not satisfied).
+  const [start, end] = quarterBounds(quarter);
+  const { data: missed } = await client
+    .from("governance_deadlines")
+    .select("id, title_ar, due_at")
+    .eq("org_id", org_id)
+    .is("satisfied_at", null)
+    .gte("due_at", start.toISOString())
+    .lt("due_at", end.toISOString())
+    .lt("due_at", new Date().toISOString());
+
+  let deadlinePercent = 0;
+  for (const m of missed ?? []) {
+    if (deadlinePercent >= 40) break;
+    breakdown.push({
+      criterion_code: null,
+      percent: 10,
+      reason: `Missed deadline: ${m.title_ar}`,
+    });
+    deadlinePercent += 10;
+  }
+
+  const totalPercent = Math.min(
+    60,
+    breakdown.reduce((acc, line) => acc + line.percent, 0),
+  );
+
+  // Pull org's prior-quarter support estimate as the base for deductions.
+  // Falls back to zero — surfaced as percent-only in the UI.
+  const { data: prior } = await client
+    .from("financial_support_estimates")
+    .select("amount_sar")
+    .eq("org_id", org_id)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  const base = Number(prior?.[0]?.amount_sar ?? 0);
+  const amount_sar = Math.round((base * totalPercent) / 100);
+
+  return {
+    amount_sar,
+    reasons: breakdown.map((b) => b.reason),
+    breakdown,
+  };
+}
+
+// ─────────────────────────────────────────────
+// Financial support estimate
+//
+// Master plan: up to 2.5M SAR/quarter for Category ب clubs, scaling down by
+// tier. We map total_score → support amount using a simple linear model
+// capped at the tier ceiling. Tiers below A get a fraction of the ceiling.
+// ─────────────────────────────────────────────
+
+const TIER_CEILINGS: Record<string, number> = {
+  a: 5_000_000,
+  b: 2_500_000,
+  c: 1_500_000,
+  d: 800_000,
+  e: 300_000,
+};
+
+export interface FinancialSupportEstimate {
+  amount_sar: number;
+  tier: string | null;
+  total_score: number;
+  ceiling: number;
+  score_ratio: number;
 }
 
 export async function estimateFinancialSupport(input: {
   client: SupabaseClient;
   org_id: string;
   quarter: string;
-}): Promise<{ amount_sar: number; tier: string | null }> {
-  void input;
-  return { amount_sar: 0, tier: null };
+}): Promise<FinancialSupportEstimate> {
+  const { client, org_id, quarter } = input;
+  const score = await computeQuarterlyScore({ client, org_id, quarter });
+
+  const { data: org } = await client
+    .from("organizations")
+    .select("tier")
+    .eq("id", org_id)
+    .maybeSingle();
+
+  const tier = (org?.tier ?? null) as string | null;
+  const ceiling = tier ? TIER_CEILINGS[tier] ?? 0 : 0;
+
+  // Normalise score against an arbitrary perfect-score reference of 100.
+  // Phase 4 refines this once we have ≥1 real club's baseline.
+  const REFERENCE_TOTAL = 100;
+  const ratio = Math.min(1, score.total_score / REFERENCE_TOTAL);
+  const amount_sar = Math.round(ceiling * ratio);
+
+  return {
+    amount_sar,
+    tier,
+    total_score: score.total_score,
+    ceiling,
+    score_ratio: ratio,
+  };
 }
 
 // ─────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────
 
-function quarterBounds(quarter: string): [Date, Date] {
-  // Accepts "YYYY-Qn" where n ∈ 1..4. Returns [start, end) UTC.
+export function quarterBounds(quarter: string): [Date, Date] {
   const match = /^(\d{4})-Q([1-4])$/.exec(quarter);
   if (!match) throw new Error(`Invalid quarter: ${quarter}`);
   const year = Number(match[1]);
@@ -145,4 +263,32 @@ function quarterBounds(quarter: string): [Date, Date] {
   const start = new Date(Date.UTC(year, startMonth, 1));
   const end = new Date(Date.UTC(year, startMonth + 3, 1));
   return [start, end];
+}
+
+export function currentQuarter(now: Date = new Date()): string {
+  const y = now.getUTCFullYear();
+  const q = Math.floor(now.getUTCMonth() / 3) + 1;
+  return `${y}-Q${q}`;
+}
+
+export function previousQuarters(count: number, from?: string): string[] {
+  const start = from ? parseQuarter(from) : parseQuarter(currentQuarter());
+  const out: string[] = [];
+  let y = start.year;
+  let q = start.q;
+  for (let i = 0; i < count; i++) {
+    out.push(`${y}-Q${q}`);
+    q -= 1;
+    if (q === 0) {
+      q = 4;
+      y -= 1;
+    }
+  }
+  return out;
+}
+
+function parseQuarter(s: string): { year: number; q: number } {
+  const m = /^(\d{4})-Q([1-4])$/.exec(s);
+  if (!m) throw new Error(`Invalid quarter: ${s}`);
+  return { year: Number(m[1]), q: Number(m[2]) };
 }

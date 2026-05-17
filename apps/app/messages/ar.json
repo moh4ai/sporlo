@@ -1243,5 +1243,157 @@
       "certDeleted": "تم حذف الشهادة",
       "saveFailed": "فشل الحفظ"
     }
+  },
+  "governance": {
+    "title": "الحوكمة ومؤشرات الأداء",
+    "subtitle": "احتساب مؤشرات وزارة الرياضة، المواعيد، الخصومات، الاعتراضات، وتقارير الوزارة.",
+    "tabs": {
+      "scores": "النتائج",
+      "deadlines": "المواعيد",
+      "events": "سجل الأحداث",
+      "appeals": "الاعتراضات",
+      "reports": "التقارير"
+    },
+    "common": {
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "create": "إنشاء",
+      "delete": "حذف",
+      "recompute": "إعادة الاحتساب",
+      "quarter": "الربع",
+      "category": "الفئة",
+      "amount_sar": "المبلغ (ر.س)",
+      "status": "الحالة",
+      "createdAt": "تاريخ الإنشاء"
+    },
+    "scores": {
+      "title": "نتيجة المؤشرات الفصلية",
+      "subtitle": "نتيجة موزونة لكل معيار وزاري. إعادة الاحتساب تأخذ لقطة للخصومات والدعم المالي.",
+      "totalScore": "النتيجة الإجمالية",
+      "tier": "التصنيف",
+      "supportEstimate": "تقدير الدعم المالي",
+      "penaltyEstimate": "تقدير الخصومات",
+      "headers": {
+        "criterion": "المعيار",
+        "category": "الفئة",
+        "weight": "الوزن",
+        "events": "الأحداث",
+        "weightedScore": "النتيجة الموزونة"
+      },
+      "empty": "لا توجد أحداث مسجلة لهذا الربع بعد. ستبدأ الوحدات في إصدار الأحداث عند الاستخدام.",
+      "categories": {
+        "b": "ب — الحوكمة والمالية",
+        "c": "ج — الرياضة والأكاديمية",
+        "d": "د — المجتمع",
+        "e": "هـ — البنية التحتية"
+      },
+      "recomputed": "تمت إعادة الاحتساب",
+      "recomputeFailed": "فشلت إعادة الاحتساب"
+    },
+    "deadlines": {
+      "title": "المواعيد الإدارية",
+      "subtitle": "مواعيد وزارة الرياضة للإفصاحات والتقارير والتسليمات.",
+      "newDeadline": "إضافة موعد",
+      "empty": "لا توجد مواعيد نشطة.",
+      "headers": {
+        "title": "العنوان",
+        "dueAt": "تاريخ الاستحقاق",
+        "warningAt": "تاريخ التنبيه",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "satisfied": "منجز",
+        "overdue": "متأخر",
+        "upcoming": "قادم"
+      },
+      "form": {
+        "createTitle": "موعد جديد",
+        "titleAr": "العنوان",
+        "dueAt": "تاريخ الاستحقاق",
+        "warningAt": "تاريخ التنبيه (اختياري)"
+      },
+      "actions": {
+        "satisfy": "تأكيد الإنجاز",
+        "delete": "حذف"
+      }
+    },
+    "events": {
+      "title": "سجل أحداث المؤشرات",
+      "subtitle": "سجل غير قابل للتعديل لجميع الأحداث الصادرة من وحدات سبورلو.",
+      "empty": "لا توجد أحداث مسجلة بعد.",
+      "headers": {
+        "occurredAt": "وقت الحدث",
+        "module": "الوحدة",
+        "eventType": "نوع الحدث",
+        "criterion": "المعيار",
+        "category": "الفئة"
+      }
+    },
+    "appeals": {
+      "title": "الاعتراضات",
+      "subtitle": "اعترض على خصم متوقع. تراجع الوزارة وتقرر.",
+      "newAppeal": "تقديم اعتراض",
+      "empty": "لا توجد اعتراضات.",
+      "headers": {
+        "filedAt": "تاريخ التقديم",
+        "penalty": "الخصم",
+        "narrative": "البيان",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "open": "مفتوح",
+        "approved": "مقبول",
+        "rejected": "مرفوض",
+        "withdrawn": "مسحوب"
+      },
+      "form": {
+        "createTitle": "تقديم اعتراض",
+        "penalty": "الخصم المرتبط (اختياري)",
+        "penaltyNone": "— اعتراض مستقل —",
+        "narrative": "البيان"
+      },
+      "resolve": {
+        "title": "حسم الاعتراض",
+        "status": "القرار",
+        "notes": "ملاحظات القرار",
+        "approved": "قبول",
+        "rejected": "رفض",
+        "withdrawn": "سحب"
+      }
+    },
+    "reports": {
+      "title": "تقارير الوزارة",
+      "subtitle": "أنشئ تقرير الربع بصيغة PDF أو Excel لتسليمه للوزارة.",
+      "generate": "إنشاء تقرير",
+      "empty": "لم يُنشأ أي تقرير بعد.",
+      "headers": {
+        "quarter": "الربع",
+        "format": "الصيغة",
+        "totalScore": "النتيجة الإجمالية",
+        "generatedAt": "تاريخ الإنشاء",
+        "submittedAt": "تاريخ التسليم",
+        "actions": "الإجراءات"
+      },
+      "form": {
+        "createTitle": "إنشاء تقرير الوزارة",
+        "quarter": "الربع",
+        "format": "الصيغة"
+      },
+      "actions": {
+        "markSubmitted": "وضع علامة تم التسليم"
+      },
+      "generated": "تم تسجيل التقرير",
+      "submitted": "تم وضع علامة التسليم"
+    },
+    "toast": {
+      "deadlineCreated": "تم إنشاء الموعد",
+      "deadlineSatisfied": "تم وضع علامة منجز",
+      "deadlineDeleted": "تم حذف الموعد",
+      "appealFiled": "تم تقديم الاعتراض",
+      "appealResolved": "تم حسم الاعتراض",
+      "saveFailed": "فشل الحفظ"
+    }
   }
 }

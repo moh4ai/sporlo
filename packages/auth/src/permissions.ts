@@ -126,6 +126,9 @@ export type Resource =
   | "kpi_event"
   | "governance_document"
   | "governance_deadline"
+  | "penalty"
+  | "appeal"
+  | "ministry_report"
   | "audit_log"
   | "revenue_summary"
   | "finance_summary"
@@ -352,6 +355,73 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       (p.role === "dept_manager" && p.department === "hr"),
     delete: ["super_admin", "club_admin"],
     read: (p) => canAccessModule(p, "hr"),
+  },
+  governance: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+    export: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+  },
+  governance_deadline: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+  },
+  penalty: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin"],
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+  },
+  appeal: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+  },
+  ministry_report: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
+    read: (p) => canAccessModule(p, "governance") || p.role === "auditor",
+    export: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      p.role === "auditor" ||
+      (p.role === "dept_manager" &&
+        (p.department === "governance" || p.department === "legal")),
   },
   audit_log: {
     read: (p) =>
