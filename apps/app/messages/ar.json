@@ -51,6 +51,7 @@
     "hr": "الموارد والهيكل",
     "account": "حساب النادي",
     "users": "الفريق والدعوات",
+    "integrations": "التكاملات",
     "settings": "الإعدادات"
   },
   "dashboard": {
@@ -402,6 +403,58 @@
     },
     "errors": {
       "invalid": "بعض الحقول غير صحيحة — راجع المظلَّلة منها."
+    }
+  },
+  "integrations": {
+    "title": "التكاملات",
+    "subtitle": "اربط سبورلو بالأدوات التي يستخدمها فريقك أصلاً.",
+    "categories": {
+      "communications": "التواصل",
+      "productivity": "الإنتاجية",
+      "marketing": "التسويق",
+      "analytics": "التحليلات",
+      "payments": "المدفوعات"
+    },
+    "status": {
+      "installed": "مثبَّت",
+      "available": "متاح",
+      "comingSoon": "قريباً"
+    },
+    "kinds": {
+      "send_message": "إرسال رسائل",
+      "send_email": "إرسال بريد",
+      "sync_calendar": "مزامنة التقويم",
+      "sync_contacts": "مزامنة جهات الاتصال",
+      "track_event": "تتبّع الأحداث",
+      "receive_payment": "استقبال المدفوعات"
+    },
+    "actions": {
+      "install": "تثبيت",
+      "uninstall": "إلغاء التثبيت",
+      "configure": "إعداد",
+      "back": "العودة إلى التكاملات",
+      "saving": "جاري الحفظ…",
+      "installing": "جاري التثبيت…",
+      "uninstalling": "جاري الإزالة…"
+    },
+    "detail": {
+      "kindsHeading": "ما يقدّمه هذا التكامل",
+      "configHeading": "الإعدادات",
+      "configHint": "إعدادات المزوِّد ستظهر هنا عند جاهزية التكامل. يمكنك تثبيت نسخة مؤقتة الآن لحجز التكامل لناديك.",
+      "configEmpty": "لا تتطلب إعداداً بعد.",
+      "installedHeading": "الحالة",
+      "installedHint": "تم تثبيته في {when} بواسطة {who}.",
+      "comingSoonHint": "هذا التكامل ليس جاهزاً بعد. سنُعلمك عند إطلاقه."
+    },
+    "confirm": {
+      "uninstallTitle": "هل ترغب في إلغاء تثبيت هذا التكامل؟",
+      "uninstallBody": "ستتوقّف الخدمات المرتبطة عن استقبال أحداث سبورلو. يمكنك إعادة التثبيت لاحقاً — لكن إعداداتك السابقة لن تُحفظ.",
+      "cancel": "إلغاء"
+    },
+    "toast": {
+      "installed": "تم تثبيت التكامل",
+      "uninstalled": "تم إلغاء تثبيت التكامل",
+      "saveFailed": "حدث خطأ ما"
     }
   },
   "memberships": {

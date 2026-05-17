@@ -36,7 +36,8 @@ export type ModuleKey =
   | "hr"
   | "account"
   | "users"
-  | "settings";
+  | "settings"
+  | "integrations";
 
 // Department -> which modules they can OPEN (read). Dept managers see a scoped
 // subset; club_admin always sees all; auditor sees governance only.
@@ -67,6 +68,7 @@ const ALL_MODULES: ReadonlyArray<ModuleKey> = [
   "account",
   "users",
   "settings",
+  "integrations",
 ];
 
 export interface Principal {
@@ -151,7 +153,8 @@ export type Resource =
   | "finance_summary"
   | "member_pii"
   | "user"
-  | "invitation";
+  | "invitation"
+  | "integration";
 
 type Allow = Role[] | "*";
 type RoleRule = Allow | ((p: Principal) => boolean);
@@ -486,6 +489,18 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
   settings: {
     read: "*",
     update: "*",
+  },
+  // Integrations module — club_admin + super_admin only. Real provider
+  // wiring lands in Phase 3+; for now this gates the catalog + the
+  // install/uninstall affordances.
+  integrations: {
+    read: ["super_admin", "club_admin"],
+  },
+  integration: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: ["super_admin", "club_admin"],
   },
   media: {
     create: (p) =>

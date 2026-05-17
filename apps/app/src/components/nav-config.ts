@@ -5,6 +5,7 @@ import {
   GraduationCap,
   LineChart,
   Megaphone,
+  Plug,
   Settings as SettingsIcon,
   ShieldCheck,
   ShoppingBag,
@@ -48,6 +49,7 @@ export const NAV_MODULES: NavModule[] = [
 
   { key: "account", icon: SettingsIcon, section: "configuration" },
   { key: "users", icon: UserPlus, section: "configuration" },
+  { key: "integrations", icon: Plug, section: "configuration" },
   { key: "settings", icon: Sliders, section: "configuration" },
 ];
 

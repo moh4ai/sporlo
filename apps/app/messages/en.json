@@ -51,6 +51,7 @@
     "hr": "HR & org",
     "account": "Account",
     "users": "Team & invites",
+    "integrations": "Integrations",
     "settings": "Settings"
   },
   "dashboard": {
@@ -402,6 +403,58 @@
     },
     "errors": {
       "invalid": "Some fields don't look right — check the highlighted ones."
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "subtitle": "Connect Sporlo to the tools your team already uses.",
+    "categories": {
+      "communications": "Communications",
+      "productivity": "Productivity",
+      "marketing": "Marketing",
+      "analytics": "Analytics",
+      "payments": "Payments"
+    },
+    "status": {
+      "installed": "Installed",
+      "available": "Available",
+      "comingSoon": "Coming soon"
+    },
+    "kinds": {
+      "send_message": "Send messages",
+      "send_email": "Send email",
+      "sync_calendar": "Calendar sync",
+      "sync_contacts": "Contact sync",
+      "track_event": "Event tracking",
+      "receive_payment": "Accept payments"
+    },
+    "actions": {
+      "install": "Install",
+      "uninstall": "Uninstall",
+      "configure": "Configure",
+      "back": "Back to integrations",
+      "saving": "Saving…",
+      "installing": "Installing…",
+      "uninstalling": "Uninstalling…"
+    },
+    "detail": {
+      "kindsHeading": "What this integration does",
+      "configHeading": "Configuration",
+      "configHint": "Provider-specific config will land here when this integration ships. For now you can install the placeholder to reserve the integration for your club.",
+      "configEmpty": "No configuration needed yet.",
+      "installedHeading": "Status",
+      "installedHint": "Installed {when} by {who}.",
+      "comingSoonHint": "This integration isn't ready yet. We'll let you know when it ships."
+    },
+    "confirm": {
+      "uninstallTitle": "Uninstall this integration?",
+      "uninstallBody": "Connected services will stop receiving Sporlo events. You can reinstall at any time — your previous configuration is discarded.",
+      "cancel": "Cancel"
+    },
+    "toast": {
+      "installed": "Integration installed",
+      "uninstalled": "Integration uninstalled",
+      "saveFailed": "Something went wrong"
     }
   },
   "memberships": {
