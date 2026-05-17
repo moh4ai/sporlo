@@ -7,7 +7,18 @@
     "switchLocale": "العربية",
     "branchPicker": "Choose branch",
     "search": "Search",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "userMenu": "Account",
+    "notifications": "Notifications",
+    "commandPalette": "Search · Cmd+K",
+    "sections": {
+      "operations": "Operations",
+      "programs": "Programs",
+      "insights": "Insights",
+      "site": "Site"
+    }
   },
   "modules": {
     "governance": "Governance",

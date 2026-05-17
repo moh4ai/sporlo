@@ -44,7 +44,7 @@ export default async function DashboardLayout({
     <div className="flex min-h-screen">
       <Sidebar principal={principal} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar locale={locale as "ar" | "en"} />
+        <TopBar locale={locale as "ar" | "en"} principal={principal} />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>

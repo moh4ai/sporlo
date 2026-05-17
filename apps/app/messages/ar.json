@@ -7,7 +7,18 @@
     "switchLocale": "English",
     "branchPicker": "اختر الفرع",
     "search": "بحث",
-    "signOut": "تسجيل الخروج"
+    "signOut": "تسجيل الخروج",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة",
+    "userMenu": "الحساب",
+    "notifications": "التنبيهات",
+    "commandPalette": "بحث · Cmd+K",
+    "sections": {
+      "operations": "العمليات",
+      "programs": "البرامج",
+      "insights": "الرؤى",
+      "site": "الموقع"
+    }
   },
   "modules": {
     "governance": "الحوكمة",
