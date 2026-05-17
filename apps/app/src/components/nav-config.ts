@@ -5,6 +5,7 @@ import {
   GraduationCap,
   LineChart,
   Megaphone,
+  Settings as SettingsIcon,
   ShieldCheck,
   ShoppingBag,
   UserCog,
@@ -13,7 +14,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-export type NavSectionKey = "operations" | "programs" | "insights" | "site";
+export type NavSectionKey =
+  | "operations"
+  | "programs"
+  | "insights"
+  | "site"
+  | "configuration";
 
 export interface NavModule {
   key: ModuleKey;
@@ -37,6 +43,8 @@ export const NAV_MODULES: NavModule[] = [
   { key: "governance", icon: LineChart, section: "insights" },
 
   { key: "media", icon: Megaphone, section: "site" },
+
+  { key: "account", icon: SettingsIcon, section: "configuration" },
 ];
 
 export const SECTION_ORDER: NavSectionKey[] = [
@@ -44,4 +52,5 @@ export const SECTION_ORDER: NavSectionKey[] = [
   "programs",
   "insights",
   "site",
+  "configuration",
 ];

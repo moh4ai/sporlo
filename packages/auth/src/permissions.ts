@@ -33,7 +33,8 @@ export type ModuleKey =
   | "events"
   | "store"
   | "media"
-  | "hr";
+  | "hr"
+  | "account";
 
 // Department -> which modules they can OPEN (read). Dept managers see a scoped
 // subset; club_admin always sees all; auditor sees governance only.
@@ -61,6 +62,7 @@ const ALL_MODULES: ReadonlyArray<ModuleKey> = [
   "store",
   "media",
   "hr",
+  "account",
 ];
 
 export interface Principal {
@@ -434,6 +436,15 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       p.role === "super_admin" ||
       p.role === "club_admin" ||
       p.role === "auditor",
+  },
+  // Account module — org-level config. Only club_admin + super_admin.
+  // `update` covers every editable field (name, branding, subdomain, archive
+  // flag). No `create` (orgs are created via super-admin onboarding) and no
+  // `delete` (archive is an update; hard-delete is super-admin-only).
+  account: {
+    read: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin"],
   },
   media: {
     create: (p) =>

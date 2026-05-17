@@ -34,7 +34,8 @@
       "operations": "Operations",
       "programs": "Programs",
       "insights": "Insights",
-      "site": "Site"
+      "site": "Site",
+      "configuration": "Configuration"
     }
   },
   "modules": {
@@ -47,7 +48,8 @@
     "events": "Matches & events",
     "store": "Store",
     "media": "Comms & media",
-    "hr": "HR & org"
+    "hr": "HR & org",
+    "account": "Account"
   },
   "dashboard": {
     "welcome": "Welcome to Sporlo",
@@ -156,6 +158,72 @@
     "hr": {
       "title": "HR & org",
       "body": "Staff directory, org chart, certifications. Phase 3."
+    }
+  },
+  "account": {
+    "title": "Account",
+    "subtitle": "Edit your club's identity, domain, branding, and plan.",
+    "sections": {
+      "identity": "Identity",
+      "identityHint": "How your club is named on the dashboard and public surfaces.",
+      "domain": "Domain",
+      "domainHint": "Where fans find your club online.",
+      "branding": "Branding",
+      "brandingHint": "Logo and accent colour used on the public site and member portal.",
+      "plan": "Plan",
+      "planHint": "Your Sporlo subscription details.",
+      "planManagedBy": "Plan changes are managed by Sporlo HQ. Contact support to upgrade."
+    },
+    "fields": {
+      "nameAr": "Club name (Arabic)",
+      "nameEn": "Club name (English)",
+      "taglineAr": "Tagline (Arabic)",
+      "taglineEn": "Tagline (English)",
+      "slug": "Slug",
+      "slugHint": "Set at sign-up; contact Sporlo HQ to change.",
+      "subdomain": "Subdomain",
+      "subdomainHint": "Lowercase letters, digits, and hyphens. Used as <subdomain>.sporlo.net.",
+      "customDomain": "Custom domain",
+      "customDomainHint": "Optional. Point your DNS at sporlo.net first.",
+      "primaryColor": "Primary colour",
+      "primaryColorHint": "Accent used on public pages. Hex value, e.g. #0a5d3c.",
+      "logoUpload": "Drop a logo or browse to upload",
+      "logoHint": "PNG, JPG, WEBP, or SVG. Max 2 MB.",
+      "logoEmpty": "No logo yet",
+      "tier": "Tier",
+      "subscriptionTier": "Subscription"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving…"
+    },
+    "danger": {
+      "title": "Danger zone",
+      "description": "Archive this club to hide it from staff and the public site. Members keep their data; you can restore it from this page.",
+      "archive": "Archive club"
+    },
+    "archived": {
+      "title": "This club is archived",
+      "description": "Public surfaces are hidden and new sign-ins are blocked. Restore to bring it back online.",
+      "unarchive": "Restore club"
+    },
+    "confirm": {
+      "archiveTitle": "Archive this club?",
+      "archiveBody": "Members will keep their data, but the public site and member portal will go offline. You can restore at any time.",
+      "unarchiveTitle": "Restore this club?",
+      "unarchiveBody": "Public surfaces will come back online immediately.",
+      "cancel": "Cancel"
+    },
+    "errors": {
+      "alreadyTaken": "That subdomain or custom domain is already in use by another club.",
+      "invalid": "Some fields don't look right — check the highlighted ones."
+    },
+    "toast": {
+      "saved": "Account updated",
+      "logoUploaded": "Logo uploaded",
+      "archived": "Club archived",
+      "unarchived": "Club restored",
+      "saveFailed": "Couldn't save changes"
     }
   },
   "memberships": {

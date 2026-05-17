@@ -9,6 +9,7 @@ export const MODULES = [
   "store",
   "media",
   "hr",
+  "account",
 ] as const;
 
 export type ModuleKey = (typeof MODULES)[number];
