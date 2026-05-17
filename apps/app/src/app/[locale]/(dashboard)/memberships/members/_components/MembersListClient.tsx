@@ -139,7 +139,7 @@ export function MembersListClient({
         </span>
       </div>
 
-      <Table>
+      <Table responsive>
         <THead>
           <TR>
             <TH>{t("members.headers.name")}</TH>
@@ -157,8 +157,10 @@ export function MembersListClient({
           ) : (
             pageRows.map((m) => (
               <TR key={m.id}>
-                <TD className="font-medium">{displayName(m)}</TD>
-                <TD>
+                <TD label={t("members.headers.name")} className="font-medium">
+                  {displayName(m)}
+                </TD>
+                <TD label={t("members.headers.memberNumber")}>
                   {m.member_number ? (
                     <code className="rounded bg-spo-paper px-1.5 py-0.5 text-xs">
                       {m.member_number}
@@ -167,17 +169,24 @@ export function MembersListClient({
                     "—"
                   )}
                 </TD>
-                <TD>
+                <TD label={t("members.headers.status")}>
                   <Badge tone={STATUS_TONES[m.status]}>
                     {t(`members.statuses.${m.status}`)}
                   </Badge>
                 </TD>
-                <TD dir="ltr">{m.phone ?? "—"}</TD>
-                <TD dir="ltr">{m.email ?? "—"}</TD>
-                <TD className="text-xs text-spo-muted">
+                <TD label={t("members.headers.phone")} dir="ltr">
+                  {m.phone ?? "—"}
+                </TD>
+                <TD label={t("members.headers.email")} dir="ltr">
+                  {m.email ?? "—"}
+                </TD>
+                <TD
+                  label={t("members.headers.joined")}
+                  className="text-xs text-spo-muted"
+                >
                   {dateFmt.format(new Date(m.joined_at))}
                 </TD>
-                <TD>
+                <TD label={t("members.headers.actions")}>
                   <Link
                     href={`/memberships/members/${m.id}`}
                     className="text-sm text-spo-green-deep hover:underline"

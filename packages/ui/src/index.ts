@@ -6,7 +6,16 @@ export { Badge, type BadgeProps } from "./components/Badge";
 export { Tag, type TagProps } from "./components/Tag";
 export { Pill, type PillProps } from "./components/Pill";
 export { Stat, type StatProps } from "./components/Stat";
-export { Table, THead, TBody, TR, TH, TD } from "./components/Table";
+export {
+  Table,
+  THead,
+  TBody,
+  TR,
+  TH,
+  TD,
+  type TableProps,
+  type TDProps,
+} from "./components/Table";
 export { Modal, type ModalProps } from "./components/Modal";
 export { FormGroup, type FormGroupProps } from "./components/FormGroup";
 export { Textarea, type TextareaProps } from "./components/Textarea";

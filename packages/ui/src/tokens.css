@@ -136,3 +136,55 @@ html[lang="en"] body {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Responsive Table card-stack — opt-in via <Table responsive>.
+   Below md, each row becomes a card and each cell becomes a labelled row.
+   The td::before content comes from data-label on the TD. */
+@media (max-width: 767px) {
+  [data-responsive="true"] {
+    overflow-x: visible;
+    background: transparent;
+    border: 0;
+  }
+  [data-responsive="true"] table {
+    display: block;
+  }
+  [data-responsive="true"] thead {
+    display: none;
+  }
+  [data-responsive="true"] tbody {
+    display: block;
+  }
+  [data-responsive="true"] tbody > tr {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--color-spo-line);
+    border-radius: var(--radius-lg);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.625rem;
+    transition: none;
+  }
+  [data-responsive="true"] tbody > tr:hover {
+    background: #fff;
+  }
+  [data-responsive="true"] td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.5rem 0.25rem;
+    border-bottom: 1px solid var(--color-spo-line);
+  }
+  [data-responsive="true"] td:last-child {
+    border-bottom: 0;
+  }
+  [data-responsive="true"] td[data-label]::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-spo-muted);
+    flex-shrink: 0;
+  }
+}

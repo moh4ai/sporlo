@@ -118,7 +118,7 @@ export function PlansClient({
         )}
       </div>
 
-      <Table>
+      <Table responsive>
         <THead>
           <TR>
             <TH>{t("plans.headers.name")}</TH>
@@ -136,23 +136,32 @@ export function PlansClient({
           ) : (
             initialPlans.map((plan) => (
               <TR key={plan.id}>
-                <TD className="font-medium">{displayName(plan)}</TD>
-                <TD>
+                <TD label={t("plans.headers.name")} className="font-medium">
+                  {displayName(plan)}
+                </TD>
+                <TD label={t("plans.headers.code")}>
                   <code className="rounded bg-spo-paper px-1.5 py-0.5 text-xs">
                     {plan.code}
                   </code>
                 </TD>
-                <TD>{plan.duration_months}</TD>
-                <TD>{sarFormatter.format(plan.price_sar)}</TD>
-                <TD>{plan.member_only_store_discount_pct}%</TD>
-                <TD>
+                <TD label={t("plans.headers.duration")}>{plan.duration_months}</TD>
+                <TD label={t("plans.headers.price")}>
+                  {sarFormatter.format(plan.price_sar)}
+                </TD>
+                <TD label={t("plans.headers.discount")}>
+                  {plan.member_only_store_discount_pct}%
+                </TD>
+                <TD label={t("plans.headers.status")}>
                   {plan.active ? (
                     <Badge tone="green">{t("common.active")}</Badge>
                   ) : (
                     <Badge tone="neutral">{t("common.archived")}</Badge>
                   )}
                 </TD>
-                <TD className="space-x-2 rtl:space-x-reverse">
+                <TD
+                  label={t("plans.headers.actions")}
+                  className="space-x-2 rtl:space-x-reverse"
+                >
                   {canUpdate && (
                     <>
                       <button

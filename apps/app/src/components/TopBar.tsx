@@ -49,7 +49,7 @@ export function TopBar({
             type="button"
             onClick={() => setNavOpen(true)}
             aria-label={t("openMenu")}
-            className="rounded-md p-1.5 text-spo-ink-2 transition-colors hover:bg-spo-paper md:hidden"
+            className="-ms-1.5 flex size-10 items-center justify-center rounded-md text-spo-ink-2 transition-colors hover:bg-spo-paper md:hidden"
           >
             <Menu className="size-5" />
           </button>
@@ -83,7 +83,7 @@ export function TopBar({
           <button
             type="button"
             aria-label={t("notifications")}
-            className="rounded-md p-1.5 text-spo-ink-2 transition-colors hover:bg-spo-paper"
+            className="flex size-10 items-center justify-center rounded-md text-spo-ink-2 transition-colors hover:bg-spo-paper"
           >
             <Bell className="size-4" />
           </button>
