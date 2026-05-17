@@ -83,6 +83,8 @@ export default async function RevenuePage({
 
   const hasData = (paidLast12?.length ?? 0) > 0;
 
+  const lastKey = monthly[monthly.length - 1]?.[0];
+
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -98,30 +100,54 @@ export default async function RevenuePage({
       </div>
 
       <Card>
-        <h3 className="mb-3 text-lg font-semibold text-spo-ink">
-          {t("revenue.byMonthTitle")}
-        </h3>
+        <div className="mb-4 flex items-baseline justify-between gap-3">
+          <h3 className="text-lg font-semibold text-spo-ink">
+            {t("revenue.byMonthTitle")}
+          </h3>
+          {hasData && (
+            <span className="text-xs text-spo-muted">
+              {sarFmt.format(max)} <span className="opacity-60">/ peak</span>
+            </span>
+          )}
+        </div>
         {!hasData ? (
           <p className="text-sm text-spo-muted">{t("revenue.noData")}</p>
         ) : (
-          <div className="flex h-48 items-end gap-2">
-            {monthly.map(([key, value]) => (
-              <div
-                key={key}
-                className="flex flex-1 flex-col items-center gap-1"
-                title={`${monthLabel(key)} — ${sarFmt.format(value)}`}
-              >
+          <div className="flex h-56 items-end gap-1.5 sm:gap-2">
+            {monthly.map(([key, value]) => {
+              const isCurrent = key === lastKey;
+              const pct = Math.max(2, Math.round((value / max) * 100));
+              return (
                 <div
-                  className="w-full rounded-md bg-spo-green-soft"
-                  style={{
-                    height: `${Math.max(2, Math.round((value / max) * 100))}%`,
-                  }}
-                />
-                <span className="text-[10px] text-spo-muted">
-                  {monthLabel(key)}
-                </span>
-              </div>
-            ))}
+                  key={key}
+                  className="group relative flex flex-1 flex-col items-center gap-2"
+                >
+                  <div className="relative flex h-full w-full items-end">
+                    <div
+                      className={
+                        "w-full rounded-md transition-all " +
+                        (isCurrent
+                          ? "bg-spo-green hover:bg-spo-green-deep"
+                          : "bg-spo-green-soft hover:bg-spo-green/40")
+                      }
+                      style={{ height: `${pct}%` }}
+                    />
+                    {/* Hover tooltip — pure CSS */}
+                    <div className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 whitespace-nowrap rounded-md bg-spo-ink px-2 py-1 text-[10px] text-white opacity-0 shadow-[var(--shadow-2)] transition-opacity group-hover:opacity-100">
+                      {sarFmt.format(value)}
+                    </div>
+                  </div>
+                  <span
+                    className={
+                      "text-[10px] " +
+                      (isCurrent ? "font-semibold text-spo-ink-2" : "text-spo-muted")
+                    }
+                  >
+                    {monthLabel(key)}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         )}
       </Card>

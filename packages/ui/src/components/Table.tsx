@@ -16,15 +16,28 @@ export function Table({
 }
 
 export function THead(props: React.HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className="bg-spo-paper text-xs uppercase text-spo-muted" {...props} />;
+  return (
+    <thead
+      className="bg-spo-paper text-xs uppercase tracking-wider text-spo-muted"
+      {...props}
+    />
+  );
 }
 
 export function TBody(props: React.HTMLAttributes<HTMLTableSectionElement>) {
   return <tbody className="divide-y divide-spo-line" {...props} />;
 }
 
-export function TR(props: React.HTMLAttributes<HTMLTableRowElement>) {
-  return <tr {...props} />;
+export function TR({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLTableRowElement>) {
+  return (
+    <tr
+      className={cn("transition-colors hover:bg-spo-paper/60", className)}
+      {...props}
+    />
+  );
 }
 
 export function TH({
@@ -33,7 +46,10 @@ export function TH({
 }: React.ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
-      className={cn("px-4 py-3 text-start font-medium", className)}
+      className={cn(
+        "px-4 py-3 text-start text-[11px] font-semibold",
+        className,
+      )}
       {...props}
     />
   );
@@ -43,5 +59,7 @@ export function TD({
   className,
   ...props
 }: React.TdHTMLAttributes<HTMLTableCellElement>) {
-  return <td className={cn("px-4 py-3", className)} {...props} />;
+  return (
+    <td className={cn("px-4 py-3 align-middle", className)} {...props} />
+  );
 }

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
+import { Plus, Search } from "lucide-react";
 
 import { canPerform, type Principal } from "@sporlo/auth";
 import {
@@ -96,32 +97,46 @@ export function MembersListClient({
         </div>
         {canCreate && (
           <Link href="/memberships/members/new">
-            <Button>{t("members.newMember")}</Button>
+            <Button>
+              <Plus className="size-4 me-1.5" aria-hidden="true" />
+              {t("members.newMember")}
+            </Button>
           </Link>
         )}
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-3">
-        <Input
-          placeholder={t("members.filters.search")}
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setPage(1);
-          }}
-        />
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative min-w-[14rem] flex-1">
+          <Search
+            className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-spo-muted"
+            aria-hidden="true"
+          />
+          <Input
+            placeholder={t("members.filters.search")}
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+            className="ps-9"
+          />
+        </div>
         <Select
           value={status}
           onChange={(e) => {
             setStatus(e.target.value as typeof status);
             setPage(1);
           }}
+          className="w-auto min-w-[10rem]"
         >
           <option value="all">{t("members.filters.all")}</option>
           <option value="active">{t("members.statuses.active")}</option>
           <option value="inactive">{t("members.statuses.inactive")}</option>
           <option value="prospect">{t("members.statuses.prospect")}</option>
         </Select>
+        <span className="ms-auto text-xs text-spo-muted">
+          {filtered.length} / {members.length}
+        </span>
       </div>
 
       <Table>
