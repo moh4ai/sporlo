@@ -103,3 +103,46 @@ export const ThreadResolveSchema = z.object({
   status: z.enum(["open", "resolved", "archived"]),
 });
 export type ThreadResolveInput = z.infer<typeof ThreadResolveSchema>;
+
+// ─── Galleries ────────────────────────────────────────────────────────
+
+export const GalleryCreateSchema = z.object({
+  title_ar: z.string().trim().min(2).max(200),
+  title_en: z.string().trim().min(2).max(200),
+  description_ar: z.string().max(2000).optional().or(z.literal("")),
+  description_en: z.string().max(2000).optional().or(z.literal("")),
+  cover_image_path: z.string().max(500).optional().or(z.literal("")),
+  display_order: z.number().int().min(0).max(9999).default(0),
+  publish_now: z.boolean().default(false),
+});
+export type GalleryCreateInput = z.infer<typeof GalleryCreateSchema>;
+
+export const GalleryUpdateSchema = GalleryCreateSchema.extend({
+  id: z.string().uuid(),
+});
+export type GalleryUpdateInput = z.infer<typeof GalleryUpdateSchema>;
+
+export const GalleryIdSchema = z.object({ id: z.string().uuid() });
+
+export const GalleryItemAddSchema = z.object({
+  gallery_id: z.string().uuid(),
+  image_path: z.string().min(1).max(500),
+  caption_ar: z.string().max(280).optional().or(z.literal("")),
+  caption_en: z.string().max(280).optional().or(z.literal("")),
+});
+export type GalleryItemAddInput = z.infer<typeof GalleryItemAddSchema>;
+
+export const GalleryItemUpdateSchema = z.object({
+  id: z.string().uuid(),
+  caption_ar: z.string().max(280).optional().or(z.literal("")),
+  caption_en: z.string().max(280).optional().or(z.literal("")),
+});
+export type GalleryItemUpdateInput = z.infer<typeof GalleryItemUpdateSchema>;
+
+export const GalleryItemReorderSchema = z.object({
+  gallery_id: z.string().uuid(),
+  order: z.array(z.string().uuid()).max(500),
+});
+export type GalleryItemReorderInput = z.infer<typeof GalleryItemReorderSchema>;
+
+export const GalleryItemRemoveSchema = z.object({ id: z.string().uuid() });

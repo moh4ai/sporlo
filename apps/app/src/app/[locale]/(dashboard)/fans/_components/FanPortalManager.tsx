@@ -32,6 +32,7 @@ export type CurrentSettings = {
   match_center_enabled: boolean;
   honours_enabled: boolean;
   sponsors_enabled: boolean;
+  galleries_enabled: boolean;
   featured_news_id: string | null;
   featured_product_id: string | null;
 };
@@ -48,6 +49,7 @@ type SectionFlagKey =
   | "shop_enabled"
   | "honours_enabled"
   | "sponsors_enabled"
+  | "galleries_enabled"
   | "about_enabled";
 
 const SECTIONS: ReadonlyArray<{
@@ -64,6 +66,7 @@ const SECTIONS: ReadonlyArray<{
   { key: "shop_enabled", labelKey: "sections.shop", hintKey: "sections.shopHint", icon: ShoppingBag },
   { key: "honours_enabled", labelKey: "sections.honours", hintKey: "sections.honoursHint", icon: Trophy },
   { key: "sponsors_enabled", labelKey: "sections.sponsors", hintKey: "sections.sponsorsHint", icon: Handshake },
+  { key: "galleries_enabled", labelKey: "sections.galleries", hintKey: "sections.galleriesHint", icon: ImageIcon },
   { key: "about_enabled", labelKey: "sections.about", hintKey: "sections.aboutHint", icon: Building2 },
 ];
 
@@ -105,6 +108,7 @@ export function FanPortalManager({
       match_center_enabled: form.match_center_enabled,
       honours_enabled: form.honours_enabled,
       sponsors_enabled: form.sponsors_enabled,
+      galleries_enabled: form.galleries_enabled,
       featured_news_id: form.featured_news_id,
       featured_product_id: form.featured_product_id,
     });

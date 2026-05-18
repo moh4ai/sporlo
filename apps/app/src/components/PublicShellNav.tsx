@@ -9,6 +9,7 @@ import type { Locale } from "@/i18n/routing";
 
 const NAV = [
   { key: "news", href: "/news" },
+  { key: "galleries", href: "/media/galleries" },
   { key: "fixtures", href: "/fixtures" },
   { key: "squad", href: "/squads" },
   { key: "shop", href: "/shop" },

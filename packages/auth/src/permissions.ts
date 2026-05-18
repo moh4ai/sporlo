@@ -146,6 +146,7 @@ export type Resource =
   | "ministry_report"
   | "public_page"
   | "news_article"
+  | "media_gallery"
   | "broadcast"
   | "notification_pref"
   | "message_thread"
@@ -582,6 +583,20 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
       p.role === "super_admin" ||
       p.role === "club_admin" ||
       (p.role === "dept_manager" && p.department === "marketing"),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "media"),
+  },
+  media_gallery: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "marketing" || p.department === "csr")),
     delete: ["super_admin", "club_admin"],
     read: (p) => canAccessModule(p, "media"),
   },

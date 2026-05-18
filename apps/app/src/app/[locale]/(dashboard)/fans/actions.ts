@@ -30,6 +30,7 @@ export const FanPortalSettingsSchema = z.object({
   match_center_enabled: z.boolean(),
   honours_enabled: z.boolean(),
   sponsors_enabled: z.boolean(),
+  galleries_enabled: z.boolean(),
   featured_news_id: z.preprocess(emptyToNull, UuidSchema.nullable()),
   featured_product_id: z.preprocess(emptyToNull, UuidSchema.nullable()),
 });

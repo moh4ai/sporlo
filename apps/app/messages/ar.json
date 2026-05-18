@@ -81,6 +81,12 @@
       "minutes": "{count} د",
       "soon": "قريباً",
       "live": "تُلعب الآن"
+    },
+    "galleries": {
+      "title": "خلف الكواليس",
+      "subtitle": "أيام المباريات، التدريب، الفعاليات، المشجعون.",
+      "viewAll": "عرض الكل",
+      "noCover": "لا توجد صورة غلاف"
     }
   },
   "stadium": {
@@ -345,7 +351,9 @@
       "sponsors": "الرعاة والشركاء",
       "sponsorsHint": "شبكة الشركاء حسب الفئة. إدارتها من Account → الرعاة.",
       "about": "نبذة",
-      "aboutHint": "النص الطويل من صفحة 'about' في وحدة الإعلام."
+      "aboutHint": "النص الطويل من صفحة 'about' في وحدة الإعلام.",
+      "galleries": "خلف الكواليس",
+      "galleriesHint": "إظهار كاروسيل الألبومات في بوابة المشجعين."
     },
     "featured": {
       "title": "المثبّت",
@@ -398,7 +406,8 @@
       "shop": "المتجر",
       "membership": "العضوية",
       "stadium": "الملعب",
-      "memberPortal": "بوابة العضو"
+      "memberPortal": "بوابة العضو",
+      "galleries": "الألبومات"
     },
     "footer": {
       "poweredBy": "مدعوم من سبورلو",
@@ -2269,7 +2278,8 @@
       "news": "الأخبار",
       "broadcasts": "البث الجماعي",
       "messages": "الرسائل",
-      "prefs": "التفضيلات"
+      "prefs": "التفضيلات",
+      "galleries": "الألبومات"
     },
     "common": {
       "cancel": "إلغاء",
@@ -2282,7 +2292,8 @@
       "draft": "مسودة",
       "published": "منشور",
       "status": "الحالة",
-      "actions": "الإجراءات"
+      "actions": "الإجراءات",
+      "remove": "إزالة"
     },
     "pages": {
       "title": "الصفحات العامة",
@@ -2457,6 +2468,61 @@
       "threadResolved": "تم تحديث المحادثة",
       "prefsSaved": "تم حفظ التفضيلات",
       "saveFailed": "فشل الحفظ"
+    },
+    "galleries": {
+      "title": "الألبومات",
+      "subtitle": "ألبومات من خلف الكواليس تظهر في الصفحة الرئيسية و/media/galleries.",
+      "newGallery": "ألبوم جديد",
+      "empty": "لا توجد ألبومات بعد. أنشئ واحدًا للبدء.",
+      "backToList": "العودة إلى الألبومات",
+      "manageItems": "إدارة الصور",
+      "headers": {
+        "title": "العنوان",
+        "items": "عدد الصور",
+        "status": "الحالة",
+        "publishedAt": "النشر",
+        "actions": "إجراءات"
+      },
+      "form": {
+        "createTitle": "ألبوم جديد",
+        "editTitle": "تعديل الألبوم",
+        "titleAr": "العنوان (عربي)",
+        "titleEn": "العنوان (إنجليزي)",
+        "descriptionAr": "الوصف (عربي)",
+        "descriptionEn": "الوصف (إنجليزي)",
+        "displayOrder": "ترتيب العرض",
+        "displayOrderHint": "الأرقام الأقل تظهر أولًا في الكاروسيل.",
+        "publishNow": "نشر الآن",
+        "uploadHint": "بعد الحفظ، اضغط [إدارة الصور] لرفع الصور."
+      },
+      "publishedHint": "منشور في بوابة المشجعين.",
+      "draftHint": "مسودة — لا يظهر للمشجعين.",
+      "uploadTitle": "إضافة صور",
+      "uploadLabel": "أفلت الصور هنا أو اضغط للاستعراض",
+      "uploadAccept": "PNG أو JPG أو WEBP. الحد الأقصى 5 ميجابايت لكل صورة.",
+      "captionArPlaceholder": "تعليق بالعربية",
+      "captionEnPlaceholder": "Caption in English",
+      "saveCaption": "حفظ التعليق",
+      "moveUp": "إلى الأعلى",
+      "moveDown": "إلى الأسفل",
+      "emptyItems": "لا توجد صور بعد. ارفع صورة للبدء.",
+      "removeItemTitle": "إزالة الصورة؟",
+      "removeItemBody": "سيتم حذف الصورة من التخزين ولا يمكن التراجع.",
+      "publicTitle": "الألبومات",
+      "publicSubtitle": "أيام المباريات، التدريب، الفعاليات، خلف الكواليس.",
+      "publicEmpty": "لا توجد ألبومات منشورة بعد. تابعنا قريبًا.",
+      "noCover": "لا توجد صورة غلاف",
+      "noItemsYet": "يتم تجهيز هذا الألبوم. تابعنا قريبًا.",
+      "viewAll": "عرض جميع الألبومات",
+      "toast": {
+        "created": "تم إنشاء الألبوم",
+        "updated": "تم تحديث الألبوم",
+        "deleted": "تم حذف الألبوم",
+        "itemAdded": "تم رفع الصورة",
+        "itemRemoved": "تم إزالة الصورة",
+        "captionSaved": "تم حفظ التعليق",
+        "reordered": "تم تحديث الترتيب"
+      }
     }
   }
 }

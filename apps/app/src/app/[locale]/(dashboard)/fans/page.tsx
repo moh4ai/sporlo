@@ -35,7 +35,7 @@ export default async function FansPage({
       supabase
         .from("fan_portal_settings")
         .select(
-          "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, match_center_enabled, honours_enabled, sponsors_enabled, featured_news_id, featured_product_id",
+          "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, match_center_enabled, honours_enabled, sponsors_enabled, galleries_enabled, featured_news_id, featured_product_id",
         )
         .eq("org_id", tenant.org_id)
         .maybeSingle(),
@@ -69,6 +69,7 @@ export default async function FansPage({
     match_center_enabled: settings?.match_center_enabled ?? true,
     honours_enabled: settings?.honours_enabled ?? true,
     sponsors_enabled: settings?.sponsors_enabled ?? true,
+    galleries_enabled: settings?.galleries_enabled ?? true,
     featured_news_id: (settings?.featured_news_id as string | null) ?? null,
     featured_product_id: (settings?.featured_product_id as string | null) ?? null,
   };

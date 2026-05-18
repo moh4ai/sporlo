@@ -41,6 +41,7 @@ export default async function ClubLandingPage({
     { data: aboutPage },
     { data: honoursRows },
     { data: sponsorsRows },
+    { data: galleryRows },
   ] = await Promise.all([
     admin
       .from("organizations")
@@ -52,7 +53,7 @@ export default async function ClubLandingPage({
     admin
       .from("fan_portal_settings")
       .select(
-        "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, match_center_enabled, honours_enabled, sponsors_enabled, featured_news_id, featured_product_id",
+        "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, match_center_enabled, honours_enabled, sponsors_enabled, galleries_enabled, featured_news_id, featured_product_id",
       )
       .eq("org_id", tenant.org_id)
       .maybeSingle(),
@@ -121,6 +122,15 @@ export default async function ClubLandingPage({
       .eq("active", true)
       .order("tier", { ascending: true })
       .order("display_order", { ascending: true }),
+    admin
+      .from("media_galleries")
+      .select("id, title_ar, title_en, cover_image_path")
+      .eq("org_id", tenant.org_id)
+      .not("published_at", "is", null)
+      .lte("published_at", nowIso)
+      .order("display_order", { ascending: true })
+      .order("published_at", { ascending: false })
+      .limit(6),
   ]);
 
   // Default = everything visible (matches Phase 4 behaviour for tenants
@@ -135,12 +145,25 @@ export default async function ClubLandingPage({
     matchCenter: settings?.match_center_enabled ?? true,
     honours: settings?.honours_enabled ?? true,
     sponsors: settings?.sponsors_enabled ?? true,
+    galleries: settings?.galleries_enabled ?? true,
   };
 
   const nextFixture = nextFixtureRows?.[0] ?? null;
   const lastFixture = lastFixtureRows?.[0] ?? null;
   const honours = honoursRows ?? [];
   const sponsors = sponsorsRows ?? [];
+  const galleries = (galleryRows ?? []).map((g) => {
+    const path = g.cover_image_path as string | null;
+    const url = path
+      ? admin.storage.from("media-galleries").getPublicUrl(path).data.publicUrl
+      : null;
+    return {
+      id: g.id as string,
+      title_ar: g.title_ar as string,
+      title_en: g.title_en as string,
+      cover_url: url,
+    };
+  });
 
   // Look up a linked match report for the last fixture (if one exists).
   // Cheap second-pass query — single row, indexed lookup. Keeps the main
@@ -687,6 +710,67 @@ export default async function ClubLandingPage({
                 </div>
               );
             })}
+          </div>
+        </section>
+      )}
+
+      {/* Galleries — behind-the-scenes */}
+      {show.galleries && galleries.length > 0 && (
+        <section className="bg-white">
+          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+            <header className="flex flex-wrap items-end justify-between gap-2">
+              <div className="space-y-1">
+                <h2
+                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {t("galleries.title")}
+                </h2>
+                <p className="text-sm text-spo-muted">{t("galleries.subtitle")}</p>
+              </div>
+              <Link
+                href="/media/galleries"
+                className="text-sm font-medium text-spo-green-deep hover:underline"
+              >
+                {t("galleries.viewAll")} →
+              </Link>
+            </header>
+            <ul className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible lg:grid-cols-3">
+              {galleries.slice(0, 6).map((g) => (
+                <li
+                  key={g.id}
+                  className="min-w-[80%] flex-shrink-0 snap-start px-1 sm:min-w-0 sm:px-0"
+                >
+                  <Link
+                    href={`/media/galleries/${g.id}`}
+                    className="block overflow-hidden rounded-card border border-spo-line bg-white transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative aspect-[4/3] w-full bg-spo-paper">
+                      {g.cover_url ? (
+                        // Bypass the Next image optimizer — Supabase Storage URLs
+                        // are public CDN, no need to proxy through /_next/image.
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={g.cover_url}
+                          alt={locale === "ar" ? g.title_ar : g.title_en}
+                          loading="lazy"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xs text-spo-muted">
+                          {t("galleries.noCover")}
+                        </div>
+                      )}
+                    </div>
+                    <div className="space-y-1 p-3">
+                      <h3 className="line-clamp-2 text-sm font-medium text-spo-ink">
+                        {locale === "ar" ? g.title_ar : g.title_en}
+                      </h3>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

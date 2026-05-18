@@ -85,6 +85,12 @@
       "minutes": "{count}m",
       "soon": "Soon",
       "live": "Live now"
+    },
+    "galleries": {
+      "title": "Behind the scenes",
+      "subtitle": "Match days, training, community, fans.",
+      "viewAll": "View all",
+      "noCover": "No cover image"
     }
   },
   "stadium": {
@@ -349,7 +355,9 @@
       "sponsors": "Sponsors & partners",
       "sponsorsHint": "Tiered partner grid. Manage in Account → Sponsors.",
       "about": "About",
-      "aboutHint": "Long-form copy from your Media · Pages 'about' entry."
+      "aboutHint": "Long-form copy from your Media · Pages 'about' entry.",
+      "galleries": "Behind the scenes",
+      "galleriesHint": "Show the photo gallery carousel on the fan portal."
     },
     "featured": {
       "title": "Featured pins",
@@ -398,7 +406,8 @@
       "shop": "Shop",
       "membership": "Membership",
       "stadium": "Stadium",
-      "memberPortal": "Member portal"
+      "memberPortal": "Member portal",
+      "galleries": "Galleries"
     },
     "footer": {
       "poweredBy": "Powered by Sporlo",
@@ -2269,7 +2278,8 @@
       "news": "News",
       "broadcasts": "Broadcasts",
       "messages": "Messages",
-      "prefs": "Preferences"
+      "prefs": "Preferences",
+      "galleries": "Galleries"
     },
     "common": {
       "cancel": "Cancel",
@@ -2282,7 +2292,8 @@
       "draft": "Draft",
       "published": "Published",
       "status": "Status",
-      "actions": "Actions"
+      "actions": "Actions",
+      "remove": "Remove"
     },
     "pages": {
       "title": "Public pages",
@@ -2457,6 +2468,61 @@
       "threadResolved": "Thread updated",
       "prefsSaved": "Preferences saved",
       "saveFailed": "Save failed"
+    },
+    "galleries": {
+      "title": "Photo galleries",
+      "subtitle": "Behind-the-scenes albums shown on /welcome and /media/galleries.",
+      "newGallery": "New gallery",
+      "empty": "No galleries yet. Create one to start curating photos.",
+      "backToList": "Back to galleries",
+      "manageItems": "Manage photos",
+      "headers": {
+        "title": "Title",
+        "items": "Photos",
+        "status": "Status",
+        "publishedAt": "Published",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New gallery",
+        "editTitle": "Edit gallery",
+        "titleAr": "Title (Arabic)",
+        "titleEn": "Title (English)",
+        "descriptionAr": "Description (Arabic)",
+        "descriptionEn": "Description (English)",
+        "displayOrder": "Display order",
+        "displayOrderHint": "Lower numbers show first in the carousel.",
+        "publishNow": "Publish now",
+        "uploadHint": "After saving, click \"Manage photos\" on the row to upload images."
+      },
+      "publishedHint": "Live on the public fan portal.",
+      "draftHint": "Draft — not visible to fans.",
+      "uploadTitle": "Add photos",
+      "uploadLabel": "Drop images here or click to browse",
+      "uploadAccept": "PNG, JPG, or WEBP. Max 5 MB each.",
+      "captionArPlaceholder": "تعليق بالعربية",
+      "captionEnPlaceholder": "Caption in English",
+      "saveCaption": "Save caption",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "emptyItems": "No photos yet. Upload one to get started.",
+      "removeItemTitle": "Remove photo?",
+      "removeItemBody": "This deletes the photo from storage and cannot be undone.",
+      "publicTitle": "Photo galleries",
+      "publicSubtitle": "Match days, training, community, behind the scenes.",
+      "publicEmpty": "No galleries published yet. Check back soon.",
+      "noCover": "No cover image",
+      "noItemsYet": "This gallery is being prepared. Check back soon.",
+      "viewAll": "View all galleries",
+      "toast": {
+        "created": "Gallery created",
+        "updated": "Gallery updated",
+        "deleted": "Gallery deleted",
+        "itemAdded": "Photo uploaded",
+        "itemRemoved": "Photo removed",
+        "captionSaved": "Caption saved",
+        "reordered": "Order updated"
+      }
     }
   }
 }

@@ -9,6 +9,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 const TABS = [
   { key: "pages", href: "/media" },
   { key: "news", href: "/media/news" },
+  { key: "galleries", href: "/media/galleries" },
   { key: "broadcasts", href: "/media/broadcasts" },
   { key: "messages", href: "/media/messages" },
   { key: "prefs", href: "/media/prefs" },
