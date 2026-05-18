@@ -20,6 +20,9 @@ import {
   FixtureCreateSchema,
   FixtureIdSchema,
   FixtureUpdateSchema,
+  HospitalityCreateSchema,
+  HospitalityIdSchema,
+  HospitalityUpdateSchema,
   MatchEventRecordSchema,
   PricingSetSchema,
   PublicTicketIntentSchema,
@@ -28,6 +31,8 @@ import {
   SectionDeleteSchema,
   type FixtureCreateInput,
   type FixtureUpdateInput,
+  type HospitalityCreateInput,
+  type HospitalityUpdateInput,
   type MatchEventRecordInput,
   type PricingSetInput,
   type PublicTicketIntentInput,
@@ -525,4 +530,151 @@ export async function recordMatchEvent(
 
   revalidatePath(`/[locale]/(dashboard)/events/${parsed.data.fixture_id}/report`, "page");
   return actionOk({ id: data.id as string });
+}
+
+// ─────────────────────────────────────────────
+// Hospitality packages (Phase 8.2)
+// ─────────────────────────────────────────────
+
+export async function createHospitalityPackage(
+  input: HospitalityCreateInput,
+): Promise<ActionResult<{ id: string }>> {
+  const parsed = HospitalityCreateSchema.safeParse(input);
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return actionError(first?.message ?? "invalid", first?.path?.[0]?.toString());
+  }
+  const { tenant, error } = await withPrincipal("create", "hospitality_package");
+  if (error) return permissionError("create", "hospitality_package");
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error: insErr } = await supabase
+    .from("hospitality_packages")
+    .insert({
+      org_id: tenant!.org_id,
+      name_ar: parsed.data.name_ar,
+      name_en: parsed.data.name_en,
+      body_ar: parsed.data.body_ar ?? null,
+      body_en: parsed.data.body_en ?? null,
+      price_sar: parsed.data.price_sar,
+      capacity: parsed.data.capacity ?? null,
+      cover_image_path: parsed.data.cover_image_path ?? null,
+      fixture_filter: parsed.data.fixture_filter,
+      contact_url: parsed.data.contact_url ?? null,
+      display_order: parsed.data.display_order,
+      active: parsed.data.active,
+    })
+    .select("id")
+    .single();
+  if (insErr || !data) return actionError(insErr?.message ?? "insert-failed");
+
+  await supabase.rpc("record_audit", {
+    p_action: "hospitality_package_created",
+    p_target_type: "hospitality_package",
+    p_target_id: data.id,
+    p_payload: { name_en: parsed.data.name_en },
+  });
+
+  revalidatePath("/[locale]/(dashboard)/events/hospitality", "page");
+  revalidatePath("/[locale]/hospitality", "page");
+  return actionOk({ id: data.id as string });
+}
+
+export async function updateHospitalityPackage(
+  input: HospitalityUpdateInput,
+): Promise<ActionResult<void>> {
+  const parsed = HospitalityUpdateSchema.safeParse(input);
+  if (!parsed.success) return actionError("invalid");
+  const { tenant, error } = await withPrincipal("update", "hospitality_package");
+  if (error) return permissionError("update", "hospitality_package");
+
+  const { id, ...patch } = parsed.data;
+  const supabase = await createSupabaseServerClient();
+  const { error: updErr } = await supabase
+    .from("hospitality_packages")
+    .update({
+      name_ar: patch.name_ar,
+      name_en: patch.name_en,
+      body_ar: patch.body_ar ?? null,
+      body_en: patch.body_en ?? null,
+      price_sar: patch.price_sar,
+      capacity: patch.capacity ?? null,
+      cover_image_path: patch.cover_image_path ?? null,
+      fixture_filter: patch.fixture_filter,
+      contact_url: patch.contact_url ?? null,
+      display_order: patch.display_order,
+      active: patch.active,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/events/hospitality", "page");
+  revalidatePath("/[locale]/hospitality", "page");
+  return actionOk(undefined);
+}
+
+export async function deleteHospitalityPackage(
+  input: { id: string },
+): Promise<ActionResult<void>> {
+  const parsed = HospitalityIdSchema.safeParse(input);
+  if (!parsed.success) return actionError("invalid");
+  const { tenant, error } = await withPrincipal("delete", "hospitality_package");
+  if (error) return permissionError("delete", "hospitality_package");
+
+  const supabase = await createSupabaseServerClient();
+  const { error: delErr } = await supabase
+    .from("hospitality_packages")
+    .delete()
+    .eq("id", parsed.data.id)
+    .eq("org_id", tenant!.org_id);
+  if (delErr) return actionError(delErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/events/hospitality", "page");
+  revalidatePath("/[locale]/hospitality", "page");
+  return actionOk(undefined);
+}
+
+export async function uploadHospitalityCover(
+  form: FormData,
+): Promise<ActionResult<{ path: string }>> {
+  const id = form.get("package_id");
+  if (typeof id !== "string" || !id) return actionError("missing-package-id");
+
+  const { tenant, error } = await withPrincipal("update", "hospitality_package");
+  if (error) return permissionError("update", "hospitality_package");
+
+  const file = form.get("cover");
+  if (!(file instanceof File) || file.size === 0) {
+    return actionError("no-file", "cover");
+  }
+  if (file.size > 5 * 1024 * 1024) return actionError("too-large", "cover");
+  const allowed = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowed.includes(file.type)) return actionError("invalid-type", "cover");
+
+  const ext =
+    file.type === "image/png"
+      ? "png"
+      : file.type === "image/webp"
+        ? "webp"
+        : "jpg";
+  const path = `${tenant!.org_id}/${id}-${Date.now()}.${ext}`;
+
+  const admin = createServiceRoleClient();
+  const { error: upErr } = await admin.storage
+    .from("hospitality-covers")
+    .upload(path, file, { contentType: file.type, upsert: true });
+  if (upErr) return actionError(upErr.message, "cover");
+
+  const { error: updErr } = await admin
+    .from("hospitality_packages")
+    .update({ cover_image_path: path })
+    .eq("id", id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/events/hospitality", "page");
+  revalidatePath("/[locale]/hospitality", "page");
+  return actionOk({ path });
 }

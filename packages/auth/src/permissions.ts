@@ -130,6 +130,7 @@ export type Resource =
   | "coupon"
   | "fixture"
   | "ticket"
+  | "hospitality_package"
   | "product"
   | "order"
   | "facility"
@@ -533,6 +534,20 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
   stadium: {
     read: ["super_admin", "club_admin"],
     update: ["super_admin", "club_admin"],
+  },
+  hospitality_package: {
+    create: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "events" || p.department === "marketing")),
+    update: (p) =>
+      p.role === "super_admin" ||
+      p.role === "club_admin" ||
+      (p.role === "dept_manager" &&
+        (p.department === "events" || p.department === "marketing")),
+    delete: ["super_admin", "club_admin"],
+    read: (p) => canAccessModule(p, "events"),
   },
   media: {
     create: (p) =>

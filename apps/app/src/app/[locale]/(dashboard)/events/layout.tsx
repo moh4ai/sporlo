@@ -3,6 +3,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import type { Locale } from "@/i18n/routing";
 
+import { TabNav } from "./_components/TabNav";
+
 export default async function EventsLayout({
   children,
   params,
@@ -15,7 +17,7 @@ export default async function EventsLayout({
   const t = await getTranslations({ locale, namespace: "events" });
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <PageHeader title={t("title")} subtitle={t("subtitle")} />
+      <PageHeader title={t("title")} subtitle={t("subtitle")} tabs={<TabNav />} />
       {children}
     </div>
   );

@@ -407,7 +407,9 @@
       "membership": "Membership",
       "stadium": "Stadium",
       "memberPortal": "Member portal",
-      "galleries": "Galleries"
+      "galleries": "Galleries",
+      "hospitality": "Hospitality",
+      "foundation": "Foundation"
     },
     "footer": {
       "poweredBy": "Powered by Sporlo",
@@ -1543,6 +1545,10 @@
       "scanRecorded": "Scan recorded",
       "matchEventAdded": "Event added",
       "saveFailed": "Save failed"
+    },
+    "tabs": {
+      "fixtures": "Fixtures",
+      "hospitality": "Hospitality"
     }
   },
   "store": {
@@ -2524,5 +2530,69 @@
         "reordered": "Order updated"
       }
     }
+  },
+  "hospitality": {
+    "common": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "filter": {
+      "all": "Every fixture",
+      "season": "Season package",
+      "specific": "Specific fixture(s)"
+    },
+    "admin": {
+      "title": "Hospitality packages",
+      "subtitle": "VIP boxes, season packages, and premium offerings.",
+      "newPackage": "New package",
+      "empty": "No hospitality packages yet. Create one to start selling premium experiences.",
+      "headers": {
+        "name": "Name",
+        "price": "Price",
+        "capacity": "Capacity",
+        "filter": "Availability",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "createTitle": "New hospitality package",
+        "editTitle": "Edit hospitality package",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "bodyAr": "Description (Arabic)",
+        "bodyEn": "Description (English)",
+        "priceSar": "Price (SAR)",
+        "capacity": "Capacity",
+        "capacityHint": "Number of guests per booking. Leave blank if not limited.",
+        "displayOrder": "Display order",
+        "filter": "Availability",
+        "filterHint": "How this package maps to fixtures.",
+        "contactUrl": "Inquiry / booking URL",
+        "contactUrlHint": "Where fans go to ask about availability. Leave blank to hide the button.",
+        "active": "Visible on public page",
+        "cover": "Cover image",
+        "coverLabel": "Drop a cover image or click to browse",
+        "coverHint": "PNG, JPG, or WEBP. 16:9 recommended. Max 5 MB."
+      },
+      "toast": {
+        "created": "Package created",
+        "updated": "Package updated",
+        "deleted": "Package deleted",
+        "coverUpdated": "Cover image updated",
+        "saveFirst": "Save the package first",
+        "saveFirstHint": "Create the package before uploading a cover image.",
+        "saveFailed": "Save failed"
+      }
+    },
+    "publicTitle": "Hospitality",
+    "publicSubtitle": "Premium boxes, season packages, and VIP experiences for every match.",
+    "publicEmpty": "Hospitality packages aren't published yet. Check back soon.",
+    "capacityLabel": "{count} guests",
+    "inquire": "Inquire about this package"
   }
 }

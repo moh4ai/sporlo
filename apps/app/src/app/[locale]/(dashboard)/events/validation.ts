@@ -122,3 +122,34 @@ export type MatchEventRecordInput = z.infer<typeof MatchEventRecordSchema>;
 // Use BilingualNameSchema for fixtures? No, opponent_ar/opponent_en are
 // independently free-form here. Re-export for downstream forms anyway.
 export { BilingualNameSchema };
+
+// ─────────────────────────────────────────────
+// Hospitality packages (Phase 8.2)
+// ─────────────────────────────────────────────
+
+export const HospitalityFilterSchema = z.enum(["all", "season", "specific"]);
+export type HospitalityFilter = z.infer<typeof HospitalityFilterSchema>;
+
+export const HospitalityCreateSchema = z.object({
+  name_ar: z.string().trim().min(1).max(120),
+  name_en: z.string().trim().min(1).max(120),
+  body_ar: z.preprocess(emptyToUndef, z.string().max(4000).optional()),
+  body_en: z.preprocess(emptyToUndef, z.string().max(4000).optional()),
+  price_sar: SarAmountSchema,
+  capacity: z.preprocess(emptyToUndef, PositiveIntSchema.max(10000).optional()),
+  cover_image_path: z.preprocess(emptyToUndef, z.string().max(500).optional()),
+  fixture_filter: HospitalityFilterSchema.default("all"),
+  contact_url: z.preprocess(emptyToUndef, z.string().url().max(500).optional()),
+  display_order: z.number().int().min(0).max(9999).default(0),
+  active: z.boolean().default(true),
+});
+
+export const HospitalityUpdateSchema = HospitalityCreateSchema.extend({
+  id: UuidSchema,
+});
+
+export const HospitalityIdSchema = z.object({ id: UuidSchema });
+
+export type HospitalityCreateInput = z.infer<typeof HospitalityCreateSchema>;
+export type HospitalityUpdateInput = z.infer<typeof HospitalityUpdateSchema>;
+export type HospitalityIdInput = z.infer<typeof HospitalityIdSchema>;
