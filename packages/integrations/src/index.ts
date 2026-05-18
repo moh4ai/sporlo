@@ -14,17 +14,26 @@ export type IntegrationCategory =
   | "productivity"
   | "marketing"
   | "analytics"
-  | "payments";
+  | "payments"
+  | "sports"
+  | "social"
+  | "support"
+  | "automation";
 
 // What this provider can DO. Drives the UI affordance ("Send broadcast",
 // "Sync calendar") and lets us scope permissions per-capability later.
 export type IntegrationKind =
-  | "send_message"     // Slack post, WhatsApp text, etc.
+  | "send_message"     // Slack post, WhatsApp text, SMS
   | "send_email"       // Mailchimp campaign, transactional email
   | "sync_calendar"    // Push fixtures + sessions to Google/Outlook
-  | "sync_contacts"    // Push members as audience
+  | "sync_contacts"    // Push members as audience / files
   | "track_event"      // Send analytics events
-  | "receive_payment"; // Payment intent → Sporlo webhook
+  | "receive_payment"  // Payment intent → Sporlo webhook
+  | "analyze_video"    // Hudl, Veo, Wyscout-style video tools
+  | "manage_team"      // Spond, TeamSnap-style roster + attendance tools
+  | "social_post"      // Facebook / Instagram / X / TikTok publishing
+  | "customer_support" // Zendesk / Intercom-style ticketing + chat
+  | "automate";        // Zapier / Make-style cross-app automation
 
 export interface ProviderSetupContext {
   org_id: string;

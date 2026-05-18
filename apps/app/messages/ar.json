@@ -477,12 +477,42 @@
   "integrations": {
     "title": "التكاملات",
     "subtitle": "اربط سبورلو بالأدوات التي يستخدمها فريقك أصلاً.",
+    "hero": {
+      "eyebrow": "السوق",
+      "headline": "{count} تكامل ومتنامٍ",
+      "body": "اربط سبورلو بكل الأدوات التي يعمل عليها ناديك — التواصل مع المشجعين، المالية، تحليل الفيديو، السوشيال وغيرها. ثبّت الجاهز الآن، وصوّت على ما نطلقه التالي.",
+      "statTotal": "متاحة",
+      "statInstalled": "مثبّت لدى ناديك"
+    },
+    "filters": {
+      "all": "الكل",
+      "installed": "المثبّت"
+    },
+    "searchPlaceholder": "ابحث في التكاملات…",
+    "emptyFiltered": "لا توجد نتائج لهذا الفلتر. جرّب مسح البحث أو اختيار فئة أخرى.",
     "categories": {
       "communications": "التواصل",
       "productivity": "الإنتاجية",
       "marketing": "التسويق",
       "analytics": "التحليلات",
-      "payments": "المدفوعات"
+      "payments": "المدفوعات",
+      "sports": "رياضي",
+      "social": "السوشيال",
+      "support": "الدعم",
+      "automation": "الأتمتة"
+    },
+    "request": {
+      "button": "طلب",
+      "alreadyRequested": "تم الطلب",
+      "modalTitle": "طلب هذا التكامل",
+      "intro": "أخبر فريقنا كيف ستستخدمه. نُولي الأولوية للتكاملات التي تطلبها أكثر من نادٍ.",
+      "notesLabel": "ملاحظات (اختيارية)",
+      "notesPlaceholder": "بماذا ستربطه؟ أي مهمة سيُسهّلها؟",
+      "cancel": "إلغاء",
+      "submit": "إرسال الطلب",
+      "submitting": "جاري الإرسال…",
+      "toastSuccess": "تم إرسال طلبك — شكراً.",
+      "toastFailed": "تعذّر إرسال طلبك"
     },
     "status": {
       "installed": "مثبَّت",
@@ -495,7 +525,12 @@
       "sync_calendar": "مزامنة التقويم",
       "sync_contacts": "مزامنة جهات الاتصال",
       "track_event": "تتبّع الأحداث",
-      "receive_payment": "استقبال المدفوعات"
+      "receive_payment": "استقبال المدفوعات",
+      "analyze_video": "تحليل الفيديو",
+      "manage_team": "إدارة الفرق",
+      "social_post": "نشر السوشيال",
+      "customer_support": "دعم العملاء",
+      "automate": "أتمتة"
     },
     "actions": {
       "install": "تثبيت",

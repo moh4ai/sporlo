@@ -2,14 +2,16 @@ import { redirect } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 
 import { canPerform } from "@sporlo/auth";
-import { CATALOG, CATEGORY_ORDER } from "@sporlo/integrations/catalog";
-import type { IntegrationCategory } from "@sporlo/integrations";
-import { Badge } from "@sporlo/ui";
+import { CATALOG } from "@sporlo/integrations/catalog";
 
-import { Link } from "@/i18n/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
+
+import {
+  IntegrationsCatalog,
+  type CatalogEntryProps,
+} from "./_components/IntegrationsCatalog";
 
 export default async function IntegrationsPage({
   params,
@@ -28,79 +30,71 @@ export default async function IntegrationsPage({
   const t = await getTranslations({ locale, namespace: "integrations" });
 
   const supabase = await createSupabaseServerClient();
-  const { data: installed } = await supabase
-    .from("org_integrations")
-    .select("integration_slug, enabled");
+  const [{ data: installed }, { data: pending }] = await Promise.all([
+    supabase.from("org_integrations").select("integration_slug, enabled"),
+    supabase
+      .from("integration_requests")
+      .select("integration_slug")
+      .eq("status", "pending"),
+  ]);
 
-  const installedSlugs = new Set(
-    (installed ?? []).map((r) => r.integration_slug as string),
+  const installedSlugs = (installed ?? []).map((r) => r.integration_slug as string);
+  const pendingRequestSlugs = (pending ?? []).map(
+    (r) => r.integration_slug as string,
   );
 
-  // Group catalog by category, preserve catalog ordering within each group.
-  const grouped = new Map<IntegrationCategory, typeof CATALOG[number][]>();
-  for (const entry of CATALOG) {
-    const list = grouped.get(entry.category) ?? [];
-    list.push(entry);
-    grouped.set(entry.category, list);
-  }
+  // Pass the TS catalog directly — it's the source of truth for bilingual
+  // labels (the DB seed is English-only).
+  const entries: CatalogEntryProps[] = CATALOG.map((e) => ({
+    slug: e.slug,
+    name_ar: e.name_ar,
+    name_en: e.name_en,
+    category: e.category,
+    short_description_ar: e.short_description_ar,
+    short_description_en: e.short_description_en,
+    kinds: e.kinds,
+    availability: e.availability,
+    simple_icon: e.simple_icon,
+    brand_color: e.brand_color,
+  }));
+
+  const installedCount = installedSlugs.length;
 
   return (
     <div className="space-y-8">
-      {CATEGORY_ORDER.map((category) => {
-        const entries = grouped.get(category);
-        if (!entries || entries.length === 0) return null;
-        return (
-          <section key={category} className="space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-spo-muted">
-              {t(`categories.${category}`)}
-            </h2>
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {entries.map((entry) => {
-                const isInstalled = installedSlugs.has(entry.slug);
-                const status = isInstalled
-                  ? "installed"
-                  : entry.availability === "available"
-                    ? "available"
-                    : "comingSoon";
-                const tone =
-                  status === "installed"
-                    ? "green"
-                    : status === "available"
-                      ? "blue"
-                      : "neutral";
-                const statusLabel =
-                  status === "installed"
-                    ? t("status.installed")
-                    : status === "available"
-                      ? t("status.available")
-                      : t("status.comingSoon");
-                return (
-                  <li key={entry.slug}>
-                    <Link
-                      href={`/integrations/${entry.slug}`}
-                      className="block h-full rounded-card border border-spo-line bg-white p-4 transition-colors hover:border-spo-green hover:bg-spo-green-soft/40"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="min-w-0 space-y-1">
-                          <div className="text-base font-semibold text-spo-ink">
-                            {locale === "ar" ? entry.name_ar : entry.name_en}
-                          </div>
-                          <p className="text-sm text-spo-muted">
-                            {locale === "ar"
-                              ? entry.short_description_ar
-                              : entry.short_description_en}
-                          </p>
-                        </div>
-                        <Badge tone={tone}>{statusLabel}</Badge>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        );
-      })}
+      {/* Marketplace hero */}
+      <section className="rounded-card-lg border border-spo-line bg-gradient-to-br from-spo-green-soft to-white p-6 sm:p-8">
+        <div className="max-w-2xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+            {t("hero.eyebrow")}
+          </p>
+          <h2
+            className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            {t("hero.headline", { count: entries.length })}
+          </h2>
+          <p className="text-sm text-spo-ink-2">{t("hero.body")}</p>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-3 text-sm text-spo-muted">
+          <span>
+            <strong className="text-spo-ink">{entries.length}</strong>{" "}
+            {t("hero.statTotal")}
+          </span>
+          <span>·</span>
+          <span>
+            <strong className="text-spo-ink">{installedCount}</strong>{" "}
+            {t("hero.statInstalled")}
+          </span>
+        </div>
+      </section>
+
+      <IntegrationsCatalog
+        entries={entries}
+        installedSlugs={installedSlugs}
+        pendingRequestSlugs={pendingRequestSlugs}
+        locale={locale as "ar" | "en"}
+      />
     </div>
   );
 }

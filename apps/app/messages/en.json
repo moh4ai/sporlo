@@ -477,12 +477,42 @@
   "integrations": {
     "title": "Integrations",
     "subtitle": "Connect Sporlo to the tools your team already uses.",
+    "hero": {
+      "eyebrow": "Marketplace",
+      "headline": "{count} integrations and growing",
+      "body": "Wire Sporlo into the tools your club already runs on — fan comms, finance, video analysis, social, and more. Install the ones that are ready, vote on what we should ship next.",
+      "statTotal": "available",
+      "statInstalled": "installed by your club"
+    },
+    "filters": {
+      "all": "All",
+      "installed": "Installed"
+    },
+    "searchPlaceholder": "Search integrations…",
+    "emptyFiltered": "Nothing matches that filter. Try clearing search or picking another category.",
     "categories": {
       "communications": "Communications",
       "productivity": "Productivity",
       "marketing": "Marketing",
       "analytics": "Analytics",
-      "payments": "Payments"
+      "payments": "Payments",
+      "sports": "Sports",
+      "social": "Social",
+      "support": "Support",
+      "automation": "Automation"
+    },
+    "request": {
+      "button": "Request",
+      "alreadyRequested": "Requested",
+      "modalTitle": "Request this integration",
+      "intro": "Tell our team how you'd use this. We prioritise integrations that multiple clubs ask for.",
+      "notesLabel": "Notes (optional)",
+      "notesPlaceholder": "What would you connect it to? Which workflow does it unblock?",
+      "cancel": "Cancel",
+      "submit": "Send request",
+      "submitting": "Sending…",
+      "toastSuccess": "Request sent — thanks for letting us know.",
+      "toastFailed": "Couldn't send your request"
     },
     "status": {
       "installed": "Installed",
@@ -495,7 +525,12 @@
       "sync_calendar": "Calendar sync",
       "sync_contacts": "Contact sync",
       "track_event": "Event tracking",
-      "receive_payment": "Accept payments"
+      "receive_payment": "Accept payments",
+      "analyze_video": "Video analysis",
+      "manage_team": "Team management",
+      "social_post": "Social publishing",
+      "customer_support": "Customer support",
+      "automate": "Workflow automation"
     },
     "actions": {
       "install": "Install",

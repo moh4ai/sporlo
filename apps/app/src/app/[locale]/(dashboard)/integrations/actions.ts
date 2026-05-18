@@ -72,6 +72,51 @@ export async function installIntegration(
   return actionOk(undefined);
 }
 
+export async function requestIntegration(input: {
+  slug: string;
+  notes?: string;
+}): Promise<ActionResult<{ id: string }>> {
+  const entry = CATALOG.find((c) => c.slug === input.slug);
+  if (!entry) return actionError("unknown-slug", "slug");
+
+  const { tenant, error } = await withPrincipal("create", "integration");
+  if (error) return permissionError("create", "integration");
+
+  const supabase = await createSupabaseServerClient();
+
+  // De-dupe: if this org already has a pending request for this integration,
+  // don't insert a second one — surface the existing row's id instead.
+  const { data: existing } = await supabase
+    .from("integration_requests")
+    .select("id")
+    .eq("integration_slug", input.slug)
+    .eq("status", "pending")
+    .maybeSingle();
+  if (existing) return actionOk({ id: existing.id as string });
+
+  const { data, error: insErr } = await supabase
+    .from("integration_requests")
+    .insert({
+      org_id: tenant!.org_id,
+      integration_slug: input.slug,
+      requested_by: tenant!.user_id,
+      notes: input.notes?.trim() || null,
+    })
+    .select("id")
+    .single();
+  if (insErr || !data) return actionError(insErr?.message ?? "insert-failed");
+
+  await supabase.rpc("record_audit", {
+    p_action: "integration_requested",
+    p_target_type: "integration",
+    p_target_id: null,
+    p_payload: { slug: input.slug, notes: input.notes ?? null },
+  });
+
+  revalidatePath("/[locale]/(dashboard)/integrations", "page");
+  return actionOk({ id: data.id as string });
+}
+
 export async function uninstallIntegration(
   input: { slug: string },
 ): Promise<ActionResult<void>> {
