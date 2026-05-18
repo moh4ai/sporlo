@@ -1,9 +1,17 @@
-// Renders a branded square logo for an integration. Tries
-// https://cdn.simpleicons.org first (public-domain SVGs for ~3000 brands);
-// when the integration's simple_icon slug is null (Saudi-specific providers
-// mostly), falls back to a gradient avatar with the brand's first letter.
+import { INTEGRATION_ICONS } from "@/lib/integration-icon-registry";
+
+// Renders a branded square logo for an integration.
 //
-// Server component — no client state, no JS shipped.
+// Strategy: SVG path data for every supported brand is bundled into the JS
+// chunk via integration-icon-registry.ts (generated from the simple-icons
+// npm package by scripts/generate-icon-registry.mjs). No external CDN call
+// — works regardless of region or browser blocking that defeated the
+// earlier cdn.simpleicons.org approach.
+//
+// When a brand isn't in the registry (most Saudi providers + a handful of
+// brands that pulled their logos upstream — Microsoft, Hudl, Klaviyo,
+// Amplitude, Freshworks), the component falls back to a gradient initial
+// badge in the brand's hex.
 
 export function IntegrationLogo({
   name,
@@ -17,34 +25,34 @@ export function IntegrationLogo({
   size?: "sm" | "md" | "lg";
 }) {
   const dims = size === "sm" ? 32 : size === "lg" ? 64 : 44;
+  const iconPath = simpleIcon ? INTEGRATION_ICONS[simpleIcon] : null;
 
-  if (simpleIcon) {
-    // Tint the SVG with the brand colour via the CDN's query param.
-    const src = `https://cdn.simpleicons.org/${simpleIcon}/${brandColor}`;
+  if (iconPath) {
     return (
       <span
-        className="inline-flex shrink-0 items-center justify-center rounded-md bg-white p-1.5"
+        className="inline-flex shrink-0 items-center justify-center rounded-md bg-white"
         style={{
           width: dims,
           height: dims,
-          boxShadow: `0 0 0 1px ${hexAlpha(brandColor, 0.12)}`,
+          boxShadow: `0 0 0 1px ${hexAlpha(brandColor, 0.15)}`,
         }}
+        aria-hidden="true"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt=""
-          aria-hidden="true"
-          width={dims - 12}
-          height={dims - 12}
-          loading="lazy"
-          className="h-full w-full"
-        />
+        <svg
+          viewBox="0 0 24 24"
+          width={dims * 0.55}
+          height={dims * 0.55}
+          fill={`#${brandColor}`}
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+        >
+          <path d={iconPath} />
+        </svg>
       </span>
     );
   }
 
-  // Gradient fallback for brands without a simpleicons entry.
+  // Gradient fallback for brands missing from the registry.
   const initial = name.trim().slice(0, 1).toUpperCase() || "?";
   return (
     <span
