@@ -502,9 +502,9 @@
       "automation": "Automation"
     },
     "request": {
-      "button": "Request",
+      "button": "Connect",
       "alreadyRequested": "Requested",
-      "modalTitle": "Request this integration",
+      "modalTitle": "Connect this integration",
       "intro": "Tell our team how you'd use this. We prioritise integrations that multiple clubs ask for.",
       "notesLabel": "Notes (optional)",
       "notesPlaceholder": "What would you connect it to? Which workflow does it unblock?",
