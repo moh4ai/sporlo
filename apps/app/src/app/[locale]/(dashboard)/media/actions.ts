@@ -594,7 +594,7 @@ export async function updateGallery(
 
   revalidatePath("/[locale]/(dashboard)/media/galleries", "page");
   revalidatePath("/[locale]/welcome", "page");
-  revalidatePath(`/[locale]/media/galleries/${id}`, "page");
+  revalidatePath(`/[locale]/galleries/${id}`, "page");
   return actionOk(undefined);
 }
 
@@ -689,7 +689,7 @@ export async function uploadGalleryItem(
   if (insErr || !data) return actionError(insErr?.message ?? "insert-failed");
 
   revalidatePath("/[locale]/(dashboard)/media/galleries", "page");
-  revalidatePath(`/[locale]/media/galleries/${galleryId}`, "page");
+  revalidatePath(`/[locale]/galleries/${galleryId}`, "page");
   revalidatePath("/[locale]/welcome", "page");
   return actionOk({ id: data.id as string, path });
 }
@@ -739,7 +739,7 @@ export async function reorderGalleryItems(
   }
 
   revalidatePath("/[locale]/(dashboard)/media/galleries", "page");
-  revalidatePath(`/[locale]/media/galleries/${parsed.data.gallery_id}`, "page");
+  revalidatePath(`/[locale]/galleries/${parsed.data.gallery_id}`, "page");
   return actionOk(undefined);
 }
 
@@ -771,6 +771,6 @@ export async function removeGalleryItem(
   if (delErr) return actionError(delErr.message);
 
   revalidatePath("/[locale]/(dashboard)/media/galleries", "page");
-  revalidatePath(`/[locale]/media/galleries/${row.gallery_id}`, "page");
+  revalidatePath(`/[locale]/galleries/${row.gallery_id}`, "page");
   return actionOk(undefined);
 }

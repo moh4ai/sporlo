@@ -729,7 +729,7 @@ export default async function ClubLandingPage({
                 <p className="text-sm text-spo-muted">{t("galleries.subtitle")}</p>
               </div>
               <Link
-                href="/media/galleries"
+                href="/galleries"
                 className="text-sm font-medium text-spo-green-deep hover:underline"
               >
                 {t("galleries.viewAll")} →
@@ -742,7 +742,7 @@ export default async function ClubLandingPage({
                   className="min-w-[80%] flex-shrink-0 snap-start px-1 sm:min-w-0 sm:px-0"
                 >
                   <Link
-                    href={`/media/galleries/${g.id}`}
+                    href={`/galleries/${g.id}`}
                     className="block overflow-hidden rounded-card border border-spo-line bg-white transition-shadow hover:shadow-md"
                   >
                     <div className="relative aspect-[4/3] w-full bg-spo-paper">

@@ -49,7 +49,7 @@ export default async function PublicGalleryDetailPage({
     <PublicShell locale={locale as Locale} tenant={tenant}>
       <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
         <Link
-          href="/media/galleries"
+          href="/galleries"
           className="text-sm text-spo-muted hover:text-spo-ink"
         >
           ← {t("galleries.backToList")}
