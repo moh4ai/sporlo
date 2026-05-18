@@ -3,6 +3,42 @@
     "title": "Sporlo — Club Workspace",
     "description": "Multi-tenant SaaS for Saudi sports clubs"
   },
+  "notifications": {
+    "pageTitle": "Notifications",
+    "pageSubtitle": "Everything that needs your attention, newest first.",
+    "title": "Notifications",
+    "openLabel": "Open notifications",
+    "empty": "You're all caught up.",
+    "markAll": "Mark all read",
+    "viewAll": "View all",
+    "justNow": "Just now",
+    "minutesAgo": "{count}m ago",
+    "hoursAgo": "{count}h ago",
+    "daysAgo": "{count}d ago",
+    "toast": {
+      "failed": "Couldn't update notifications"
+    }
+  },
+  "cmdk": {
+    "trigger": "Search",
+    "placeholder": "Search members, plans, fixtures, products…",
+    "hint": "Type at least 2 characters to search.",
+    "empty": "No matches.",
+    "loading": "Searching…",
+    "recentLabel": "Recent",
+    "nav": "Navigate",
+    "open": "Open",
+    "kinds": {
+      "member": "Members",
+      "plan": "Plans",
+      "product": "Products",
+      "fixture": "Fixtures",
+      "news_article": "News",
+      "staff": "Staff",
+      "facility": "Facilities",
+      "squad": "Squads"
+    }
+  },
   "publicShell": {
     "nav": {
       "home": "Home",

@@ -16,6 +16,7 @@ import {
 } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 import { refundPayment as moyasarRefund } from "@/lib/moyasar";
+import { emitNotification } from "@/lib/notifications";
 
 import {
   DisclosureSubmitSchema,
@@ -208,6 +209,19 @@ export async function requestRefund(
     p_target_type: "refund",
     p_target_id: data.id,
     p_payload: { payment_id: parsed.data.payment_id, amount_sar: parsed.data.amount_sar },
+  });
+
+  // Notify club_admin (who approves) — refund needs a sign-off path.
+  await emitNotification({
+    org_id: tenant!.org_id,
+    type: "refund_requested",
+    title_ar: "طلب استرداد جديد",
+    title_en: "New refund request",
+    body_ar: `بمبلغ ${parsed.data.amount_sar} ر.س — يحتاج موافقتك.`,
+    body_en: `For SAR ${parsed.data.amount_sar} — needs your approval.`,
+    href: `/finance/refunds`,
+    payload: { refund_id: data.id, payment_id: parsed.data.payment_id },
+    recipient_roles: ["club_admin"],
   });
 
   revalidatePath("/[locale]/(dashboard)/finance/refunds", "page");

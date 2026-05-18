@@ -3,12 +3,10 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import {
-  Bell,
   ChevronDown,
   Languages,
   LogOut,
   Menu,
-  Search,
   User,
 } from "lucide-react";
 
@@ -18,14 +16,23 @@ import type { Principal } from "@sporlo/auth";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { createSupabaseBrowserClient } from "@/lib/supabase-browser";
 
+import { CommandPalette } from "./CommandPalette";
 import { MobileNavDrawer } from "./MobileNavDrawer";
+import {
+  NotificationBell,
+  type NotificationRow,
+} from "./NotificationBell";
 
 export function TopBar({
   locale,
   principal,
+  initialNotifications,
+  initialUnread,
 }: {
   locale: "ar" | "en";
   principal: Principal;
+  initialNotifications: NotificationRow[];
+  initialUnread: number;
 }) {
   const t = useTranslations("nav");
   const pathname = usePathname();
@@ -66,27 +73,13 @@ export function TopBar({
         </div>
 
         <div className="flex items-center gap-1.5">
-          {/* Command-K stub — surfaces the search affordance; wired in later phase. */}
-          <button
-            type="button"
-            className="hidden items-center gap-2 rounded-pill border border-spo-line bg-spo-paper px-3 py-1.5 text-sm text-spo-muted transition-colors hover:text-spo-ink-2 md:inline-flex"
-            aria-label={t("commandPalette")}
-          >
-            <Search className="size-3.5" />
-            <span>{t("search")}</span>
-            <kbd className="ms-1 rounded border border-spo-line bg-white px-1 text-[10px] font-medium text-spo-muted">
-              ⌘K
-            </kbd>
-          </button>
+          <CommandPalette locale={locale} />
 
-          {/* Notifications stub */}
-          <button
-            type="button"
-            aria-label={t("notifications")}
-            className="flex size-10 items-center justify-center rounded-md text-spo-ink-2 transition-colors hover:bg-spo-paper"
-          >
-            <Bell className="size-4" />
-          </button>
+          <NotificationBell
+            locale={locale}
+            initialNotifications={initialNotifications}
+            initialUnread={initialUnread}
+          />
 
           {/* Locale toggle */}
           <Link
