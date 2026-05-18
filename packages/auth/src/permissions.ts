@@ -157,7 +157,9 @@ export type Resource =
   | "user"
   | "invitation"
   | "integration"
-  | "fan_portal";
+  | "fan_portal"
+  | "honour"
+  | "sponsor";
 
 type Allow = Role[] | "*";
 type RoleRule = Allow | ((p: Principal) => boolean);
@@ -513,6 +515,18 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
   fan_portal: {
     read: ["super_admin", "club_admin"],
     update: ["super_admin", "club_admin"],
+  },
+  honour: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: ["super_admin", "club_admin"],
+  },
+  sponsor: {
+    create: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
+    delete: ["super_admin", "club_admin"],
+    read: ["super_admin", "club_admin"],
   },
   media: {
     create: (p) =>

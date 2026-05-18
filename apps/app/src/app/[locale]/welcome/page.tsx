@@ -33,20 +33,26 @@ export default async function ClubLandingPage({
     { data: orgRow },
     { data: settings },
     { data: nextFixtureRows },
+    { data: lastFixtureRows },
+    { data: seasonFixtureRows },
     { data: newsRows },
     { data: rosterRows },
     { data: productRows },
     { data: aboutPage },
+    { data: honoursRows },
+    { data: sponsorsRows },
   ] = await Promise.all([
     admin
       .from("organizations")
-      .select("tagline_ar, tagline_en, logo_path, primary_color")
+      .select(
+        "tagline_ar, tagline_en, logo_path, primary_color, social_jsonb, app_store_url, play_store_url, newsletter_provider",
+      )
       .eq("id", tenant.org_id)
       .maybeSingle(),
     admin
       .from("fan_portal_settings")
       .select(
-        "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, featured_news_id, featured_product_id",
+        "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, match_center_enabled, honours_enabled, sponsors_enabled, featured_news_id, featured_product_id",
       )
       .eq("org_id", tenant.org_id)
       .maybeSingle(),
@@ -58,6 +64,20 @@ export default async function ClubLandingPage({
       .gte("kickoff_at", nowIso)
       .order("kickoff_at", { ascending: true })
       .limit(1),
+    admin
+      .from("fixtures")
+      .select("id, opponent_ar, opponent_en, kickoff_at, venue, status, home_score, away_score")
+      .eq("org_id", tenant.org_id)
+      .eq("status", "completed")
+      .lt("kickoff_at", nowIso)
+      .order("kickoff_at", { ascending: false })
+      .limit(1),
+    admin
+      .from("fixtures")
+      .select("id, opponent_ar, opponent_en, kickoff_at, venue, status, home_score, away_score")
+      .eq("org_id", tenant.org_id)
+      .order("kickoff_at", { ascending: false })
+      .limit(8),
     admin
       .from("news_articles")
       .select("id, slug, title_ar, title_en, excerpt_ar, excerpt_en, cover_image_path, published_at")
@@ -87,6 +107,20 @@ export default async function ClubLandingPage({
       .eq("slug", "about")
       .eq("published", true)
       .maybeSingle(),
+    admin
+      .from("honours")
+      .select("id, competition_ar, competition_en, kind, win_count, last_won_year")
+      .eq("org_id", tenant.org_id)
+      .order("display_order", { ascending: true })
+      .order("win_count", { ascending: false })
+      .limit(16),
+    admin
+      .from("sponsors")
+      .select("id, name_ar, name_en, logo_path, url, tier, display_order")
+      .eq("org_id", tenant.org_id)
+      .eq("active", true)
+      .order("tier", { ascending: true })
+      .order("display_order", { ascending: true }),
   ]);
 
   // Default = everything visible (matches Phase 4 behaviour for tenants
@@ -98,9 +132,56 @@ export default async function ClubLandingPage({
     squad: settings?.squad_enabled ?? true,
     shop: settings?.shop_enabled ?? true,
     about: settings?.about_enabled ?? true,
+    matchCenter: settings?.match_center_enabled ?? true,
+    honours: settings?.honours_enabled ?? true,
+    sponsors: settings?.sponsors_enabled ?? true,
   };
 
   const nextFixture = nextFixtureRows?.[0] ?? null;
+  const lastFixture = lastFixtureRows?.[0] ?? null;
+  const honours = honoursRows ?? [];
+  const sponsors = sponsorsRows ?? [];
+
+  // Group sponsors by tier for the multi-row rendering.
+  type Tier = "strategic" | "main" | "official" | "supporter";
+  const sponsorsByTier = new Map<Tier, typeof sponsors>();
+  for (const s of sponsors) {
+    const tier = s.tier as Tier;
+    if (!sponsorsByTier.has(tier)) sponsorsByTier.set(tier, []);
+    sponsorsByTier.get(tier)!.push(s);
+  }
+  const tierOrder: Tier[] = ["strategic", "main", "official", "supporter"];
+
+  // Build the sponsor logo URL resolver. Mirrors the org-branding pattern.
+  function sponsorLogoUrl(path: string | null): string | null {
+    if (!path) return null;
+    return admin.storage.from("sponsor-logos").getPublicUrl(path).data.publicUrl;
+  }
+
+  // Last 3 results + next 3 scheduled for the Match Center mini-table.
+  const seasonRows = (seasonFixtureRows ?? []) as Array<{
+    id: string;
+    opponent_ar: string;
+    opponent_en: string;
+    kickoff_at: string;
+    venue: string | null;
+    status: string;
+    home_score: number | null;
+    away_score: number | null;
+  }>;
+  const recentResults = seasonRows
+    .filter((f) => f.status === "completed")
+    .slice(0, 3);
+  const upcomingSeason = seasonRows
+    .filter((f) => f.status === "scheduled")
+    .reverse()
+    .slice(0, 3);
+
+  // Org social/app/newsletter metadata
+  const social = (orgRow?.social_jsonb ?? {}) as Record<string, string | undefined>;
+  const appStoreUrl = (orgRow?.app_store_url as string | null) ?? null;
+  const playStoreUrl = (orgRow?.play_store_url as string | null) ?? null;
+  const newsletterEnabled = Boolean(orgRow?.newsletter_provider);
 
   // Promote the pinned news / product to position 0, then take the first 3 /
   // 4 of the resulting list. Cap fetched rows at 6 / 8 above so a pin near
@@ -211,6 +292,107 @@ export default async function ClubLandingPage({
                 <Button>{t("nextMatch.buyTickets")}</Button>
               </Link>
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* Match Center — last result + season at a glance */}
+      {show.matchCenter && (lastFixture || recentResults.length > 0 || upcomingSeason.length > 0) && (
+        <section className="border-b border-spo-line bg-white">
+          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                  {t("matchCenter.eyebrow")}
+                </p>
+                <h2
+                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {t("matchCenter.title")}
+                </h2>
+              </div>
+              <Link href="/fixtures" className="text-sm text-spo-green-deep hover:underline">
+                {t("common.viewAll")}
+              </Link>
+            </div>
+
+            {lastFixture && (
+              <div className="rounded-card-lg border border-spo-line bg-spo-paper-warm p-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
+                  {t("matchCenter.lastResult")}
+                </p>
+                <div className="mt-3 flex flex-wrap items-baseline gap-4">
+                  <div className="text-xl font-semibold text-spo-ink sm:text-2xl">
+                    {orgName}{" "}
+                    <span className="font-mono text-spo-green-deep">
+                      {lastFixture.home_score ?? 0} - {lastFixture.away_score ?? 0}
+                    </span>{" "}
+                    {locale === "ar"
+                      ? (lastFixture.opponent_ar as string)
+                      : (lastFixture.opponent_en as string)}
+                  </div>
+                  <ResultBadge
+                    home={lastFixture.home_score}
+                    away={lastFixture.away_score}
+                    t={t}
+                  />
+                  <span className="text-xs text-spo-muted">
+                    {new Date(lastFixture.kickoff_at as string).toLocaleDateString(
+                      locale === "ar" ? "ar-SA" : "en-GB",
+                      { year: "numeric", month: "short", day: "numeric" },
+                    )}
+                    {lastFixture.venue ? ` · ${lastFixture.venue}` : ""}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {(recentResults.length > 0 || upcomingSeason.length > 0) && (
+              <div className="grid gap-4 md:grid-cols-2">
+                {recentResults.length > 0 && (
+                  <div className="rounded-card border border-spo-line bg-white">
+                    <p className="border-b border-spo-line px-4 py-2 text-xs font-semibold uppercase tracking-wider text-spo-muted">
+                      {t("matchCenter.recentResults")}
+                    </p>
+                    <ul className="divide-y divide-spo-line">
+                      {recentResults.map((f) => (
+                        <li key={f.id} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
+                          <span className="truncate text-spo-ink-2">
+                            {locale === "ar" ? f.opponent_ar : f.opponent_en}
+                          </span>
+                          <span className="font-mono text-xs text-spo-ink">
+                            {f.home_score ?? 0}–{f.away_score ?? 0}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {upcomingSeason.length > 0 && (
+                  <div className="rounded-card border border-spo-line bg-white">
+                    <p className="border-b border-spo-line px-4 py-2 text-xs font-semibold uppercase tracking-wider text-spo-muted">
+                      {t("matchCenter.upcoming")}
+                    </p>
+                    <ul className="divide-y divide-spo-line">
+                      {upcomingSeason.map((f) => (
+                        <li key={f.id} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
+                          <span className="truncate text-spo-ink-2">
+                            {locale === "ar" ? f.opponent_ar : f.opponent_en}
+                          </span>
+                          <span className="text-xs text-spo-muted">
+                            {new Date(f.kickoff_at as string).toLocaleDateString(
+                              locale === "ar" ? "ar-SA" : "en-GB",
+                              { month: "short", day: "numeric" },
+                            )}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -375,6 +557,112 @@ export default async function ClubLandingPage({
         </section>
       )}
 
+      {/* Honours — trophy cabinet */}
+      {show.honours && honours.length > 0 && (
+        <section className="border-b border-spo-line bg-spo-ink py-12 text-white">
+          <div className="mx-auto max-w-6xl space-y-6 px-4 sm:px-6">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-soft/80">
+                  {t("honours.eyebrow")}
+                </p>
+                <h2
+                  className="text-2xl font-semibold sm:text-3xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {t("honours.titleWith", { club: orgName })}
+                </h2>
+              </div>
+            </div>
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+              {honours.map((h) => (
+                <li
+                  key={h.id}
+                  className="flex flex-col items-center gap-1 rounded-card bg-white/5 p-4 text-center backdrop-blur-sm"
+                >
+                  <span
+                    className="text-3xl font-bold text-spo-amber sm:text-4xl"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {h.win_count}
+                  </span>
+                  <span className="text-xs font-medium leading-tight">
+                    {locale === "ar" ? h.competition_ar : h.competition_en}
+                  </span>
+                  {h.last_won_year && (
+                    <span className="text-[10px] text-white/40">
+                      {t("honours.lastWon", { year: h.last_won_year })}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* Sponsors — multi-tier partner grid */}
+      {show.sponsors && sponsors.length > 0 && (
+        <section className="border-b border-spo-line bg-white">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                {t("sponsors.eyebrow")}
+              </p>
+              <h2
+                className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {t("sponsors.title")}
+              </h2>
+            </div>
+            {tierOrder.map((tier) => {
+              const list = sponsorsByTier.get(tier) ?? [];
+              if (list.length === 0) return null;
+              return (
+                <div key={tier} className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
+                    {t(`sponsors.tiers.${tier}`)}
+                  </p>
+                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+                    {list.map((s) => {
+                      const logo = sponsorLogoUrl(s.logo_path as string | null);
+                      const inner = (
+                        <span className="flex h-20 w-full items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white p-3 transition-colors hover:border-spo-green/40">
+                          {logo ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={logo}
+                              alt={(locale === "ar" ? s.name_ar : s.name_en) as string}
+                              className="h-full w-full object-contain"
+                            />
+                          ) : (
+                            <span className="text-xs font-medium text-spo-ink-2">
+                              {locale === "ar" ? s.name_ar : s.name_en}
+                            </span>
+                          )}
+                        </span>
+                      );
+                      return (
+                        <li key={s.id}>
+                          {s.url ? (
+                            <a href={s.url as string} target="_blank" rel="noreferrer" className="block">
+                              {inner}
+                            </a>
+                          ) : (
+                            inner
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
       {/* About */}
       {show.about && aboutPage && (
         <section className="bg-spo-paper-warm">
@@ -391,6 +679,98 @@ export default async function ClubLandingPage({
           </div>
         </section>
       )}
+
+      {/* Footer CTA — social + apps + newsletter — always-on */}
+      <section className="border-t border-spo-line bg-white">
+        <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
+          {newsletterEnabled && (
+            <div className="rounded-card border border-spo-line bg-spo-green-soft/40 p-5 text-center">
+              <h3
+                className="text-lg font-semibold text-spo-ink sm:text-xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {t("footerCta.newsletterTitle")}
+              </h3>
+              <p className="mt-1 text-sm text-spo-muted">{t("footerCta.newsletterHint")}</p>
+              <p className="mt-3 text-xs text-spo-muted">{t("footerCta.newsletterPending")}</p>
+            </div>
+          )}
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-2">
+              {Object.entries(social).map(([key, url]) => {
+                if (!url) return null;
+                return (
+                  <a
+                    key={key}
+                    href={url as string}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={key}
+                    className="inline-flex size-9 items-center justify-center rounded-md border border-spo-line bg-white text-spo-ink-2 transition-colors hover:bg-spo-paper"
+                  >
+                    <SocialGlyph kind={key} />
+                  </a>
+                );
+              })}
+            </div>
+            {(appStoreUrl || playStoreUrl) && (
+              <div className="flex items-center gap-2">
+                {appStoreUrl && (
+                  <a
+                    href={appStoreUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-pill border border-spo-line bg-white px-3 py-1.5 text-xs text-spo-ink-2 hover:bg-spo-paper"
+                  >
+                    {t("footerCta.appStore")}
+                  </a>
+                )}
+                {playStoreUrl && (
+                  <a
+                    href={playStoreUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-pill border border-spo-line bg-white px-3 py-1.5 text-xs text-spo-ink-2 hover:bg-spo-paper"
+                  >
+                    {t("footerCta.playStore")}
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
     </PublicShell>
   );
+}
+
+function ResultBadge({
+  home,
+  away,
+  t,
+}: {
+  home: number | null;
+  away: number | null;
+  t: (key: string) => string;
+}) {
+  if (home == null || away == null) return null;
+  const result = home > away ? "win" : home < away ? "loss" : "draw";
+  const tone =
+    result === "win"
+      ? "bg-spo-green text-white"
+      : result === "loss"
+        ? "bg-spo-danger/15 text-spo-danger"
+        : "bg-spo-paper text-spo-ink-2";
+  return (
+    <span className={`inline-flex items-center rounded-pill px-2 py-0.5 text-xs font-semibold ${tone}`}>
+      {t(`matchCenter.result.${result}`)}
+    </span>
+  );
+}
+
+function SocialGlyph({ kind }: { kind: string }) {
+  // Tiny inline glyph mapping. Keeps the bundle slim — Lucide doesn't ship
+  // all brand icons consistently.
+  const label = kind.slice(0, 1).toUpperCase();
+  return <span className="text-sm font-semibold">{label}</span>;
 }

@@ -27,6 +27,9 @@ export const FanPortalSettingsSchema = z.object({
   squad_enabled: z.boolean(),
   shop_enabled: z.boolean(),
   about_enabled: z.boolean(),
+  match_center_enabled: z.boolean(),
+  honours_enabled: z.boolean(),
+  sponsors_enabled: z.boolean(),
   featured_news_id: z.preprocess(emptyToNull, UuidSchema.nullable()),
   featured_product_id: z.preprocess(emptyToNull, UuidSchema.nullable()),
 });

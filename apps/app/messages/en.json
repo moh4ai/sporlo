@@ -41,6 +41,40 @@
       "eyebrow": "Official store",
       "title": "Shop"
     },
+    "matchCenter": {
+      "eyebrow": "Match Center",
+      "title": "How the season's going",
+      "lastResult": "Last result",
+      "recentResults": "Recent results",
+      "upcoming": "Upcoming",
+      "result": {
+        "win": "Win",
+        "loss": "Loss",
+        "draw": "Draw"
+      }
+    },
+    "honours": {
+      "eyebrow": "Trophy cabinet",
+      "titleWith": "Proud to be {club}",
+      "lastWon": "Last won {year}"
+    },
+    "sponsors": {
+      "eyebrow": "Partners",
+      "title": "Working with the best",
+      "tiers": {
+        "strategic": "Strategic partners",
+        "main": "Main partners",
+        "official": "Official partners",
+        "supporter": "Official supporters"
+      }
+    },
+    "footerCta": {
+      "newsletterTitle": "Stay in the loop",
+      "newsletterHint": "Get match alerts, ticket releases, and member-only perks delivered to your inbox.",
+      "newsletterPending": "Newsletter signup launches with the next release. Follow us on social for now.",
+      "appStore": "Download on App Store",
+      "playStore": "Get it on Google Play"
+    },
     "common": {
       "viewAll": "View all"
     },
@@ -50,6 +84,113 @@
       "minutes": "{count}m",
       "soon": "Soon",
       "live": "Live now"
+    }
+  },
+  "honours": {
+    "title": "Trophy cabinet",
+    "subtitle": "Every title the club has lifted. Shown on the public landing page when enabled in the Fan portal manager.",
+    "add": "Add trophy",
+    "totalWins": "total titles",
+    "empty": "No trophies yet. Add one to start building the cabinet.",
+    "headers": {
+      "competition": "Competition",
+      "kind": "Type",
+      "wins": "Wins",
+      "lastWon": "Last won",
+      "order": "Order",
+      "actions": "Actions"
+    },
+    "kinds": {
+      "league": "League",
+      "domestic_cup": "Domestic cup",
+      "continental": "Continental",
+      "international": "International",
+      "regional": "Regional",
+      "other": "Other"
+    },
+    "drawer": {
+      "createTitle": "Add a trophy",
+      "editTitle": "Edit trophy",
+      "save": "Save",
+      "create": "Add",
+      "saving": "Saving…",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "competitionAr": "Competition (Arabic)",
+      "competitionEn": "Competition (English)",
+      "kind": "Type",
+      "winCount": "Wins",
+      "lastWonYear": "Last won year",
+      "displayOrder": "Display order"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "toast": {
+      "added": "Trophy added",
+      "updated": "Trophy updated",
+      "deleted": "Trophy removed",
+      "failed": "Couldn't save"
+    }
+  },
+  "sponsors": {
+    "title": "Sponsors & partners",
+    "subtitle": "Logos shown on the public landing page. Group by tier — strategic, main, official, supporter.",
+    "add": "Add sponsor",
+    "empty": "No sponsors yet. Add one to start building your partner grid.",
+    "headers": {
+      "logo": "Logo",
+      "name": "Name",
+      "tier": "Tier",
+      "url": "Website",
+      "order": "Order",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "tiers": {
+      "strategic": "Strategic",
+      "main": "Main",
+      "official": "Official",
+      "supporter": "Supporter"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Hidden"
+    },
+    "drawer": {
+      "createTitle": "Add a sponsor",
+      "editTitle": "Edit sponsor",
+      "save": "Save",
+      "create": "Add",
+      "saving": "Saving…",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "nameAr": "Name (Arabic)",
+      "nameEn": "Name (English)",
+      "tier": "Tier",
+      "url": "Website",
+      "urlHint": "Optional. Logo will be clickable.",
+      "displayOrder": "Display order",
+      "active": "Show on fan portal",
+      "logo": "Logo",
+      "logoHint": "Upload the sponsor's logo. Will appear on the public landing page.",
+      "logoUpload": "Drag or browse",
+      "logoFormats": "PNG, JPG, WEBP, or SVG. Max 2 MB."
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "toast": {
+      "added": "Sponsor added",
+      "updated": "Sponsor updated",
+      "deleted": "Sponsor removed",
+      "logoUploaded": "Logo uploaded",
+      "saveFirst": "Save the sponsor first, then upload its logo.",
+      "failed": "Couldn't save"
     }
   },
   "memberPortal": {
@@ -123,6 +264,12 @@
       "squadHint": "Four-player teaser from your active roster.",
       "shop": "Shop",
       "shopHint": "Four-product teaser from your store. Pin one below.",
+      "matchCenter": "Match Center",
+      "matchCenterHint": "Last result + recent results + upcoming fixtures table.",
+      "honours": "Trophy cabinet",
+      "honoursHint": "Counts of titles won across competitions. Manage in Account → Trophy cabinet.",
+      "sponsors": "Sponsors & partners",
+      "sponsorsHint": "Tiered partner grid. Manage in Account → Sponsors.",
       "about": "About",
       "aboutHint": "Long-form copy from your Media · Pages 'about' entry."
     },

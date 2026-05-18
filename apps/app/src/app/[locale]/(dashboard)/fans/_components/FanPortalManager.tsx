@@ -7,9 +7,11 @@ import {
   CalendarDays,
   ExternalLink,
   Globe,
+  Handshake,
   Image as ImageIcon,
   Newspaper,
   ShoppingBag,
+  Trophy,
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -27,6 +29,9 @@ export type CurrentSettings = {
   squad_enabled: boolean;
   shop_enabled: boolean;
   about_enabled: boolean;
+  match_center_enabled: boolean;
+  honours_enabled: boolean;
+  sponsors_enabled: boolean;
   featured_news_id: string | null;
   featured_product_id: string | null;
 };
@@ -34,37 +39,31 @@ export type CurrentSettings = {
 export type NewsOption = { id: string; title_ar: string; title_en: string };
 export type ProductOption = { id: string; name_ar: string; name_en: string };
 
+type SectionFlagKey =
+  | "hero_enabled"
+  | "next_match_enabled"
+  | "match_center_enabled"
+  | "news_enabled"
+  | "squad_enabled"
+  | "shop_enabled"
+  | "honours_enabled"
+  | "sponsors_enabled"
+  | "about_enabled";
+
 const SECTIONS: ReadonlyArray<{
-  key: keyof Pick<
-    CurrentSettings,
-    | "hero_enabled"
-    | "next_match_enabled"
-    | "news_enabled"
-    | "squad_enabled"
-    | "shop_enabled"
-    | "about_enabled"
-  >;
-  labelKey:
-    | "sections.hero"
-    | "sections.nextMatch"
-    | "sections.news"
-    | "sections.squad"
-    | "sections.shop"
-    | "sections.about";
-  hintKey:
-    | "sections.heroHint"
-    | "sections.nextMatchHint"
-    | "sections.newsHint"
-    | "sections.squadHint"
-    | "sections.shopHint"
-    | "sections.aboutHint";
+  key: SectionFlagKey;
+  labelKey: string;
+  hintKey: string;
   icon: LucideIcon;
 }> = [
   { key: "hero_enabled", labelKey: "sections.hero", hintKey: "sections.heroHint", icon: ImageIcon },
   { key: "next_match_enabled", labelKey: "sections.nextMatch", hintKey: "sections.nextMatchHint", icon: CalendarDays },
+  { key: "match_center_enabled", labelKey: "sections.matchCenter", hintKey: "sections.matchCenterHint", icon: CalendarDays },
   { key: "news_enabled", labelKey: "sections.news", hintKey: "sections.newsHint", icon: Newspaper },
   { key: "squad_enabled", labelKey: "sections.squad", hintKey: "sections.squadHint", icon: Users },
   { key: "shop_enabled", labelKey: "sections.shop", hintKey: "sections.shopHint", icon: ShoppingBag },
+  { key: "honours_enabled", labelKey: "sections.honours", hintKey: "sections.honoursHint", icon: Trophy },
+  { key: "sponsors_enabled", labelKey: "sections.sponsors", hintKey: "sections.sponsorsHint", icon: Handshake },
   { key: "about_enabled", labelKey: "sections.about", hintKey: "sections.aboutHint", icon: Building2 },
 ];
 
@@ -103,6 +102,9 @@ export function FanPortalManager({
       squad_enabled: form.squad_enabled,
       shop_enabled: form.shop_enabled,
       about_enabled: form.about_enabled,
+      match_center_enabled: form.match_center_enabled,
+      honours_enabled: form.honours_enabled,
+      sponsors_enabled: form.sponsors_enabled,
       featured_news_id: form.featured_news_id,
       featured_product_id: form.featured_product_id,
     });
