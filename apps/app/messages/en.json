@@ -185,7 +185,7 @@
       "slug": "Slug",
       "slugHint": "Set at sign-up; contact Sporlo HQ to change.",
       "subdomain": "Subdomain",
-      "subdomainHint": "Lowercase letters, digits, and hyphens. Used as <subdomain>.sporlo.net.",
+      "subdomainHint": "Lowercase letters, digits, and hyphens. Used as [subdomain].sporlo.net.",
       "customDomain": "Custom domain",
       "customDomainHint": "Optional. Point your DNS at sporlo.net first.",
       "primaryColor": "Primary colour",
