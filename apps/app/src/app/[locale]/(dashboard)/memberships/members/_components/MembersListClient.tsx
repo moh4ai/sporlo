@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, Search } from "lucide-react";
+import { Eye, Pencil, Plus, Search, UserPlus } from "lucide-react";
 
 import { canPerform, type Principal } from "@sporlo/auth";
 import {
@@ -11,16 +11,18 @@ import {
   EmptyTableRow,
   Input,
   Pagination,
+  RowActions,
   Select,
+  SortableTH,
   Table,
   TBody,
   TD,
-  TH,
   THead,
   TR,
+  useTableSort,
 } from "@sporlo/ui";
 
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 
 export type MemberRow = {
   id: string;
@@ -41,6 +43,8 @@ const STATUS_TONES = {
 
 const PAGE_SIZE = 20;
 
+type SortKey = "name" | "member_number" | "status" | "joined_at";
+
 export function MembersListClient({
   members,
   principal,
@@ -51,7 +55,9 @@ export function MembersListClient({
   locale: "ar" | "en";
 }) {
   const t = useTranslations("memberships");
+  const router = useRouter();
   const canCreate = useMemo(() => canPerform(principal, "create", "member"), [principal]);
+  const canUpdate = useMemo(() => canPerform(principal, "update", "member"), [principal]);
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<"all" | "active" | "inactive" | "prospect">("all");
   const [page, setPage] = useState(1);
@@ -73,8 +79,18 @@ export function MembersListClient({
     });
   }, [members, query, status]);
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const pageRows = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const displayName = (m: MemberRow) =>
+    locale === "ar" ? m.full_name_ar : m.full_name_en || m.full_name_ar;
+
+  const { sort, setSort, sorted } = useTableSort<MemberRow, SortKey>(filtered, {
+    name: (m) => displayName(m).toLowerCase(),
+    member_number: (m) => m.member_number ?? "",
+    status: (m) => m.status,
+    joined_at: (m) => m.joined_at,
+  });
+
+  const pageCount = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  const pageRows = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const dateFmt = useMemo(
     () =>
@@ -85,8 +101,6 @@ export function MembersListClient({
       }),
     [locale],
   );
-
-  const displayName = (m: MemberRow) => (locale === "ar" ? m.full_name_ar : m.full_name_en || m.full_name_ar);
 
   return (
     <div className="space-y-4">
@@ -142,13 +156,32 @@ export function MembersListClient({
       <Table responsive>
         <THead>
           <TR>
-            <TH>{t("members.headers.name")}</TH>
-            <TH>{t("members.headers.memberNumber")}</TH>
-            <TH>{t("members.headers.status")}</TH>
-            <TH>{t("members.headers.phone")}</TH>
-            <TH>{t("members.headers.email")}</TH>
-            <TH>{t("members.headers.joined")}</TH>
-            <TH>{t("members.headers.actions")}</TH>
+            <SortableTH sortKey="name" state={sort} onSort={setSort}>
+              {t("members.headers.name")}
+            </SortableTH>
+            <SortableTH sortKey="member_number" state={sort} onSort={setSort}>
+              {t("members.headers.memberNumber")}
+            </SortableTH>
+            <SortableTH sortKey="status" state={sort} onSort={setSort}>
+              {t("members.headers.status")}
+            </SortableTH>
+            <th className="px-4 py-3 text-start text-[11px] font-semibold text-spo-muted">
+              {t("members.headers.phone")}
+            </th>
+            <th className="px-4 py-3 text-start text-[11px] font-semibold text-spo-muted">
+              {t("members.headers.email")}
+            </th>
+            <SortableTH
+              sortKey="joined_at"
+              state={sort}
+              onSort={setSort}
+              initialDirection="desc"
+            >
+              {t("members.headers.joined")}
+            </SortableTH>
+            <th className="px-4 py-3 text-end text-[11px] font-semibold text-spo-muted">
+              {t("members.headers.actions")}
+            </th>
           </TR>
         </THead>
         <TBody>
@@ -186,13 +219,41 @@ export function MembersListClient({
                 >
                   {dateFmt.format(new Date(m.joined_at))}
                 </TD>
-                <TD label={t("members.headers.actions")}>
-                  <Link
-                    href={`/memberships/members/${m.id}`}
-                    className="text-sm text-spo-green-deep hover:underline"
-                  >
-                    {t("common.edit")}
-                  </Link>
+                <TD label={t("members.headers.actions")} className="text-end">
+                  <RowActions
+                    label={t("members.headers.actions")}
+                    actions={[
+                      {
+                        key: "view",
+                        label: t("common.view"),
+                        icon: <Eye className="size-4" />,
+                        onSelect: () => router.push(`/memberships/members/${m.id}`),
+                      },
+                      ...(canUpdate
+                        ? [
+                            {
+                              key: "edit",
+                              label: t("common.edit"),
+                              icon: <Pencil className="size-4" />,
+                              onSelect: () =>
+                                router.push(`/memberships/members/${m.id}`),
+                            },
+                          ]
+                        : []),
+                      ...(canUpdate
+                        ? [
+                            {
+                              key: "subscribe",
+                              label: t("members.actions.subscribe"),
+                              icon: <UserPlus className="size-4" />,
+                              onSelect: () =>
+                                router.push(`/memberships/members/${m.id}/subscribe`),
+                              separator: true,
+                            },
+                          ]
+                        : []),
+                    ]}
+                  />
                 </TD>
               </TR>
             ))

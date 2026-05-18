@@ -24,6 +24,14 @@ export { Radio, type RadioProps } from "./components/Radio";
 export { Switch, type SwitchProps } from "./components/Switch";
 export { Pagination, type PaginationProps } from "./components/Pagination";
 export { EmptyTableRow, type EmptyTableRowProps } from "./components/EmptyTableRow";
+export { RowActions, type RowAction, type RowActionsProps } from "./components/RowActions";
+export {
+  SortableTH,
+  useTableSort,
+  type SortDirection,
+  type SortState,
+  type SortableTHProps,
+} from "./components/SortableTH";
 export { ConfirmModal, type ConfirmModalProps } from "./components/ConfirmModal";
 export { Drawer, type DrawerProps } from "./components/Drawer";
 export {

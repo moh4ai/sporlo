@@ -678,6 +678,7 @@
       "save": "Save",
       "create": "Create",
       "edit": "Edit",
+      "view": "View",
       "archive": "Archive",
       "unarchive": "Unarchive",
       "confirm": "Confirm",
@@ -725,6 +726,9 @@
       "newMember": "Add member",
       "backToList": "Back to members",
       "empty": "No members yet. Add your first member to get started.",
+      "actions": {
+        "subscribe": "Subscribe to plan"
+      },
       "filters": {
         "all": "All",
         "status": "Status",
