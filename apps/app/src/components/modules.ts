@@ -13,6 +13,7 @@ export const MODULES = [
   "users",
   "settings",
   "integrations",
+  "fans",
 ] as const;
 
 export type ModuleKey = (typeof MODULES)[number];

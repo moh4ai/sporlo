@@ -37,7 +37,8 @@ export type ModuleKey =
   | "account"
   | "users"
   | "settings"
-  | "integrations";
+  | "integrations"
+  | "fans";
 
 // Department -> which modules they can OPEN (read). Dept managers see a scoped
 // subset; club_admin always sees all; auditor sees governance only.
@@ -69,6 +70,7 @@ const ALL_MODULES: ReadonlyArray<ModuleKey> = [
   "users",
   "settings",
   "integrations",
+  "fans",
 ];
 
 export interface Principal {
@@ -154,7 +156,8 @@ export type Resource =
   | "member_pii"
   | "user"
   | "invitation"
-  | "integration";
+  | "integration"
+  | "fan_portal";
 
 type Allow = Role[] | "*";
 type RoleRule = Allow | ((p: Principal) => boolean);
@@ -501,6 +504,15 @@ const ACL: Partial<Record<Resource, Partial<Record<Action, RoleRule>>>> = {
     update: ["super_admin", "club_admin"],
     delete: ["super_admin", "club_admin"],
     read: ["super_admin", "club_admin"],
+  },
+  // Fan portal settings — club_admin manages which sections fans see on
+  // /welcome and which news/products are pinned to position 0.
+  fans: {
+    read: ["super_admin", "club_admin"],
+  },
+  fan_portal: {
+    read: ["super_admin", "club_admin"],
+    update: ["super_admin", "club_admin"],
   },
   media: {
     create: (p) =>

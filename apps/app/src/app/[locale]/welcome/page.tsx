@@ -25,11 +25,13 @@ export default async function ClubLandingPage({
   const admin = createServiceRoleClient();
 
   // Fetch hero org details (tagline, branding) + next match + news + roster
-  // + products + about in parallel. Each can be empty without breaking the
-  // page — sections render with their own empty states.
+  // + products + about + per-org fan-portal settings in parallel. Each can
+  // be empty without breaking the page — sections render with their own
+  // empty states (or stay hidden if disabled in settings).
   const nowIso = new Date().toISOString();
   const [
     { data: orgRow },
+    { data: settings },
     { data: nextFixtureRows },
     { data: newsRows },
     { data: rosterRows },
@@ -40,6 +42,13 @@ export default async function ClubLandingPage({
       .from("organizations")
       .select("tagline_ar, tagline_en, logo_path, primary_color")
       .eq("id", tenant.org_id)
+      .maybeSingle(),
+    admin
+      .from("fan_portal_settings")
+      .select(
+        "hero_enabled, next_match_enabled, news_enabled, squad_enabled, shop_enabled, about_enabled, featured_news_id, featured_product_id",
+      )
+      .eq("org_id", tenant.org_id)
       .maybeSingle(),
     admin
       .from("fixtures")
@@ -56,7 +65,7 @@ export default async function ClubLandingPage({
       .not("published_at", "is", null)
       .lte("published_at", nowIso)
       .order("published_at", { ascending: false })
-      .limit(3),
+      .limit(6),
     admin
       .from("roster_entries")
       .select("id, full_name_ar, full_name_en, jersey_number, position, photo_path")
@@ -70,7 +79,7 @@ export default async function ClubLandingPage({
       .eq("org_id", tenant.org_id)
       .eq("active", true)
       .order("created_at", { ascending: false })
-      .limit(4),
+      .limit(8),
     admin
       .from("public_pages")
       .select("title_ar, title_en, body_ar, body_en")
@@ -80,10 +89,45 @@ export default async function ClubLandingPage({
       .maybeSingle(),
   ]);
 
+  // Default = everything visible (matches Phase 4 behaviour for tenants
+  // that haven't visited the Fan portal manager yet).
+  const show = {
+    hero: settings?.hero_enabled ?? true,
+    nextMatch: settings?.next_match_enabled ?? true,
+    news: settings?.news_enabled ?? true,
+    squad: settings?.squad_enabled ?? true,
+    shop: settings?.shop_enabled ?? true,
+    about: settings?.about_enabled ?? true,
+  };
+
   const nextFixture = nextFixtureRows?.[0] ?? null;
-  const news = newsRows ?? [];
+
+  // Promote the pinned news / product to position 0, then take the first 3 /
+  // 4 of the resulting list. Cap fetched rows at 6 / 8 above so a pin near
+  // the bottom of the feed still bubbles up.
+  function promote<T extends { id: string }>(
+    rows: T[],
+    pinnedId: string | null | undefined,
+    keep: number,
+  ): T[] {
+    if (!pinnedId) return rows.slice(0, keep);
+    const pinned = rows.find((r) => r.id === pinnedId);
+    if (!pinned) return rows.slice(0, keep);
+    const rest = rows.filter((r) => r.id !== pinnedId);
+    return [pinned, ...rest].slice(0, keep);
+  }
+
+  const news = promote(
+    newsRows ?? [],
+    settings?.featured_news_id as string | null,
+    3,
+  );
+  const products = promote(
+    productRows ?? [],
+    settings?.featured_product_id as string | null,
+    4,
+  );
   const roster = rosterRows ?? [];
-  const products = productRows ?? [];
 
   const orgName = locale === "ar" ? tenant.name_ar : tenant.name_en;
   const tagline = locale === "ar"
@@ -97,6 +141,7 @@ export default async function ClubLandingPage({
   return (
     <PublicShell locale={locale} tenant={tenant}>
       {/* Hero */}
+      {show.hero && (
       <section
         className="border-b border-spo-line bg-white"
         style={primaryColor ? { backgroundImage: `linear-gradient(180deg, ${primaryColor}10, transparent 80%)` } : undefined}
@@ -136,9 +181,10 @@ export default async function ClubLandingPage({
           )}
         </div>
       </section>
+      )}
 
       {/* Next match */}
-      {nextFixture && (
+      {show.nextMatch && nextFixture && (
         <section className="bg-spo-green-soft">
           <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center">
             <div className="space-y-1">
@@ -170,7 +216,7 @@ export default async function ClubLandingPage({
       )}
 
       {/* News */}
-      {news.length > 0 && (
+      {show.news && news.length > 0 && (
         <section className="border-b border-spo-line bg-white">
           <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
             <div className="flex items-end justify-between gap-3">
@@ -227,7 +273,7 @@ export default async function ClubLandingPage({
       )}
 
       {/* Squad */}
-      {roster.length > 0 && (
+      {show.squad && roster.length > 0 && (
         <section className="bg-spo-paper-warm">
           <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
             <div className="flex items-end justify-between gap-3">
@@ -286,7 +332,7 @@ export default async function ClubLandingPage({
       )}
 
       {/* Shop */}
-      {products.length > 0 && (
+      {show.shop && products.length > 0 && (
         <section className="border-b border-spo-line bg-white">
           <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
             <div className="flex items-end justify-between gap-3">
@@ -330,7 +376,7 @@ export default async function ClubLandingPage({
       )}
 
       {/* About */}
-      {aboutPage && (
+      {show.about && aboutPage && (
         <section className="bg-spo-paper-warm">
           <div className="mx-auto max-w-3xl space-y-4 px-4 py-12 sm:px-6">
             <h2

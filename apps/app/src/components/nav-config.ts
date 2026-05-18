@@ -3,6 +3,7 @@ import {
   Building2,
   CalendarDays,
   GraduationCap,
+  Globe,
   LineChart,
   Megaphone,
   Plug,
@@ -46,6 +47,7 @@ export const NAV_MODULES: NavModule[] = [
   { key: "governance", icon: LineChart, section: "insights" },
 
   { key: "media", icon: Megaphone, section: "site" },
+  { key: "fans", icon: Globe, section: "site" },
 
   { key: "account", icon: SettingsIcon, section: "configuration" },
   { key: "users", icon: UserPlus, section: "configuration" },

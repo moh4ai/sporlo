@@ -100,6 +100,50 @@
       "alreadyClaimed": "This account was already claimed. Sign in with your existing email + password."
     }
   },
+  "fansManager": {
+    "title": "Fan portal",
+    "subtitle": "Choose what fans see on your public landing page. Sections pull live data from your other modules — toggle them off if a section doesn't apply to your club.",
+    "preview": {
+      "title": "Your fan portal",
+      "subtitle": "Public URL where fans land first.",
+      "open": "Open fan portal"
+    },
+    "sections": {
+      "title": "Sections",
+      "subtitle": "Turn off any section you don't want fans to see.",
+      "on": "Visible",
+      "off": "Hidden",
+      "hero": "Hero",
+      "heroHint": "Club name, tagline, logo, primary call-to-action.",
+      "nextMatch": "Next match",
+      "nextMatchHint": "Countdown card pulled from your next scheduled fixture.",
+      "news": "News",
+      "newsHint": "Three most recent published articles. Pin one below to override.",
+      "squad": "First team",
+      "squadHint": "Four-player teaser from your active roster.",
+      "shop": "Shop",
+      "shopHint": "Four-product teaser from your store. Pin one below.",
+      "about": "About",
+      "aboutHint": "Long-form copy from your Media · Pages 'about' entry."
+    },
+    "featured": {
+      "title": "Featured pins",
+      "subtitle": "Promote one item to the top of its row. Leave on 'Latest' to use the newest item automatically.",
+      "news": "Featured news",
+      "newsHint": "Pinned article goes first in the News row.",
+      "product": "Featured product",
+      "productHint": "Pinned product goes first in the Shop row.",
+      "noneLatest": "— Latest"
+    },
+    "actions": {
+      "save": "Save changes",
+      "saving": "Saving…"
+    },
+    "toast": {
+      "saved": "Fan portal updated",
+      "failed": "Couldn't save"
+    }
+  },
   "cmdk": {
     "trigger": "Search",
     "placeholder": "Search members, plans, fixtures, products…",
@@ -166,6 +210,7 @@
     "store": "Store",
     "media": "Comms & media",
     "hr": "HR & org",
+    "fans": "Fan portal",
     "account": "Account",
     "users": "Team & invites",
     "integrations": "Integrations",
