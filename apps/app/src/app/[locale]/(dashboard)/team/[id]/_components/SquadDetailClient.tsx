@@ -33,6 +33,8 @@ import {
   updateRosterEntry,
 } from "../../actions";
 
+export type PreviousClub = { club: string; years: string };
+
 export type PlayerRow = {
   id: string;
   full_name_ar: string;
@@ -41,6 +43,14 @@ export type PlayerRow = {
   position: string | null;
   date_of_birth: string | null;
   nationality: string | null;
+  bio_ar: string | null;
+  bio_en: string | null;
+  nationality_flag: string | null;
+  height_cm: number | null;
+  weight_kg: number | null;
+  instagram_handle: string | null;
+  joined_club_at: string | null;
+  previous_clubs: PreviousClub[];
 };
 
 export type TrainingRow = {
@@ -310,6 +320,14 @@ function RosterFormDrawer({
   const [position, setPosition] = useState("");
   const [dob, setDob] = useState("");
   const [nationality, setNationality] = useState("");
+  const [bioAr, setBioAr] = useState("");
+  const [bioEn, setBioEn] = useState("");
+  const [flag, setFlag] = useState("");
+  const [heightCm, setHeightCm] = useState("");
+  const [weightKg, setWeightKg] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [joinedAt, setJoinedAt] = useState("");
+  const [prevClubs, setPrevClubs] = useState<PreviousClub[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -323,6 +341,14 @@ function RosterFormDrawer({
       setPosition("");
       setDob("");
       setNationality("");
+      setBioAr("");
+      setBioEn("");
+      setFlag("");
+      setHeightCm("");
+      setWeightKg("");
+      setInstagram("");
+      setJoinedAt("");
+      setPrevClubs([]);
     } else {
       setNameAr(state.player.full_name_ar);
       setNameEn(state.player.full_name_en ?? "");
@@ -330,6 +356,14 @@ function RosterFormDrawer({
       setPosition(state.player.position ?? "");
       setDob(state.player.date_of_birth ?? "");
       setNationality(state.player.nationality ?? "");
+      setBioAr(state.player.bio_ar ?? "");
+      setBioEn(state.player.bio_en ?? "");
+      setFlag(state.player.nationality_flag ?? "");
+      setHeightCm(state.player.height_cm != null ? String(state.player.height_cm) : "");
+      setWeightKg(state.player.weight_kg != null ? String(state.player.weight_kg) : "");
+      setInstagram(state.player.instagram_handle ?? "");
+      setJoinedAt(state.player.joined_club_at ?? "");
+      setPrevClubs(state.player.previous_clubs);
     }
     setErr(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -347,6 +381,14 @@ function RosterFormDrawer({
       position,
       date_of_birth: dob,
       nationality,
+      bio_ar: bioAr,
+      bio_en: bioEn,
+      nationality_flag: flag,
+      height_cm: heightCm === "" ? undefined : Number(heightCm),
+      weight_kg: weightKg === "" ? undefined : Number(weightKg),
+      instagram_handle: instagram,
+      joined_club_at: joinedAt,
+      previous_clubs: prevClubs,
     };
     const res = isEdit && editing
       ? await updateRosterEntry({ id: editing.id, ...payload })
@@ -403,6 +445,160 @@ function RosterFormDrawer({
             <Input value={nationality} onChange={(e) => setNationality(e.target.value)} />
           </FormGroup>
         </div>
+
+        <details className="rounded-card border border-spo-line">
+          <summary className="cursor-pointer px-3 py-2 text-sm font-medium text-spo-ink">
+            {t("roster.form.profileDetails")}
+          </summary>
+          <div className="space-y-3 border-t border-spo-line p-3">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <FormGroup label={t("roster.form.bioAr")}>
+                <Textarea
+                  rows={3}
+                  value={bioAr}
+                  onChange={(e) => setBioAr(e.target.value)}
+                  dir="rtl"
+                />
+              </FormGroup>
+              <FormGroup label={t("roster.form.bioEn")}>
+                <Textarea
+                  rows={3}
+                  value={bioEn}
+                  onChange={(e) => setBioEn(e.target.value)}
+                  dir="ltr"
+                />
+              </FormGroup>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-4">
+              <FormGroup
+                label={t("roster.form.heightCm")}
+                hint={t("roster.form.heightHint")}
+              >
+                <Input
+                  type="number"
+                  min={100}
+                  max={250}
+                  value={heightCm}
+                  onChange={(e) => setHeightCm(e.target.value)}
+                  dir="ltr"
+                />
+              </FormGroup>
+              <FormGroup
+                label={t("roster.form.weightKg")}
+                hint={t("roster.form.weightHint")}
+              >
+                <Input
+                  type="number"
+                  min={30}
+                  max={250}
+                  value={weightKg}
+                  onChange={(e) => setWeightKg(e.target.value)}
+                  dir="ltr"
+                />
+              </FormGroup>
+              <FormGroup
+                label={t("roster.form.nationalityFlag")}
+                hint={t("roster.form.nationalityFlagHint")}
+              >
+                <Input
+                  value={flag}
+                  onChange={(e) => setFlag(e.target.value)}
+                  dir="ltr"
+                  placeholder="🇸🇦"
+                />
+              </FormGroup>
+              <FormGroup label={t("roster.form.joinedClubAt")}>
+                <Input
+                  type="date"
+                  value={joinedAt}
+                  onChange={(e) => setJoinedAt(e.target.value)}
+                  dir="ltr"
+                />
+              </FormGroup>
+            </div>
+            <FormGroup
+              label={t("roster.form.instagramHandle")}
+              hint={t("roster.form.instagramHint")}
+            >
+              <Input
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                dir="ltr"
+                placeholder="@player"
+              />
+            </FormGroup>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-spo-ink">
+                    {t("roster.form.previousClubs")}
+                  </h4>
+                  <p className="text-xs text-spo-muted">
+                    {t("roster.form.previousClubsHint")}
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() =>
+                    setPrevClubs((p) => [...p, { club: "", years: "" }])
+                  }
+                >
+                  {t("roster.form.addPrevious")}
+                </Button>
+              </div>
+              {prevClubs.length === 0 ? (
+                <p className="rounded-card border border-dashed border-spo-line p-2 text-xs text-spo-muted">
+                  {t("roster.form.previousClubsEmpty")}
+                </p>
+              ) : (
+                <ul className="space-y-2">
+                  {prevClubs.map((c, i) => (
+                    <li
+                      key={i}
+                      className="grid gap-2 rounded-card border border-spo-line bg-white p-2 sm:grid-cols-[2fr_1fr_auto]"
+                    >
+                      <Input
+                        value={c.club}
+                        onChange={(e) =>
+                          setPrevClubs((prev) =>
+                            prev.map((x, j) =>
+                              j === i ? { ...x, club: e.target.value } : x,
+                            ),
+                          )
+                        }
+                        placeholder={t("roster.form.prevClubName")}
+                      />
+                      <Input
+                        value={c.years}
+                        onChange={(e) =>
+                          setPrevClubs((prev) =>
+                            prev.map((x, j) =>
+                              j === i ? { ...x, years: e.target.value } : x,
+                            ),
+                          )
+                        }
+                        dir="ltr"
+                        placeholder="2018–2022"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setPrevClubs((prev) => prev.filter((_, j) => j !== i))
+                        }
+                        className="text-xs text-spo-muted hover:text-spo-danger"
+                      >
+                        {t("common.remove")}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </details>
+
         {err && <p className="text-sm text-spo-danger">{err}</p>}
         <div className="flex items-center justify-end gap-2 pt-2">
           <Button type="button" variant="ghost" onClick={onClose} disabled={submitting}>

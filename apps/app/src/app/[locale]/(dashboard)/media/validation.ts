@@ -26,6 +26,16 @@ export const PageIdSchema = z.object({ id: z.string().uuid() });
 
 // ─── News articles ────────────────────────────────────────────────────────
 
+export const ArticleCategorySchema = z.enum([
+  "general",
+  "match_report",
+  "press",
+  "transfer",
+  "community",
+  "youth",
+]);
+export type ArticleCategory = z.infer<typeof ArticleCategorySchema>;
+
 export const ArticleCreateSchema = z.object({
   slug: SlugSchema,
   title_ar: z.string().min(2).max(200),
@@ -36,6 +46,8 @@ export const ArticleCreateSchema = z.object({
   body_en: z.string().max(50000).optional().or(z.literal("")),
   cover_image_path: z.string().max(500).optional().or(z.literal("")),
   publish_now: z.boolean().default(false),
+  category: ArticleCategorySchema.default("general"),
+  fixture_id: z.string().uuid().optional().or(z.literal("")),
 });
 export type ArticleCreateInput = z.infer<typeof ArticleCreateSchema>;
 

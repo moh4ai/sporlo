@@ -18,11 +18,21 @@ const PlanCodeSchema = z
 
 const DiscountPctSchema = z.number().min(0).max(100).finite();
 
+// Each benefit is a bilingual line ({ ar: "...", en: "..." }). Either side
+// can be empty when the user only has one language to hand; we strip those
+// rows out before persisting so the array stays clean.
+export const PlanBenefitSchema = z.object({
+  ar: z.string().trim().max(200).default(""),
+  en: z.string().trim().max(200).default(""),
+});
+
 export const PlanCreateSchema = BilingualNameSchema.extend({
   code: PlanCodeSchema,
   duration_months: PositiveIntSchema.max(120),
   price_sar: SarAmountSchema,
   member_only_store_discount_pct: DiscountPctSchema,
+  public_visible: z.boolean().default(false),
+  benefits: z.array(PlanBenefitSchema).default([]),
 });
 
 export const PlanUpdateSchema = PlanCreateSchema.extend({

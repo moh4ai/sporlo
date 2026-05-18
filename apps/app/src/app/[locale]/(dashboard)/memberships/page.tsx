@@ -19,7 +19,7 @@ export default async function PlansPage({
   const { data: plans } = await supabase
     .from("plans")
     .select(
-      "id, code, name_ar, name_en, duration_months, price_sar, member_only_store_discount_pct, active",
+      "id, code, name_ar, name_en, duration_months, price_sar, member_only_store_discount_pct, active, public_visible, benefits_jsonb",
     )
     .order("created_at", { ascending: false });
 
@@ -29,6 +29,12 @@ export default async function PlansPage({
         ...p,
         price_sar: Number(p.price_sar),
         member_only_store_discount_pct: Number(p.member_only_store_discount_pct),
+        public_visible: Boolean(p.public_visible),
+        benefits: Array.isArray(p.benefits_jsonb)
+          ? (p.benefits_jsonb as Array<{ ar?: string; en?: string }>).map(
+              (b) => ({ ar: b.ar ?? "", en: b.en ?? "" }),
+            )
+          : [],
       }))}
       principal={{
         role: tenant.user_role,

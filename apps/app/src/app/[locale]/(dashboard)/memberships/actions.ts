@@ -90,12 +90,18 @@ export async function createPlan(
   const { tenant, error } = await withPrincipal("create", "plan");
   if (error) return permissionError("create", "plan");
 
+  const { benefits, ...rest } = parsed.data;
+  const cleanBenefits = benefits.filter(
+    (b) => b.ar.trim() !== "" || b.en.trim() !== "",
+  );
+
   const supabase = await createSupabaseServerClient();
   const { data, error: insertErr } = await supabase
     .from("plans")
     .insert({
       org_id: tenant!.org_id,
-      ...parsed.data,
+      ...rest,
+      benefits_jsonb: cleanBenefits,
     })
     .select("id")
     .single();
@@ -127,11 +133,14 @@ export async function updatePlan(
   const { tenant, error } = await withPrincipal("update", "plan");
   if (error) return permissionError("update", "plan");
 
-  const { id, ...patch } = parsed.data;
+  const { id, benefits, ...patch } = parsed.data;
+  const cleanBenefits = benefits.filter(
+    (b) => b.ar.trim() !== "" || b.en.trim() !== "",
+  );
   const supabase = await createSupabaseServerClient();
   const { error: updErr } = await supabase
     .from("plans")
-    .update(patch)
+    .update({ ...patch, benefits_jsonb: cleanBenefits })
     .eq("id", id)
     .eq("org_id", tenant!.org_id);
 

@@ -175,6 +175,8 @@ export async function createArticle(
       body_en: parsed.data.body_en || null,
       cover_image_path: parsed.data.cover_image_path || null,
       published_at: parsed.data.publish_now ? new Date().toISOString() : null,
+      category: parsed.data.category,
+      fixture_id: parsed.data.fixture_id || null,
     })
     .select("id")
     .single();
@@ -228,6 +230,8 @@ export async function updateArticle(
       body_en: patch.body_en || null,
       cover_image_path: patch.cover_image_path || null,
       published_at,
+      category: patch.category,
+      fixture_id: patch.fixture_id || null,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)

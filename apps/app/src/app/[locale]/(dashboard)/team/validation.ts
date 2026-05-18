@@ -28,6 +28,12 @@ export type SquadUpdateInput = z.infer<typeof SquadUpdateSchema>;
 // Roster
 // ─────────────────────────────────────────────
 
+// Bilingual previous-club entry: club name + years span (e.g. "2018–2022").
+export const PreviousClubSchema = z.object({
+  club: z.string().trim().max(120).default(""),
+  years: z.string().trim().max(40).default(""),
+});
+
 export const RosterCreateSchema = z.object({
   squad_id: UuidSchema,
   member_id: z.preprocess(emptyToUndef, UuidSchema.optional()),
@@ -37,6 +43,20 @@ export const RosterCreateSchema = z.object({
   position: z.preprocess(emptyToUndef, z.string().max(40).optional()),
   date_of_birth: z.preprocess(emptyToUndef, z.string().date().optional()),
   nationality: z.preprocess(emptyToUndef, z.string().max(40).optional()),
+  bio_ar: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
+  bio_en: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
+  nationality_flag: z.preprocess(emptyToUndef, z.string().max(8).optional()),
+  height_cm: z.preprocess(
+    emptyToUndef,
+    z.coerce.number().int().min(100).max(250).optional(),
+  ),
+  weight_kg: z.preprocess(
+    emptyToUndef,
+    z.coerce.number().int().min(30).max(250).optional(),
+  ),
+  instagram_handle: z.preprocess(emptyToUndef, z.string().max(60).optional()),
+  joined_club_at: z.preprocess(emptyToUndef, z.string().date().optional()),
+  previous_clubs: z.array(PreviousClubSchema).default([]),
 });
 
 export const RosterUpdateSchema = RosterCreateSchema.extend({

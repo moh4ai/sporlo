@@ -27,7 +27,7 @@ export default async function AccountPage({
   const { data } = await supabase
     .from("organizations")
     .select(
-      "id, slug, name_ar, name_en, tagline_ar, tagline_en, subdomain, custom_domain, primary_color, logo_path, tier, subscription_tier, archived_at",
+      "id, slug, name_ar, name_en, tagline_ar, tagline_en, subdomain, custom_domain, primary_color, logo_path, tier, subscription_tier, archived_at, social_jsonb, app_store_url, play_store_url, newsletter_provider",
     )
     .eq("id", tenant.org_id)
     .single();

@@ -33,7 +33,7 @@ export default async function SquadDetailPage({
   const { data: roster } = await supabase
     .from("roster_entries")
     .select(
-      "id, full_name_ar, full_name_en, jersey_number, position, date_of_birth, nationality, active",
+      "id, full_name_ar, full_name_en, jersey_number, position, date_of_birth, nationality, active, bio_ar, bio_en, nationality_flag, height_cm, weight_kg, instagram_handle, joined_club_at, previous_clubs_jsonb",
     )
     .eq("squad_id", id)
     .eq("active", true)
@@ -47,6 +47,18 @@ export default async function SquadDetailPage({
     position: p.position,
     date_of_birth: p.date_of_birth,
     nationality: p.nationality,
+    bio_ar: p.bio_ar,
+    bio_en: p.bio_en,
+    nationality_flag: p.nationality_flag,
+    height_cm: p.height_cm,
+    weight_kg: p.weight_kg,
+    instagram_handle: p.instagram_handle,
+    joined_club_at: p.joined_club_at,
+    previous_clubs: Array.isArray(p.previous_clubs_jsonb)
+      ? (p.previous_clubs_jsonb as Array<{ club?: string; years?: string }>).map(
+          (c) => ({ club: c.club ?? "", years: c.years ?? "" }),
+        )
+      : [],
   }));
 
   const { data: trainingData } = await supabase

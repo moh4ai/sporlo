@@ -53,6 +53,14 @@ export async function updateOrganization(
   // Use service-role for the write because `public.organizations` RLS only
   // grants SELECT on the caller's own row; UPDATE goes through the trusted
   // server context after the ACL check above.
+  // Strip empty entries out of social so we don't store a wall of empties.
+  const cleanSocial: Record<string, string> = {};
+  if (parsed.data.social) {
+    for (const [k, v] of Object.entries(parsed.data.social)) {
+      if (typeof v === "string" && v.trim() !== "") cleanSocial[k] = v;
+    }
+  }
+
   const admin = createServiceRoleClient();
   const { error: updErr } = await admin
     .from("organizations")
@@ -64,6 +72,10 @@ export async function updateOrganization(
       subdomain: parsed.data.subdomain ?? null,
       custom_domain: parsed.data.custom_domain ?? null,
       primary_color: parsed.data.primary_color ?? null,
+      social_jsonb: cleanSocial,
+      app_store_url: parsed.data.app_store_url ?? null,
+      play_store_url: parsed.data.play_store_url ?? null,
+      newsletter_provider: parsed.data.newsletter_provider ?? null,
     })
     .eq("id", tenant!.org_id);
 

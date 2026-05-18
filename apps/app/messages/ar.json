@@ -617,7 +617,23 @@
       "brandingHint": "الشعار واللون المعتمد للواجهات العامة وبوابة الأعضاء.",
       "plan": "الاشتراك",
       "planHint": "تفاصيل اشتراك ناديك في سبورلو.",
-      "planManagedBy": "تُدار تغييرات الاشتراك من قبل سبورلو HQ. تواصل مع الدعم للترقية."
+      "planManagedBy": "تُدار تغييرات الاشتراك من قبل سبورلو HQ. تواصل مع الدعم للترقية.",
+      "social": "وسائل التواصل",
+      "socialHint": "الروابط التي تظهر في الموقع العام. اتركها فارغة لإخفائها.",
+      "apps": "تطبيقات الجوال",
+      "appsHint": "روابط App Store و Google Play تظهر في تذييل بوابة المشجعين.",
+      "newsletter": "النشرة البريدية",
+      "newsletterHint": "اختر مزود خدمة التسجيل في النشرة البريدية.",
+      "advanced": "إعدادات إضافية",
+      "advancedHint": "إدارة الأسطح العامة الأخرى للنادي.",
+      "linkHonours": "خزانة البطولات",
+      "linkHonoursHint": "البطولات والكؤوس والإنجازات التاريخية.",
+      "linkSponsors": "الرعاة والشركاء",
+      "linkSponsorsHint": "شبكة رعاة متعددة المستويات لبوابة المشجعين.",
+      "linkStadium": "بيانات الملعب",
+      "linkStadiumHint": "العنوان والسعة والبوابات ومواقف السيارات وسهولة الوصول.",
+      "linkFans": "إدارة بوابة المشجعين",
+      "linkFansHint": "اختر الأقسام التي تظهر في الموقع العام."
     },
     "fields": {
       "nameAr": "اسم النادي (عربي)",
@@ -636,7 +652,22 @@
       "logoHint": "PNG أو JPG أو WEBP أو SVG. الحجم الأقصى 2 ميجابايت.",
       "logoEmpty": "لا يوجد شعار بعد",
       "tier": "الفئة",
-      "subscriptionTier": "الاشتراك"
+      "subscriptionTier": "الاشتراك",
+      "social": {
+        "twitter": "رابط تويتر / X",
+        "instagram": "رابط إنستغرام",
+        "tiktok": "رابط تيك توك",
+        "youtube": "رابط يوتيوب",
+        "facebook": "رابط فيسبوك",
+        "snapchat": "رابط سناب شات",
+        "linkedin": "رابط لينكدإن",
+        "whatsapp": "رابط واتساب"
+      },
+      "appStoreUrl": "رابط App Store",
+      "playStoreUrl": "رابط Google Play",
+      "newsletterProvider": "مزود النشرة البريدية",
+      "newsletterProviderHint": "يتم إعداد ربط المزود من وحدة التكاملات.",
+      "newsletterProviderNone": "غير مفعل"
     },
     "actions": {
       "save": "حفظ التغييرات",
@@ -955,7 +986,8 @@
       "unarchive": "إلغاء الأرشفة",
       "confirm": "تأكيد",
       "active": "نشطة",
-      "archived": "مؤرشفة"
+      "archived": "مؤرشفة",
+      "remove": "إزالة"
     },
     "plans": {
       "title": "الباقات",
@@ -981,7 +1013,15 @@
         "durationMonths": "المدة (أشهر)",
         "priceSar": "السعر (ر.س)",
         "discountPct": "خصم المتجر للأعضاء (%)",
-        "discountHint": "يطبق على الدفع في المتجر. اضبط 0 إذا لم تكن باقة تخفيضات."
+        "discountHint": "يطبق على الدفع في المتجر. اضبط 0 إذا لم تكن باقة تخفيضات.",
+        "publicVisible": "إظهار في صفحة العضوية العامة",
+        "publicVisibleHint": "يظهر في /membership للمشجعين. الخطط الداخلية تبقى مخفية.",
+        "benefits": "المزايا",
+        "benefitsHint": "نقاط تظهر في بطاقة الباقة العامة. أضف نقطة لكل سطر.",
+        "benefitsEmpty": "لا توجد مزايا بعد. أضف عدداً منها لتجعل بطاقة الباقة مغرية.",
+        "benefitAdd": "إضافة ميزة",
+        "benefitArPlaceholder": "مثال: تذكرة موسم مجانية",
+        "benefitEnPlaceholder": "e.g. Free season ticket"
       },
       "errors": {
         "codeExists": "يوجد باقة بنفس الرمز.",
@@ -1781,7 +1821,24 @@
         "jerseyNumber": "رقم القميص",
         "position": "المركز (مثلاً مهاجم، مدافع)",
         "dateOfBirth": "تاريخ الميلاد",
-        "nationality": "الجنسية"
+        "nationality": "الجنسية",
+        "profileDetails": "تفاصيل ملف اللاعب",
+        "bioAr": "السيرة (عربي)",
+        "bioEn": "السيرة (إنجليزي)",
+        "heightCm": "الطول (سم)",
+        "heightHint": "100-250 سم",
+        "weightKg": "الوزن (كجم)",
+        "weightHint": "30-250 كجم",
+        "nationalityFlag": "علم الدولة",
+        "nationalityFlagHint": "يظهر بجانب الاسم في الصفحة العامة.",
+        "instagramHandle": "حساب إنستغرام",
+        "instagramHint": "يظهر في صفحة اللاعب العامة.",
+        "joinedClubAt": "تاريخ الانضمام للنادي",
+        "previousClubs": "الأندية السابقة",
+        "previousClubsHint": "مسيرة اللاعب. أضف سطراً لكل نادٍ.",
+        "previousClubsEmpty": "لا توجد أندية سابقة مسجلة.",
+        "addPrevious": "إضافة نادٍ سابق",
+        "prevClubName": "اسم النادي"
       },
       "errors": {
         "jerseyTaken": "رقم القميص محجوز في هذا الفريق."
@@ -2287,7 +2344,12 @@
         "bodyAr": "المحتوى (عربي)",
         "bodyEn": "المحتوى (إنجليزي)",
         "coverImage": "مسار صورة الغلاف",
-        "publishNow": "نشر فوري"
+        "publishNow": "نشر فوري",
+        "category": "التصنيف",
+        "categoryHint": "كيف يتم تصنيف المقال في /news وفي مركز المباريات.",
+        "fixture": "المباراة المرتبطة",
+        "fixtureHint": "يعرض التقرير في مركز المباريات العام.",
+        "fixtureNone": "بدون رابط للمباراة"
       },
       "errors": {
         "slugTaken": "هذا الرابط مستخدم بالفعل."

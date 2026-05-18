@@ -157,6 +157,10 @@ export async function addRosterEntry(
   const { tenant, error } = await withPrincipal("update", "team");
   if (error) return permissionError("update", "team");
 
+  const cleanPrevClubs = parsed.data.previous_clubs.filter(
+    (c) => c.club.trim() !== "" || c.years.trim() !== "",
+  );
+
   const supabase = await createSupabaseServerClient();
   const { data, error: insErr } = await supabase
     .from("roster_entries")
@@ -170,6 +174,14 @@ export async function addRosterEntry(
       position: parsed.data.position ?? null,
       date_of_birth: parsed.data.date_of_birth ?? null,
       nationality: parsed.data.nationality ?? null,
+      bio_ar: parsed.data.bio_ar ?? null,
+      bio_en: parsed.data.bio_en ?? null,
+      nationality_flag: parsed.data.nationality_flag ?? null,
+      height_cm: parsed.data.height_cm ?? null,
+      weight_kg: parsed.data.weight_kg ?? null,
+      instagram_handle: parsed.data.instagram_handle ?? null,
+      joined_club_at: parsed.data.joined_club_at ?? null,
+      previous_clubs_jsonb: cleanPrevClubs,
     })
     .select("id")
     .single();
@@ -197,7 +209,10 @@ export async function updateRosterEntry(
   const { tenant, error } = await withPrincipal("update", "team");
   if (error) return permissionError("update", "team");
 
-  const { id, squad_id, ...patch } = parsed.data;
+  const { id, squad_id, previous_clubs, ...patch } = parsed.data;
+  const cleanPrevClubs = previous_clubs.filter(
+    (c) => c.club.trim() !== "" || c.years.trim() !== "",
+  );
   const supabase = await createSupabaseServerClient();
   const { error: updErr } = await supabase
     .from("roster_entries")
@@ -209,6 +224,14 @@ export async function updateRosterEntry(
       position: patch.position ?? null,
       date_of_birth: patch.date_of_birth ?? null,
       nationality: patch.nationality ?? null,
+      bio_ar: patch.bio_ar ?? null,
+      bio_en: patch.bio_en ?? null,
+      nationality_flag: patch.nationality_flag ?? null,
+      height_cm: patch.height_cm ?? null,
+      weight_kg: patch.weight_kg ?? null,
+      instagram_handle: patch.instagram_handle ?? null,
+      joined_club_at: patch.joined_club_at ?? null,
+      previous_clubs_jsonb: cleanPrevClubs,
     })
     .eq("id", id)
     .eq("org_id", tenant!.org_id);

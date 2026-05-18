@@ -617,7 +617,23 @@
       "brandingHint": "Logo and accent colour used on the public site and member portal.",
       "plan": "Plan",
       "planHint": "Your Sporlo subscription details.",
-      "planManagedBy": "Plan changes are managed by Sporlo HQ. Contact support to upgrade."
+      "planManagedBy": "Plan changes are managed by Sporlo HQ. Contact support to upgrade.",
+      "social": "Social media",
+      "socialHint": "Links shown on the public site. Leave blank to hide.",
+      "apps": "Mobile apps",
+      "appsHint": "App Store and Google Play links shown in the fan portal footer.",
+      "newsletter": "Newsletter",
+      "newsletterHint": "Choose the provider that powers your newsletter signup form.",
+      "advanced": "Configure further",
+      "advancedHint": "Manage other public surfaces for your club.",
+      "linkHonours": "Honours cabinet",
+      "linkHonoursHint": "Trophies, league titles, and historic wins.",
+      "linkSponsors": "Sponsors & partners",
+      "linkSponsorsHint": "Multi-tier sponsor grid for the fan portal.",
+      "linkStadium": "Stadium info",
+      "linkStadiumHint": "Address, capacity, gates, parking, accessibility.",
+      "linkFans": "Fan portal manager",
+      "linkFansHint": "Choose which sections appear on the public site."
     },
     "fields": {
       "nameAr": "Club name (Arabic)",
@@ -636,7 +652,22 @@
       "logoHint": "PNG, JPG, WEBP, or SVG. Max 2 MB.",
       "logoEmpty": "No logo yet",
       "tier": "Tier",
-      "subscriptionTier": "Subscription"
+      "subscriptionTier": "Subscription",
+      "social": {
+        "twitter": "Twitter / X URL",
+        "instagram": "Instagram URL",
+        "tiktok": "TikTok URL",
+        "youtube": "YouTube URL",
+        "facebook": "Facebook URL",
+        "snapchat": "Snapchat URL",
+        "linkedin": "LinkedIn URL",
+        "whatsapp": "WhatsApp URL"
+      },
+      "appStoreUrl": "App Store URL",
+      "playStoreUrl": "Google Play URL",
+      "newsletterProvider": "Newsletter provider",
+      "newsletterProviderHint": "Provider wiring is configured in the Integrations module.",
+      "newsletterProviderNone": "Not configured"
     },
     "actions": {
       "save": "Save changes",
@@ -955,7 +986,8 @@
       "unarchive": "Unarchive",
       "confirm": "Confirm",
       "active": "Active",
-      "archived": "Archived"
+      "archived": "Archived",
+      "remove": "Remove"
     },
     "plans": {
       "title": "Plans",
@@ -981,7 +1013,15 @@
         "durationMonths": "Duration (months)",
         "priceSar": "Price (SAR)",
         "discountPct": "Member store discount (%)",
-        "discountHint": "Applied to the Store module checkout. Set 0 if not a member-discount plan."
+        "discountHint": "Applied to the Store module checkout. Set 0 if not a member-discount plan.",
+        "publicVisible": "Show on public membership page",
+        "publicVisibleHint": "Visible on /membership for fans. Internal plans stay hidden.",
+        "benefits": "Benefits",
+        "benefitsHint": "Bullet points shown on the public tier card. Add one per row.",
+        "benefitsEmpty": "No benefits yet. Add a few to make the public tier card compelling.",
+        "benefitAdd": "Add benefit",
+        "benefitArPlaceholder": "مثال: تذكرة موسم مجانية",
+        "benefitEnPlaceholder": "e.g. Free season ticket"
       },
       "errors": {
         "codeExists": "A plan with this code already exists.",
@@ -1781,7 +1821,24 @@
         "jerseyNumber": "Jersey number",
         "position": "Position (e.g. striker, defender)",
         "dateOfBirth": "Date of birth",
-        "nationality": "Nationality"
+        "nationality": "Nationality",
+        "profileDetails": "Player profile details",
+        "bioAr": "Biography (Arabic)",
+        "bioEn": "Biography (English)",
+        "heightCm": "Height (cm)",
+        "heightHint": "100–250 cm",
+        "weightKg": "Weight (kg)",
+        "weightHint": "30–250 kg",
+        "nationalityFlag": "Flag emoji",
+        "nationalityFlagHint": "Shown next to the name on the public profile.",
+        "instagramHandle": "Instagram handle",
+        "instagramHint": "Shown on the public player page.",
+        "joinedClubAt": "Joined club",
+        "previousClubs": "Previous clubs",
+        "previousClubsHint": "Career history. Add one row per club.",
+        "previousClubsEmpty": "No previous clubs recorded.",
+        "addPrevious": "Add previous club",
+        "prevClubName": "Club name"
       },
       "errors": {
         "jerseyTaken": "That jersey number is already taken in this squad."
@@ -2287,7 +2344,12 @@
         "bodyAr": "Body (Arabic)",
         "bodyEn": "Body (English)",
         "coverImage": "Cover image path",
-        "publishNow": "Publish now"
+        "publishNow": "Publish now",
+        "category": "Category",
+        "categoryHint": "How the article is filed on /news and the match center.",
+        "fixture": "Linked fixture",
+        "fixtureHint": "Surfaces the report on the public match center.",
+        "fixtureNone": "No fixture link"
       },
       "errors": {
         "slugTaken": "That slug is already in use."

@@ -12,6 +12,7 @@ import {
   FileUpload,
   FormGroup,
   Input,
+  Select,
   useToast,
 } from "@sporlo/ui";
 
@@ -23,6 +24,27 @@ import {
   updateOrganization,
   uploadOrgLogo,
 } from "../actions";
+
+type SocialKey =
+  | "twitter"
+  | "instagram"
+  | "tiktok"
+  | "youtube"
+  | "facebook"
+  | "snapchat"
+  | "linkedin"
+  | "whatsapp";
+
+const SOCIAL_KEYS: ReadonlyArray<SocialKey> = [
+  "twitter",
+  "instagram",
+  "tiktok",
+  "youtube",
+  "facebook",
+  "snapchat",
+  "linkedin",
+  "whatsapp",
+];
 
 export type OrgRow = {
   id: string;
@@ -38,6 +60,10 @@ export type OrgRow = {
   tier: string | null;
   subscription_tier: string;
   archived_at: string | null;
+  social_jsonb: Record<string, string> | null;
+  app_store_url: string | null;
+  play_store_url: string | null;
+  newsletter_provider: string | null;
 };
 
 export function AccountForm({
@@ -63,6 +89,17 @@ export function AccountForm({
   const [subdomain, setSubdomain] = useState(org.subdomain ?? "");
   const [customDomain, setCustomDomain] = useState(org.custom_domain ?? "");
   const [primaryColor, setPrimaryColor] = useState(org.primary_color ?? "");
+  const [social, setSocial] = useState<Record<SocialKey, string>>(() => {
+    const init = {} as Record<SocialKey, string>;
+    const src = (org.social_jsonb ?? {}) as Record<string, string>;
+    for (const k of SOCIAL_KEYS) init[k] = src[k] ?? "";
+    return init;
+  });
+  const [appStoreUrl, setAppStoreUrl] = useState(org.app_store_url ?? "");
+  const [playStoreUrl, setPlayStoreUrl] = useState(org.play_store_url ?? "");
+  const [newsletterProvider, setNewsletterProvider] = useState(
+    org.newsletter_provider ?? "",
+  );
   const [submitting, setSubmitting] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [archiving, setArchiving] = useState(false);
@@ -83,6 +120,13 @@ export function AccountForm({
       subdomain,
       custom_domain: customDomain,
       primary_color: primaryColor,
+      social,
+      app_store_url: appStoreUrl,
+      play_store_url: playStoreUrl,
+      newsletter_provider:
+        newsletterProvider === "" || newsletterProvider === undefined
+          ? undefined
+          : (newsletterProvider as "mailchimp" | "resend" | "brevo"),
     });
     setSubmitting(false);
     if (res.ok) {
@@ -305,6 +349,127 @@ export function AccountForm({
               />
             </div>
           </FormGroup>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="space-y-4">
+          <header className="space-y-1">
+            <h2 className="text-lg font-semibold text-spo-ink">{t("sections.social")}</h2>
+            <p className="text-sm text-spo-muted">{t("sections.socialHint")}</p>
+          </header>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SOCIAL_KEYS.map((key) => (
+              <FormGroup key={key} label={t(`fields.social.${key}`)}>
+                <Input
+                  value={social[key]}
+                  onChange={(e) =>
+                    setSocial((s) => ({ ...s, [key]: e.target.value }))
+                  }
+                  dir="ltr"
+                  placeholder="https://"
+                  disabled={!canEdit}
+                />
+              </FormGroup>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="space-y-4">
+          <header className="space-y-1">
+            <h2 className="text-lg font-semibold text-spo-ink">{t("sections.apps")}</h2>
+            <p className="text-sm text-spo-muted">{t("sections.appsHint")}</p>
+          </header>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormGroup label={t("fields.appStoreUrl")}>
+              <Input
+                value={appStoreUrl}
+                onChange={(e) => setAppStoreUrl(e.target.value)}
+                dir="ltr"
+                placeholder="https://apps.apple.com/..."
+                disabled={!canEdit}
+              />
+            </FormGroup>
+            <FormGroup label={t("fields.playStoreUrl")}>
+              <Input
+                value={playStoreUrl}
+                onChange={(e) => setPlayStoreUrl(e.target.value)}
+                dir="ltr"
+                placeholder="https://play.google.com/..."
+                disabled={!canEdit}
+              />
+            </FormGroup>
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="space-y-4">
+          <header className="space-y-1">
+            <h2 className="text-lg font-semibold text-spo-ink">{t("sections.newsletter")}</h2>
+            <p className="text-sm text-spo-muted">{t("sections.newsletterHint")}</p>
+          </header>
+          <FormGroup label={t("fields.newsletterProvider")} hint={t("fields.newsletterProviderHint")}>
+            <Select
+              value={newsletterProvider}
+              onChange={(e) => setNewsletterProvider(e.target.value)}
+              disabled={!canEdit}
+            >
+              <option value="">{t("fields.newsletterProviderNone")}</option>
+              <option value="mailchimp">Mailchimp</option>
+              <option value="resend">Resend</option>
+              <option value="brevo">Brevo</option>
+            </Select>
+          </FormGroup>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="space-y-4">
+          <header className="space-y-1">
+            <h2 className="text-lg font-semibold text-spo-ink">{t("sections.advanced")}</h2>
+            <p className="text-sm text-spo-muted">{t("sections.advancedHint")}</p>
+          </header>
+          <ul className="grid gap-2 sm:grid-cols-2">
+            <li>
+              <a
+                href={`/${locale}/account/honours`}
+                className="block rounded-card border border-spo-line bg-white p-3 text-sm transition-colors hover:border-spo-green/40"
+              >
+                <div className="font-medium text-spo-ink">{t("sections.linkHonours")}</div>
+                <div className="text-xs text-spo-muted">{t("sections.linkHonoursHint")}</div>
+              </a>
+            </li>
+            <li>
+              <a
+                href={`/${locale}/account/sponsors`}
+                className="block rounded-card border border-spo-line bg-white p-3 text-sm transition-colors hover:border-spo-green/40"
+              >
+                <div className="font-medium text-spo-ink">{t("sections.linkSponsors")}</div>
+                <div className="text-xs text-spo-muted">{t("sections.linkSponsorsHint")}</div>
+              </a>
+            </li>
+            <li>
+              <a
+                href={`/${locale}/account/stadium`}
+                className="block rounded-card border border-spo-line bg-white p-3 text-sm transition-colors hover:border-spo-green/40"
+              >
+                <div className="font-medium text-spo-ink">{t("sections.linkStadium")}</div>
+                <div className="text-xs text-spo-muted">{t("sections.linkStadiumHint")}</div>
+              </a>
+            </li>
+            <li>
+              <a
+                href={`/${locale}/fans`}
+                className="block rounded-card border border-spo-line bg-white p-3 text-sm transition-colors hover:border-spo-green/40"
+              >
+                <div className="font-medium text-spo-ink">{t("sections.linkFans")}</div>
+                <div className="text-xs text-spo-muted">{t("sections.linkFansHint")}</div>
+              </a>
+            </li>
+          </ul>
         </div>
       </Card>
 

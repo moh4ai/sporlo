@@ -12,6 +12,7 @@ import {
   EmptyTableRow,
   FormGroup,
   Input,
+  Select,
   Switch,
   Table,
   TBody,
@@ -27,6 +28,23 @@ import { useRouter } from "@/i18n/navigation";
 
 import { createArticle, deleteArticle, updateArticle } from "../../actions";
 
+export type ArticleCategory =
+  | "general"
+  | "match_report"
+  | "press"
+  | "transfer"
+  | "community"
+  | "youth";
+
+export const ARTICLE_CATEGORIES: ReadonlyArray<ArticleCategory> = [
+  "general",
+  "match_report",
+  "press",
+  "transfer",
+  "community",
+  "youth",
+];
+
 export type ArticleRow = {
   id: string;
   slug: string;
@@ -38,6 +56,15 @@ export type ArticleRow = {
   body_en: string | null;
   cover_image_path: string | null;
   published_at: string | null;
+  category: ArticleCategory;
+  fixture_id: string | null;
+};
+
+export type FixtureOption = {
+  id: string;
+  opponent_ar: string;
+  opponent_en: string;
+  kickoff_at: string;
 };
 
 type DrawerState =
@@ -47,10 +74,12 @@ type DrawerState =
 
 export function NewsClient({
   articles,
+  fixtures,
   principal,
   locale,
 }: {
   articles: ArticleRow[];
+  fixtures: FixtureOption[];
   principal: Principal;
   locale: "ar" | "en";
 }) {
@@ -146,6 +175,8 @@ export function NewsClient({
 
       <ArticleFormDrawer
         state={drawer}
+        fixtures={fixtures}
+        locale={locale}
         onClose={() => setDrawer({ open: false })}
         onSaved={() => {
           setDrawer({ open: false });
@@ -179,10 +210,14 @@ export function NewsClient({
 
 function ArticleFormDrawer({
   state,
+  fixtures,
+  locale,
   onClose,
   onSaved,
 }: {
   state: DrawerState;
+  fixtures: FixtureOption[];
+  locale: "ar" | "en";
   onClose: () => void;
   onSaved: () => void;
 }) {
@@ -200,6 +235,8 @@ function ArticleFormDrawer({
   const [bodyEn, setBodyEn] = useState("");
   const [coverPath, setCoverPath] = useState("");
   const [publishNow, setPublishNow] = useState(false);
+  const [category, setCategory] = useState<ArticleCategory>("general");
+  const [fixtureId, setFixtureId] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [slugErr, setSlugErr] = useState<string | null>(null);
 
@@ -217,6 +254,8 @@ function ArticleFormDrawer({
       setBodyEn("");
       setCoverPath("");
       setPublishNow(false);
+      setCategory("general");
+      setFixtureId("");
     } else {
       setSlug(state.article.slug);
       setTitleAr(state.article.title_ar);
@@ -227,9 +266,17 @@ function ArticleFormDrawer({
       setBodyEn(state.article.body_en ?? "");
       setCoverPath(state.article.cover_image_path ?? "");
       setPublishNow(!!state.article.published_at);
+      setCategory(state.article.category);
+      setFixtureId(state.article.fixture_id ?? "");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
+
+  const fixtureFmt = new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -245,6 +292,8 @@ function ArticleFormDrawer({
       body_en: bodyEn,
       cover_image_path: coverPath,
       publish_now: publishNow,
+      category,
+      fixture_id: category === "match_report" ? fixtureId : "",
     };
     const res = isEdit && editing
       ? await updateArticle({ id: editing.id, ...payload })
@@ -303,6 +352,41 @@ function ArticleFormDrawer({
           <FormGroup label={t("news.form.bodyEn")}>
             <Textarea rows={10} value={bodyEn} onChange={(e) => setBodyEn(e.target.value)} dir="ltr" />
           </FormGroup>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormGroup label={t("news.form.category")} hint={t("news.form.categoryHint")}>
+            <Select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as ArticleCategory)}
+            >
+              {ARTICLE_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {t(`news.categories.${c}`)}
+                </option>
+              ))}
+            </Select>
+          </FormGroup>
+          {category === "match_report" && (
+            <FormGroup label={t("news.form.fixture")} hint={t("news.form.fixtureHint")}>
+              <Select
+                value={fixtureId}
+                onChange={(e) => setFixtureId(e.target.value)}
+              >
+                <option value="">{t("news.form.fixtureNone")}</option>
+                {fixtures.map((f) => {
+                  const opp =
+                    locale === "ar"
+                      ? f.opponent_ar || f.opponent_en
+                      : f.opponent_en || f.opponent_ar;
+                  return (
+                    <option key={f.id} value={f.id}>
+                      {fixtureFmt.format(new Date(f.kickoff_at))} — {opp}
+                    </option>
+                  );
+                })}
+              </Select>
+            </FormGroup>
+          )}
         </div>
         <FormGroup label={t("news.form.coverImage")}>
           <Input value={coverPath} onChange={(e) => setCoverPath(e.target.value)} dir="ltr" />

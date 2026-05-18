@@ -31,6 +31,8 @@ import { useRouter } from "@/i18n/navigation";
 
 import { archivePlan, createPlan, updatePlan } from "../actions";
 
+type PlanBenefit = { ar: string; en: string };
+
 type PlanRow = {
   id: string;
   code: string;
@@ -40,6 +42,8 @@ type PlanRow = {
   price_sar: number;
   member_only_store_discount_pct: number;
   active: boolean;
+  public_visible: boolean;
+  benefits: PlanBenefit[];
 };
 
 type DrawerState =
@@ -236,6 +240,8 @@ function PlanFormDrawer({
   const [duration, setDuration] = useState("12");
   const [price, setPrice] = useState("0");
   const [discount, setDiscount] = useState("0");
+  const [publicVisible, setPublicVisible] = useState(false);
+  const [benefits, setBenefits] = useState<PlanBenefit[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [fieldErr, setFieldErr] = useState<string | null>(null);
 
@@ -255,6 +261,8 @@ function PlanFormDrawer({
       setDuration("12");
       setPrice("0");
       setDiscount("0");
+      setPublicVisible(false);
+      setBenefits([]);
     } else {
       setCode(state.plan.code);
       setNameAr(state.plan.name_ar);
@@ -262,6 +270,8 @@ function PlanFormDrawer({
       setDuration(String(state.plan.duration_months));
       setPrice(String(state.plan.price_sar));
       setDiscount(String(state.plan.member_only_store_discount_pct));
+      setPublicVisible(state.plan.public_visible);
+      setBenefits(state.plan.benefits);
     }
     setFieldErr(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -278,6 +288,8 @@ function PlanFormDrawer({
       duration_months: Number(duration),
       price_sar: Number(price),
       member_only_store_discount_pct: Number(discount),
+      public_visible: publicVisible,
+      benefits,
     };
     const res = isEdit && editingPlan
       ? await updatePlan({ id: editingPlan.id, ...payload })
@@ -373,6 +385,96 @@ function PlanFormDrawer({
               dir="ltr"
             />
           </FormGroup>
+        </div>
+
+        <div className="space-y-2 rounded-card border border-spo-line bg-spo-paper/40 p-3">
+          <label className="flex items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={publicVisible}
+              onChange={(e) => setPublicVisible(e.target.checked)}
+              className="mt-1 h-4 w-4"
+            />
+            <span>
+              <span className="font-medium text-spo-ink">
+                {t("plans.form.publicVisible")}
+              </span>
+              <span className="block text-xs text-spo-muted">
+                {t("plans.form.publicVisibleHint")}
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-spo-ink">
+                {t("plans.form.benefits")}
+              </h3>
+              <p className="text-xs text-spo-muted">
+                {t("plans.form.benefitsHint")}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() =>
+                setBenefits((b) => [...b, { ar: "", en: "" }])
+              }
+            >
+              {t("plans.form.benefitAdd")}
+            </Button>
+          </div>
+          {benefits.length === 0 ? (
+            <p className="rounded-card border border-dashed border-spo-line p-3 text-xs text-spo-muted">
+              {t("plans.form.benefitsEmpty")}
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {benefits.map((b, i) => (
+                <li
+                  key={i}
+                  className="grid gap-2 rounded-card border border-spo-line bg-white p-2 sm:grid-cols-[1fr_1fr_auto]"
+                >
+                  <Input
+                    value={b.ar}
+                    onChange={(e) =>
+                      setBenefits((prev) =>
+                        prev.map((x, j) =>
+                          j === i ? { ...x, ar: e.target.value } : x,
+                        ),
+                      )
+                    }
+                    dir="rtl"
+                    placeholder={t("plans.form.benefitArPlaceholder")}
+                  />
+                  <Input
+                    value={b.en}
+                    onChange={(e) =>
+                      setBenefits((prev) =>
+                        prev.map((x, j) =>
+                          j === i ? { ...x, en: e.target.value } : x,
+                        ),
+                      )
+                    }
+                    dir="ltr"
+                    placeholder={t("plans.form.benefitEnPlaceholder")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setBenefits((prev) => prev.filter((_, j) => j !== i))
+                    }
+                    className="text-xs text-spo-muted hover:text-spo-danger"
+                    aria-label={t("common.remove")}
+                  >
+                    {t("common.remove")}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {fieldErr && <p className="text-sm text-spo-danger">{fieldErr}</p>}
