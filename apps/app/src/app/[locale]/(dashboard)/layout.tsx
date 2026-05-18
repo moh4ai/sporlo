@@ -48,6 +48,13 @@ export default async function DashboardLayout({
     throw err;
   }
 
+  // Members live on /me, not the staff dashboard. Defence-in-depth — the
+  // sign-in redirect handles the happy path, this catches the case where a
+  // member somehow lands on / (e.g. they bookmarked the dashboard root).
+  if (tenant.user_role === "member") {
+    redirect(`/${locale}/me`);
+  }
+
   const principal: Principal = {
     role: tenant.user_role,
     department: tenant.department,

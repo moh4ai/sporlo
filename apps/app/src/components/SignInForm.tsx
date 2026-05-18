@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
+import { parseClaims } from "@sporlo/auth";
 import { Button, Input } from "@sporlo/ui";
 
 import { useRouter } from "@/i18n/navigation";
@@ -42,12 +43,14 @@ export function SignInForm({ locale }: { locale: "ar" | "en" }) {
           setSuccess(t("checkEmail"));
         }
       } else {
-        const { error: err } = await supabase.auth.signInWithPassword({
+        const { data, error: err } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
         if (err) throw err;
-        router.replace("/");
+        // Members land on /me, everyone else on the staff dashboard.
+        const claims = data.session ? parseClaims(data.session.access_token) : null;
+        router.replace(claims?.role === "member" ? "/me" : "/");
         router.refresh();
       }
     } catch {

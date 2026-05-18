@@ -7,6 +7,8 @@ import { PublicShell } from "@/components/PublicShell";
 import { createServiceRoleClient } from "@/lib/supabase-server";
 import type { Locale } from "@/i18n/routing";
 
+import { ClaimAccountForm } from "./_components/ClaimAccountForm";
+
 // Public member portal. Token-gated. Read-only — Phase 1.x will add the
 // self-service freeze/cancel + downloadable member card.
 export default async function PortalPage({
@@ -41,7 +43,7 @@ export default async function PortalPage({
   const [{ data: member }, { data: org }] = await Promise.all([
     admin
       .from("members")
-      .select("full_name_ar, full_name_en, member_number, email, status")
+      .select("full_name_ar, full_name_en, member_number, email, status, user_id")
       .eq("id", tokenRow.member_id)
       .maybeSingle(),
     admin
@@ -177,6 +179,14 @@ export default async function PortalPage({
             )}
           </div>
         </div>
+
+        {/* Claim account form — only shown when not yet claimed */}
+        {!member?.user_id && (
+          <ClaimAccountForm
+            token={token}
+            defaultEmail={(member?.email as string | null) ?? null}
+          />
+        )}
 
         {/* Payment timeline */}
         {payments && payments.length > 0 && (

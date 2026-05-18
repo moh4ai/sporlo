@@ -52,6 +52,54 @@
       "live": "Live now"
     }
   },
+  "memberPortal": {
+    "signOut": "Sign out",
+    "poweredBy": "Powered by Sporlo",
+    "hero": {
+      "eyebrow": "Member portal",
+      "greeting": "Welcome, {name}",
+      "memberNumber": "Member number"
+    },
+    "subscription": {
+      "title": "Subscription",
+      "expires": "Expires",
+      "none": "No active subscription",
+      "noneHint": "Talk to your club admin to renew or sign up.",
+      "statusActive": "Active",
+      "statusNone": "None"
+    },
+    "fixtures": {
+      "title": "Upcoming matches",
+      "buyTickets": "Buy tickets"
+    },
+    "payments": {
+      "title": "Payment history"
+    },
+    "news": {
+      "title": "Latest from the club"
+    }
+  },
+  "claimAccount": {
+    "title": "Create a permanent account",
+    "subtitle": "This portal link expires in 7 days. Set a password to keep signing in.",
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "confirm": "Confirm password"
+    },
+    "submit": "Create account",
+    "submitting": "Creating…",
+    "toast": {
+      "claimed": "Account created — sign in to continue."
+    },
+    "errors": {
+      "passwordMismatch": "Passwords don't match.",
+      "passwordTooShort": "Password must be at least 8 characters.",
+      "expired": "This portal link has expired. Ask your club admin for a new one.",
+      "invalid": "This portal link is invalid.",
+      "alreadyClaimed": "This account was already claimed. Sign in with your existing email + password."
+    }
+  },
   "cmdk": {
     "trigger": "Search",
     "placeholder": "Search members, plans, fixtures, products…",
