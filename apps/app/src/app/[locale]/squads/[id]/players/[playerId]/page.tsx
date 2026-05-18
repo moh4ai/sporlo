@@ -70,7 +70,7 @@ export default async function PlayerProfilePage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-4xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         {/* Breadcrumb */}
         <nav className="text-sm text-spo-muted">
           <Link href="/squads" className="hover:text-spo-ink-2">

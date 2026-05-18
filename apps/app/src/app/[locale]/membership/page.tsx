@@ -50,7 +50,7 @@ export default async function MembershipPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-6xl space-y-12 px-4 py-16 sm:px-6 sm:py-20">
         <header className="mx-auto max-w-2xl space-y-2 text-center">
           <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
             {t("eyebrow")}
@@ -78,10 +78,10 @@ export default async function MembershipPage({
               <li key={plan.id}>
                 <article
                   className={
-                    "flex h-full flex-col gap-5 rounded-card-lg border p-6 transition-all " +
+                    "group flex h-full flex-col gap-5 rounded-card-lg border p-6 transition-all hover:-translate-y-0.5 " +
                     (isPopular
-                      ? "border-spo-green bg-spo-green-soft/20 shadow-[var(--shadow-2)]"
-                      : "border-spo-line bg-white")
+                      ? "border-spo-green bg-spo-green-soft/20 shadow-[var(--shadow-2)] hover:shadow-[var(--shadow-3)]"
+                      : "border-spo-line bg-white hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]")
                   }
                 >
                   <header className="space-y-1">

@@ -2594,6 +2594,7 @@
     "publicSubtitle": "Premium boxes, season packages, and VIP experiences for every match.",
     "publicEmpty": "Hospitality packages aren't published yet. Check back soon.",
     "capacityLabel": "{count} guests",
-    "inquire": "Inquire about this package"
+    "inquire": "Inquire about this package",
+    "eyebrow": "VIP & Hospitality"
   }
 }

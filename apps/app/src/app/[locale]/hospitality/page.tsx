@@ -42,15 +42,18 @@ export default async function PublicHospitalityPage({
 
   return (
     <PublicShell locale={locale as Locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
-        <header className="space-y-2 max-w-3xl">
+      <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
+        <header className="max-w-3xl space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+            {t("eyebrow")}
+          </p>
           <h1
-            className="text-3xl font-semibold text-spo-ink sm:text-4xl"
+            className="text-4xl font-semibold text-spo-ink sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             {t("publicTitle")}
           </h1>
-          <p className="text-sm text-spo-muted">{t("publicSubtitle")}</p>
+          <p className="text-base text-spo-ink-2">{t("publicSubtitle")}</p>
         </header>
 
         {(!data || data.length === 0) ? (
@@ -66,16 +69,18 @@ export default async function PublicHospitalityPage({
               return (
                 <li
                   key={p.id as string}
-                  className="overflow-hidden rounded-card border border-spo-line bg-white"
+                  className="group overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                 >
                   {url && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={url}
-                      alt={name as string}
-                      loading="lazy"
-                      className="aspect-[16/9] w-full object-cover"
-                    />
+                    <div className="aspect-[16/9] w-full overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={name as string}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
                   )}
                   <div className="space-y-3 p-5">
                     <div className="flex flex-wrap items-start justify-between gap-2">

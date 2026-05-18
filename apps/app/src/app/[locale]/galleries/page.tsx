@@ -43,15 +43,18 @@ export default async function PublicGalleriesPage({
 
   return (
     <PublicShell locale={locale as Locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
-        <header className="space-y-1">
+      <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
+        <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+            {t("galleries.eyebrow")}
+          </p>
           <h1
-            className="text-3xl font-semibold text-spo-ink"
+            className="text-4xl font-semibold text-spo-ink sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             {t("galleries.publicTitle")}
           </h1>
-          <p className="text-sm text-spo-muted">{t("galleries.publicSubtitle")}</p>
+          <p className="text-base text-spo-ink-2">{t("galleries.publicSubtitle")}</p>
         </header>
 
         {(!data || data.length === 0) ? (
@@ -66,8 +69,8 @@ export default async function PublicGalleriesPage({
               return (
                 <li key={g.id as string}>
                   <Link
-                    href={`/media/galleries/${g.id}`}
-                    className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-shadow hover:shadow-md"
+                    href={`/galleries/${g.id}`}
+                    className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                   >
                     <div className="relative aspect-[4/3] w-full overflow-hidden bg-spo-paper">
                       {url ? (
@@ -76,7 +79,7 @@ export default async function PublicGalleriesPage({
                           src={url}
                           alt={title as string}
                           loading="lazy"
-                          className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-xs text-spo-muted">

@@ -47,22 +47,25 @@ export default async function PublicGalleryDetailPage({
 
   return (
     <PublicShell locale={locale as Locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         <Link
           href="/galleries"
-          className="text-sm text-spo-muted hover:text-spo-ink"
+          className="inline-flex items-center gap-1 text-sm text-spo-muted hover:text-spo-ink"
         >
           ← {t("galleries.backToList")}
         </Link>
         <header className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+            {t("galleries.eyebrow")}
+          </p>
           <h1
-            className="text-3xl font-semibold text-spo-ink"
+            className="text-4xl font-semibold text-spo-ink sm:text-5xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
             {title}
           </h1>
           {description && (
-            <p className="max-w-3xl text-sm text-spo-muted">{description}</p>
+            <p className="max-w-3xl text-base text-spo-ink-2">{description}</p>
           )}
         </header>
 
@@ -85,15 +88,15 @@ export default async function PublicGalleryDetailPage({
               return (
                 <li
                   key={it.id as string}
-                  className="overflow-hidden rounded-card border border-spo-line bg-white"
+                  className="group overflow-hidden rounded-card border border-spo-line bg-white transition-shadow hover:shadow-[var(--shadow-2)]"
                 >
-                  <div className="relative aspect-[4/3] w-full bg-spo-paper">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-spo-paper">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={url}
                       alt={caption || (title as string)}
                       loading="lazy"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                   {caption && (

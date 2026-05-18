@@ -44,7 +44,7 @@ export default async function NewsArticlePage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+      <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
         <Link
           href="/news"
           className="mb-8 inline-flex items-center gap-1.5 text-sm text-spo-muted hover:text-spo-ink"

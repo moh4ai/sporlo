@@ -57,7 +57,7 @@ export default async function StadiumPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-4xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         {/* Hero */}
         <section className="overflow-hidden rounded-card-lg border border-spo-line bg-spo-ink text-white shadow-[var(--shadow-2)]">
           <div className="relative aspect-[21/9] bg-spo-green-soft/10">

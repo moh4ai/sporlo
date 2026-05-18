@@ -46,7 +46,7 @@ export default async function PublicSquadsPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-5xl space-y-8 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-5xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         <header className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
             {t("title")}
@@ -73,7 +73,7 @@ export default async function PublicSquadsPage({
               <li key={s.id}>
                 <Link
                   href={`/squads/${s.id}`}
-                  className="group flex h-full flex-col gap-3 overflow-hidden rounded-card border border-spo-line bg-white p-6 transition-colors hover:border-spo-green/40"
+                  className="group flex h-full flex-col gap-3 overflow-hidden rounded-card border border-spo-line bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-wider text-spo-muted">
                     {s.clubName}

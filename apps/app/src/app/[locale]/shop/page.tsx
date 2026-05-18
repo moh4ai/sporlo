@@ -57,7 +57,7 @@ export default async function ShopPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         <header className="flex flex-wrap items-end justify-between gap-3">
           <div className="space-y-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -93,12 +93,12 @@ export default async function ShopPage({
               <li key={p.id}>
                 <Link
                   href={`/shop/${p.id}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40"
+                  className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                 >
-                  <div className="relative aspect-square bg-spo-paper-warm">
+                  <div className="relative aspect-square overflow-hidden bg-spo-paper-warm">
                     <div
                       aria-hidden="true"
-                      className="flex h-full w-full items-center justify-center text-3xl text-spo-green-deep/20"
+                      className="flex h-full w-full items-center justify-center text-3xl text-spo-green-deep/20 transition-transform duration-300 group-hover:scale-105"
                       style={{ fontFamily: "var(--font-display)" }}
                     >
                       {(p.name ?? "—").slice(0, 1)}

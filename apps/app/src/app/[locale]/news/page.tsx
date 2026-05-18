@@ -68,7 +68,7 @@ export default async function PublicNewsPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-6xl space-y-10 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         <header className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
             {t("news.title")}
@@ -120,16 +120,16 @@ export default async function PublicNewsPage({
             {featured && (
               <Link
                 href={`/news/${featured.slug}`}
-                className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40"
+                className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
               >
                 <div className="grid gap-0 md:grid-cols-2">
-                  <div className="relative aspect-[16/10] bg-spo-green-soft md:aspect-auto">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft md:aspect-auto">
                     {featured.cover_image_path ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={featured.cover_image_path}
                         alt=""
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     ) : (
                       <div
@@ -178,15 +178,15 @@ export default async function PublicNewsPage({
                     <li key={a.id}>
                       <Link
                         href={`/news/${a.slug}`}
-                        className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40"
+                        className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                       >
-                        <div className="relative aspect-[16/10] bg-spo-green-soft">
+                        <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft">
                           {a.cover_image_path ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={a.cover_image_path}
                               alt=""
-                              className="h-full w-full object-cover"
+                              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                           ) : (
                             <div

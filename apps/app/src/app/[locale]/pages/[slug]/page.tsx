@@ -33,7 +33,7 @@ export default async function PublicStaticPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+      <article className="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
         <header className="space-y-2 pb-6">
           <h1
             className="text-3xl font-semibold text-spo-ink sm:text-5xl"

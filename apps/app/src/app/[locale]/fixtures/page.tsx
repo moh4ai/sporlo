@@ -45,7 +45,7 @@ export default async function PublicFixturesPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      <div className="mx-auto max-w-5xl space-y-8 px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-5xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
         <header className="space-y-2">
           <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
             {t("title")}
@@ -78,7 +78,7 @@ export default async function PublicFixturesPage({
               const isLive = f.status === "in_progress";
               return (
                 <li key={f.id}>
-                  <div className="group overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40">
+                  <div className="group overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]">
                     <div className="grid items-stretch gap-0 sm:grid-cols-[150px_1fr_auto]">
                       {/* Date / time block */}
                       <div className="flex flex-col items-center justify-center border-b border-spo-line bg-spo-paper-warm px-4 py-4 sm:border-b-0 sm:border-e">
