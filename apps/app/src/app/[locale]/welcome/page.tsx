@@ -262,53 +262,77 @@ export default async function ClubLandingPage({
 
   return (
     <PublicShell locale={locale} tenant={tenant}>
-      {/* Hero */}
+      {/* Hero — lets the org's primary colour do the visual lift,
+          with a larger logo treatment and two clearly-differentiated CTAs. */}
       {show.hero && (
-      <section
-        className="border-b border-spo-line bg-white"
-        style={primaryColor ? { backgroundImage: `linear-gradient(180deg, ${primaryColor}10, transparent 80%)` } : undefined}
-      >
-        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between md:py-24">
-          <div className="max-w-2xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
-              {t("hero.eyebrow")}
-            </p>
-            <h1
-              className="text-4xl font-semibold text-spo-ink sm:text-5xl md:text-6xl"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {orgName}
-            </h1>
-            {tagline && (
-              <p className="max-w-xl text-lg text-spo-ink-2 sm:text-xl">{tagline}</p>
-            )}
-            <div className="flex flex-wrap gap-2 pt-2">
-              <Link href="/sign-in">
-                <Button size="lg">{t("hero.memberPortal")}</Button>
-              </Link>
-              <Link href="/sign-in">
-                <Button size="lg" variant="secondary">{t("hero.becomeMember")}</Button>
-              </Link>
-            </div>
-          </div>
-          {logoUrl && (
-            <div className="flex h-32 w-32 shrink-0 items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white sm:h-40 sm:w-40">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={logoUrl}
-                alt={orgName}
-                className="h-full w-full object-contain"
-              />
-            </div>
+        <section
+          className="relative overflow-hidden bg-white"
+          style={
+            primaryColor
+              ? {
+                  // Stronger top tint (30% → transparent) plus a soft radial
+                  // around the logo for depth on bare-tenant setups.
+                  backgroundImage: `linear-gradient(180deg, ${primaryColor}30 0%, transparent 60%)`,
+                }
+              : undefined
+          }
+        >
+          {primaryColor && (
+            <div
+              aria-hidden
+              className="absolute -end-32 -top-32 h-96 w-96 rounded-full opacity-40 blur-3xl"
+              style={{ backgroundColor: primaryColor }}
+            />
           )}
-        </div>
-      </section>
+          <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between md:py-24">
+            <div className="max-w-2xl space-y-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                {t("hero.eyebrow")}
+              </p>
+              <h1
+                className="text-4xl font-semibold text-spo-ink sm:text-5xl md:text-6xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {orgName}
+              </h1>
+              {tagline && (
+                <p className="max-w-xl text-lg text-spo-ink-2 sm:text-xl">{tagline}</p>
+              )}
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Link href="/membership">
+                  <Button size="lg">{t("hero.becomeMember")}</Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button size="lg" variant="secondary">{t("hero.memberPortal")}</Button>
+                </Link>
+              </div>
+            </div>
+            {logoUrl && (
+              <div
+                className="relative flex h-44 w-44 shrink-0 items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white shadow-[var(--shadow-2)] sm:h-56 sm:w-56"
+                style={
+                  primaryColor
+                    ? { boxShadow: `0 12px 32px -12px ${primaryColor}50` }
+                    : undefined
+                }
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoUrl}
+                  alt={orgName}
+                  className="h-full w-full object-contain p-3"
+                />
+              </div>
+            )}
+          </div>
+        </section>
       )}
 
-      {/* Next match */}
+      {/* Next match — a slim accent band between the hero and the long
+          stack of content sections; tighter padding by design. */}
       {show.nextMatch && nextFixture && (
         <section className="bg-spo-green-soft">
-          <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-10 sm:px-6 md:flex-row md:items-center">
+          <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:py-10">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                 {t("nextMatch.eyebrow")}
@@ -339,8 +363,8 @@ export default async function ClubLandingPage({
 
       {/* Match Center — last result + season at a glance */}
       {show.matchCenter && (lastFixture || recentResults.length > 0 || upcomingSeason.length > 0) && (
-        <section className="border-b border-spo-line bg-white">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+        <section className="bg-white">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
             <div className="flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -448,8 +472,8 @@ export default async function ClubLandingPage({
 
       {/* News */}
       {show.news && news.length > 0 && (
-        <section className="border-b border-spo-line bg-white">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+        <section className="bg-spo-paper-warm">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
             <div className="flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -474,15 +498,15 @@ export default async function ClubLandingPage({
                   <li key={a.id}>
                     <Link
                       href={`/news/${a.slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40"
+                      className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                     >
-                      <div className="relative aspect-[16/10] bg-spo-green-soft">
+                      <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft">
                         {a.cover_image_path ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={a.cover_image_path as string}
                             alt=""
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
                         ) : null}
                       </div>
@@ -505,8 +529,8 @@ export default async function ClubLandingPage({
 
       {/* Squad */}
       {show.squad && roster.length > 0 && (
-        <section className="bg-spo-paper-warm">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+        <section className="bg-white">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
             <div className="flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -528,7 +552,7 @@ export default async function ClubLandingPage({
                 <li key={r.id}>
                   <Link
                     href={`/squads/${r.squad_id}/players/${r.id}`}
-                    className="group block rounded-card border border-spo-line bg-white p-5 transition-colors hover:border-spo-green/40"
+                    className="group block rounded-card border border-spo-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                   >
                     <div className="mb-3 flex h-32 w-full items-center justify-center overflow-hidden rounded-md bg-spo-green-soft">
                       {r.photo_path ? (
@@ -536,7 +560,7 @@ export default async function ClubLandingPage({
                         <img
                           src={r.photo_path as string}
                           alt=""
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
                         <span
@@ -566,8 +590,8 @@ export default async function ClubLandingPage({
 
       {/* Shop */}
       {show.shop && products.length > 0 && (
-        <section className="border-b border-spo-line bg-white">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
+        <section className="bg-spo-paper-warm">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
             <div className="flex items-end justify-between gap-3">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -591,9 +615,9 @@ export default async function ClubLandingPage({
                   <li key={p.id}>
                     <Link
                       href={`/shop/${p.id}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-colors hover:border-spo-green/40"
+                      className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                     >
-                      <div className="aspect-square bg-spo-green-soft" />
+                      <div className="aspect-square bg-spo-green-soft transition-transform duration-300 group-hover:scale-105" />
                       <div className="p-4">
                         <div className="font-medium text-spo-ink transition-colors group-hover:text-spo-green-deep">
                           {name}
@@ -608,40 +632,52 @@ export default async function ClubLandingPage({
         </section>
       )}
 
-      {/* Honours — trophy cabinet */}
+      {/* Honours — trophy cabinet. Dark backdrop is intentional (premium feel);
+          cards mimic trophy plinths with an amber rim. */}
       {show.honours && honours.length > 0 && (
-        <section className="border-b border-spo-line bg-spo-ink py-12 text-white">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 sm:px-6">
-            <div className="flex items-end justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-soft/80">
-                  {t("honours.eyebrow")}
-                </p>
-                <h2
-                  className="text-2xl font-semibold sm:text-3xl"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {t("honours.titleWith", { club: orgName })}
-                </h2>
-              </div>
+        <section className="relative overflow-hidden bg-spo-ink text-white">
+          {/* Subtle radial behind the cards to add depth on the flat dark. */}
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-spo-amber/10 to-transparent"
+          />
+          <div className="relative mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-spo-amber">
+                {t("honours.eyebrow")}
+              </p>
+              <h2
+                className="text-2xl font-semibold sm:text-3xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {t("honours.titleWith", { club: orgName })}
+              </h2>
             </div>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
               {honours.map((h) => (
                 <li
                   key={h.id}
-                  className="flex flex-col items-center gap-1 rounded-card bg-white/5 p-4 text-center backdrop-blur-sm"
+                  className="group relative flex flex-col items-center gap-2 overflow-hidden rounded-card border border-white/10 bg-white/[0.04] p-4 text-center transition-all hover:-translate-y-0.5 hover:border-spo-amber/40 hover:bg-white/[0.06]"
                 >
+                  {/* Amber rim on top — the "trophy plinth" gold band. */}
                   <span
-                    className="text-3xl font-bold text-spo-amber sm:text-4xl"
-                    style={{ fontFamily: "var(--font-display)" }}
+                    aria-hidden
+                    className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-spo-amber/60 to-transparent"
+                  />
+                  <span
+                    className="text-4xl font-bold text-spo-amber sm:text-5xl"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      textShadow: "0 2px 12px rgba(245, 197, 24, 0.25)",
+                    }}
                   >
                     {h.win_count}
                   </span>
-                  <span className="text-xs font-medium leading-tight">
+                  <span className="text-xs font-medium leading-tight text-white/90">
                     {locale === "ar" ? h.competition_ar : h.competition_en}
                   </span>
                   {h.last_won_year && (
-                    <span className="text-[10px] text-white/40">
+                    <span className="text-[10px] uppercase tracking-wider text-white/40">
                       {t("honours.lastWon", { year: h.last_won_year })}
                     </span>
                   )}
@@ -652,81 +688,104 @@ export default async function ClubLandingPage({
         </section>
       )}
 
-      {/* Sponsors — multi-tier partner grid */}
-      {show.sponsors && sponsors.length > 0 && (
-        <section className="border-b border-spo-line bg-white">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
-                {t("sponsors.eyebrow")}
-              </p>
-              <h2
-                className="text-2xl font-semibold text-spo-ink sm:text-3xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {t("sponsors.title")}
-              </h2>
+      {/* Sponsors — multi-tier partner grid. Tier weight is visible: strategic
+          sponsors get bigger cards + fewer per row; supporters get small cards
+          packed dense. Clubs pay for tier — the page should reflect it. */}
+      {show.sponsors && sponsors.length > 0 && (() => {
+        // Per-tier display config: card height, columns at each breakpoint.
+        const TIER_LAYOUT: Record<
+          "strategic" | "main" | "official" | "supporter",
+          { h: string; cols: string }
+        > = {
+          strategic: { h: "h-32 sm:h-36", cols: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" },
+          main: { h: "h-24 sm:h-28", cols: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" },
+          official: { h: "h-20 sm:h-24", cols: "grid-cols-2 sm:grid-cols-4 lg:grid-cols-5" },
+          supporter: { h: "h-16 sm:h-20", cols: "grid-cols-3 sm:grid-cols-5 lg:grid-cols-8" },
+        };
+        return (
+          <section className="bg-white">
+            <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                  {t("sponsors.eyebrow")}
+                </p>
+                <h2
+                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {t("sponsors.title")}
+                </h2>
+              </div>
+              {tierOrder.map((tier) => {
+                const list = sponsorsByTier.get(tier) ?? [];
+                if (list.length === 0) return null;
+                const layout = TIER_LAYOUT[tier];
+                return (
+                  <div key={tier} className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="h-px flex-1 bg-spo-line" />
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-spo-ink-2">
+                        {t(`sponsors.tiers.${tier}`)}
+                      </span>
+                      <span className="h-px flex-1 bg-spo-line" />
+                    </div>
+                    <ul className={`grid gap-3 sm:gap-4 ${layout.cols}`}>
+                      {list.map((s) => {
+                        const logo = sponsorLogoUrl(s.logo_path as string | null);
+                        const inner = (
+                          <span
+                            className={`flex ${layout.h} w-full items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]`}
+                          >
+                            {logo ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={logo}
+                                alt={(locale === "ar" ? s.name_ar : s.name_en) as string}
+                                className="h-full w-full object-contain"
+                              />
+                            ) : (
+                              <span className="text-center text-xs font-medium text-spo-ink-2">
+                                {locale === "ar" ? s.name_ar : s.name_en}
+                              </span>
+                            )}
+                          </span>
+                        );
+                        return (
+                          <li key={s.id}>
+                            {s.url ? (
+                              <a href={s.url as string} target="_blank" rel="noreferrer" className="block">
+                                {inner}
+                              </a>
+                            ) : (
+                              inner
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
-            {tierOrder.map((tier) => {
-              const list = sponsorsByTier.get(tier) ?? [];
-              if (list.length === 0) return null;
-              return (
-                <div key={tier} className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
-                    {t(`sponsors.tiers.${tier}`)}
-                  </p>
-                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
-                    {list.map((s) => {
-                      const logo = sponsorLogoUrl(s.logo_path as string | null);
-                      const inner = (
-                        <span className="flex h-20 w-full items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white p-3 transition-colors hover:border-spo-green/40">
-                          {logo ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={logo}
-                              alt={(locale === "ar" ? s.name_ar : s.name_en) as string}
-                              className="h-full w-full object-contain"
-                            />
-                          ) : (
-                            <span className="text-xs font-medium text-spo-ink-2">
-                              {locale === "ar" ? s.name_ar : s.name_en}
-                            </span>
-                          )}
-                        </span>
-                      );
-                      return (
-                        <li key={s.id}>
-                          {s.url ? (
-                            <a href={s.url as string} target="_blank" rel="noreferrer" className="block">
-                              {inner}
-                            </a>
-                          ) : (
-                            inner
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
+          </section>
+        );
+      })()}
 
       {/* Galleries — behind-the-scenes */}
       {show.galleries && galleries.length > 0 && (
-        <section className="bg-white">
-          <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
-            <header className="flex flex-wrap items-end justify-between gap-2">
-              <div className="space-y-1">
+        <section className="bg-spo-paper-warm">
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
+            <header className="flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                  {t("galleries.eyebrow")}
+                </p>
                 <h2
                   className="text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("galleries.title")}
                 </h2>
-                <p className="text-sm text-spo-muted">{t("galleries.subtitle")}</p>
               </div>
               <Link
                 href="/galleries"
@@ -743,9 +802,9 @@ export default async function ClubLandingPage({
                 >
                   <Link
                     href={`/galleries/${g.id}`}
-                    className="block overflow-hidden rounded-card border border-spo-line bg-white transition-shadow hover:shadow-md"
+                    className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                   >
-                    <div className="relative aspect-[4/3] w-full bg-spo-paper">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-spo-paper">
                       {g.cover_url ? (
                         // Bypass the Next image optimizer — Supabase Storage URLs
                         // are public CDN, no need to proxy through /_next/image.
@@ -754,7 +813,7 @@ export default async function ClubLandingPage({
                           src={g.cover_url}
                           alt={locale === "ar" ? g.title_ar : g.title_en}
                           loading="lazy"
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-xs text-spo-muted">
@@ -777,8 +836,8 @@ export default async function ClubLandingPage({
 
       {/* About */}
       {show.about && aboutPage && (
-        <section className="bg-spo-paper-warm">
-          <div className="mx-auto max-w-3xl space-y-4 px-4 py-12 sm:px-6">
+        <section className="bg-white">
+          <div className="mx-auto max-w-3xl space-y-4 px-4 py-16 sm:px-6 sm:py-20">
             <h2
               className="text-2xl font-semibold text-spo-ink sm:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
