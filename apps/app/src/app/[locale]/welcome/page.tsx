@@ -88,7 +88,7 @@ export default async function ClubLandingPage({
       .limit(6),
     admin
       .from("roster_entries")
-      .select("id, full_name_ar, full_name_en, jersey_number, position, photo_path")
+      .select("id, squad_id, full_name_ar, full_name_en, jersey_number, position, photo_path")
       .eq("org_id", tenant.org_id)
       .eq("active", true)
       .order("jersey_number", { ascending: true, nullsFirst: false })
@@ -141,6 +141,24 @@ export default async function ClubLandingPage({
   const lastFixture = lastFixtureRows?.[0] ?? null;
   const honours = honoursRows ?? [];
   const sponsors = sponsorsRows ?? [];
+
+  // Look up a linked match report for the last fixture (if one exists).
+  // Cheap second-pass query — single row, indexed lookup. Keeps the main
+  // Promise.all simple instead of forking on lastFixture existence.
+  let lastFixtureReportSlug: string | null = null;
+  if (lastFixture) {
+    const { data: report } = await admin
+      .from("news_articles")
+      .select("slug")
+      .eq("fixture_id", lastFixture.id)
+      .eq("category", "match_report")
+      .not("published_at", "is", null)
+      .lte("published_at", nowIso)
+      .order("published_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    lastFixtureReportSlug = (report?.slug as string | null) ?? null;
+  }
 
   // Group sponsors by tier for the multi-row rendering.
   type Tier = "strategic" | "main" | "official" | "supporter";
@@ -345,6 +363,14 @@ export default async function ClubLandingPage({
                     {lastFixture.venue ? ` · ${lastFixture.venue}` : ""}
                   </span>
                 </div>
+                {lastFixtureReportSlug && (
+                  <Link
+                    href={`/news/${lastFixtureReportSlug}`}
+                    className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-spo-green-deep hover:underline"
+                  >
+                    {t("matchCenter.readReport")} →
+                  </Link>
+                )}
               </div>
             )}
 
@@ -476,36 +502,38 @@ export default async function ClubLandingPage({
             </div>
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {roster.map((r) => (
-                <li
-                  key={r.id}
-                  className="rounded-card border border-spo-line bg-white p-5"
-                >
-                  <div className="mb-3 flex h-32 w-full items-center justify-center overflow-hidden rounded-md bg-spo-green-soft">
-                    {r.photo_path ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={r.photo_path as string}
-                        alt=""
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <span
-                        className="text-4xl text-spo-green-deep/40"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        {r.jersey_number ?? "?"}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-0.5">
-                    <div className="font-semibold text-spo-ink">
-                      {locale === "ar" ? r.full_name_ar : r.full_name_en ?? r.full_name_ar}
+                <li key={r.id}>
+                  <Link
+                    href={`/squads/${r.squad_id}/players/${r.id}`}
+                    className="group block rounded-card border border-spo-line bg-white p-5 transition-colors hover:border-spo-green/40"
+                  >
+                    <div className="mb-3 flex h-32 w-full items-center justify-center overflow-hidden rounded-md bg-spo-green-soft">
+                      {r.photo_path ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={r.photo_path as string}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span
+                          className="text-4xl text-spo-green-deep/40"
+                          style={{ fontFamily: "var(--font-display)" }}
+                        >
+                          {r.jersey_number ?? "?"}
+                        </span>
+                      )}
                     </div>
-                    <div className="text-xs text-spo-muted">
-                      {r.position ?? ""}
-                      {r.jersey_number ? ` · #${r.jersey_number}` : ""}
+                    <div className="space-y-0.5">
+                      <div className="font-semibold text-spo-ink transition-colors group-hover:text-spo-green-deep">
+                        {locale === "ar" ? r.full_name_ar : r.full_name_en ?? r.full_name_ar}
+                      </div>
+                      <div className="text-xs text-spo-muted">
+                        {r.position ?? ""}
+                        {r.jersey_number ? ` · #${r.jersey_number}` : ""}
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
               ))}
             </ul>

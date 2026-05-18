@@ -47,6 +47,7 @@
       "lastResult": "Last result",
       "recentResults": "Recent results",
       "upcoming": "Upcoming",
+      "readReport": "Read match report",
       "result": {
         "win": "Win",
         "loss": "Loss",
@@ -85,6 +86,24 @@
       "soon": "Soon",
       "live": "Live now"
     }
+  },
+  "playerProfile": {
+    "breadcrumb": {
+      "squads": "Squads"
+    },
+    "stats": {
+      "nationality": "Nationality",
+      "height": "Height",
+      "weight": "Weight",
+      "joined": "Joined"
+    },
+    "bio": {
+      "title": "Biography"
+    },
+    "previousClubs": {
+      "title": "Previous clubs"
+    },
+    "empty": "No profile yet — bio and career history are coming soon."
   },
   "honours": {
     "title": "Trophy cabinet",
@@ -2180,6 +2199,15 @@
       "subtitle": "Articles for the club site newsroom.",
       "newArticle": "New article",
       "empty": "No articles yet.",
+      "categories": {
+        "all": "All",
+        "general": "General",
+        "match_report": "Match reports",
+        "press": "Press",
+        "transfer": "Transfers",
+        "community": "Community",
+        "youth": "Youth"
+      },
       "headers": {
         "title": "Title",
         "slug": "Slug",

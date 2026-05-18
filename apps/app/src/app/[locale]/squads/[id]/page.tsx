@@ -67,25 +67,27 @@ export default async function PublicSquadDetailPage({
         ) : (
           <ul className="space-y-1">
             {roster.map((p) => (
-              <li
-                key={p.id}
-                className="flex items-center justify-between border-b border-spo-line py-2 last:border-0"
-              >
-                <div className="flex items-center gap-3">
-                  {p.jersey_number != null && (
-                    <code className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-spo-paper text-sm font-semibold">
-                      {p.jersey_number}
-                    </code>
-                  )}
-                  <span className="font-medium text-spo-ink">
-                    {locale === "ar"
-                      ? p.full_name_ar
-                      : p.full_name_en || p.full_name_ar}
+              <li key={p.id}>
+                <Link
+                  href={`/squads/${id}/players/${p.id}`}
+                  className="flex items-center justify-between rounded-md border-b border-spo-line py-2 last:border-0 transition-colors hover:bg-spo-paper"
+                >
+                  <div className="flex items-center gap-3">
+                    {p.jersey_number != null && (
+                      <code className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-spo-paper text-sm font-semibold">
+                        {p.jersey_number}
+                      </code>
+                    )}
+                    <span className="font-medium text-spo-ink">
+                      {locale === "ar"
+                        ? p.full_name_ar
+                        : p.full_name_en || p.full_name_ar}
+                    </span>
+                  </div>
+                  <span className="text-xs text-spo-muted">
+                    {[p.position, p.nationality].filter(Boolean).join(" · ")}
                   </span>
-                </div>
-                <span className="text-xs text-spo-muted">
-                  {[p.position, p.nationality].filter(Boolean).join(" · ")}
-                </span>
+                </Link>
               </li>
             ))}
           </ul>

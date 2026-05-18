@@ -43,6 +43,7 @@
       "lastResult": "آخر نتيجة",
       "recentResults": "آخر النتائج",
       "upcoming": "قادمة",
+      "readReport": "اقرأ تقرير المباراة",
       "result": {
         "win": "فوز",
         "loss": "خسارة",
@@ -81,6 +82,24 @@
       "soon": "قريباً",
       "live": "تُلعب الآن"
     }
+  },
+  "playerProfile": {
+    "breadcrumb": {
+      "squads": "الفرق"
+    },
+    "stats": {
+      "nationality": "الجنسية",
+      "height": "الطول",
+      "weight": "الوزن",
+      "joined": "انضم في"
+    },
+    "bio": {
+      "title": "السيرة"
+    },
+    "previousClubs": {
+      "title": "الأندية السابقة"
+    },
+    "empty": "لا توجد سيرة بعد — السيرة وتاريخ الأندية قريباً."
   },
   "honours": {
     "title": "خزانة البطولات",
@@ -2180,6 +2199,15 @@
       "subtitle": "مقالات قسم الأخبار في موقع النادي.",
       "newArticle": "مقال جديد",
       "empty": "لا توجد مقالات بعد.",
+      "categories": {
+        "all": "الكل",
+        "general": "عام",
+        "match_report": "تقارير المباريات",
+        "press": "صحفي",
+        "transfer": "انتقالات",
+        "community": "مجتمعي",
+        "youth": "شباب"
+      },
       "headers": {
         "title": "العنوان",
         "slug": "الرابط",

@@ -9,29 +9,52 @@ import { createServiceRoleClient } from "@/lib/supabase-server";
 import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
 
+const CATEGORIES = [
+  "general",
+  "match_report",
+  "press",
+  "transfer",
+  "community",
+  "youth",
+] as const;
+
+type Category = (typeof CATEGORIES)[number];
+
 export default async function PublicNewsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ category?: string }>;
 }) {
   const { locale } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "media" });
 
   const tenant = await resolvePublicTenant();
   if (!tenant) notFound();
 
+  const activeCategory: Category | "all" =
+    sp.category && (CATEGORIES as readonly string[]).includes(sp.category)
+      ? (sp.category as Category)
+      : "all";
+
   const admin = createServiceRoleClient();
-  const { data } = await admin
+  let query = admin
     .from("news_articles")
     .select(
-      "id, slug, title_ar, title_en, excerpt_ar, excerpt_en, cover_image_path, published_at",
+      "id, slug, title_ar, title_en, excerpt_ar, excerpt_en, cover_image_path, published_at, category",
     )
     .eq("org_id", tenant.org_id)
     .not("published_at", "is", null)
     .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false })
     .limit(50);
+  if (activeCategory !== "all") {
+    query = query.eq("category", activeCategory);
+  }
+  const { data } = await query;
 
   const dateFmt = new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-GB", {
     year: "numeric",
@@ -57,6 +80,35 @@ export default async function PublicNewsPage({
             {locale === "ar" ? tenant.name_ar : tenant.name_en}
           </h1>
         </header>
+
+        {/* Category filter chips */}
+        <nav className="flex flex-wrap gap-2">
+          <Link
+            href="/news"
+            className={
+              "inline-flex items-center rounded-pill border px-3 py-1.5 text-sm transition-colors " +
+              (activeCategory === "all"
+                ? "border-spo-green bg-spo-green text-white"
+                : "border-spo-line bg-white text-spo-ink-2 hover:bg-spo-paper")
+            }
+          >
+            {t("news.categories.all")}
+          </Link>
+          {CATEGORIES.map((c) => (
+            <Link
+              key={c}
+              href={`/news?category=${c}`}
+              className={
+                "inline-flex items-center rounded-pill border px-3 py-1.5 text-sm transition-colors " +
+                (activeCategory === c
+                  ? "border-spo-green bg-spo-green text-white"
+                  : "border-spo-line bg-white text-spo-ink-2 hover:bg-spo-paper")
+              }
+            >
+              {t(`news.categories.${c}`)}
+            </Link>
+          ))}
+        </nav>
 
         {articles.length === 0 ? (
           <Card>
