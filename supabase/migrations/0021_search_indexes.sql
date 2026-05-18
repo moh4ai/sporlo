@@ -119,78 +119,80 @@ returns table (
 )
 language sql stable security invoker as $$
   with tsq as (select plainto_tsquery('simple', q) as q)
-  (
-    select 'member'::text, m.id, m.full_name_ar, m.full_name_en, m.email,
-           ts_rank(m.search_vector, (select q from tsq))
-    from public.members m, tsq
-    where m.search_vector @@ tsq.q
-    order by ts_rank(m.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'plan'::text, p.id, p.name_ar, p.name_en, p.code,
-           ts_rank(p.search_vector, (select q from tsq))
-    from public.plans p, tsq
-    where p.search_vector @@ tsq.q
-    order by ts_rank(p.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'product'::text, pr.id, pr.name_ar, pr.name_en, pr.category,
-           ts_rank(pr.search_vector, (select q from tsq))
-    from public.products pr, tsq
-    where pr.search_vector @@ tsq.q
-    order by ts_rank(pr.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'fixture'::text, f.id, f.opponent_ar, f.opponent_en, f.venue,
-           ts_rank(f.search_vector, (select q from tsq))
-    from public.fixtures f, tsq
-    where f.search_vector @@ tsq.q
-    order by ts_rank(f.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'news_article'::text, n.id, n.title_ar, n.title_en, n.excerpt_en,
-           ts_rank(n.search_vector, (select q from tsq))
-    from public.news_articles n, tsq
-    where n.search_vector @@ tsq.q
-    order by ts_rank(n.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'staff'::text, s.id, s.full_name_ar, s.full_name_en, s.job_title_en,
-           ts_rank(s.search_vector, (select q from tsq))
-    from public.staff_profiles s, tsq
-    where s.search_vector @@ tsq.q
-    order by ts_rank(s.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'facility'::text, fac.id, fac.name_ar, fac.name_en, fac.facility_type,
-           ts_rank(fac.search_vector, (select q from tsq))
-    from public.facilities fac, tsq
-    where fac.search_vector @@ tsq.q
-    order by ts_rank(fac.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  union all
-  (
-    select 'squad'::text, sq.id, sq.name_ar, sq.name_en, sq.season,
-           ts_rank(sq.search_vector, (select q from tsq))
-    from public.squads sq, tsq
-    where sq.search_vector @@ tsq.q
-    order by ts_rank(sq.search_vector, tsq.q) desc
-    limit max_per_kind
-  )
-  order by rank desc
+  select * from (
+    (
+      select 'member'::text as kind, m.id, m.full_name_ar as title_ar, m.full_name_en as title_en, m.email as subtitle,
+             ts_rank(m.search_vector, (select q from tsq)) as rank
+      from public.members m, tsq
+      where m.search_vector @@ tsq.q
+      order by ts_rank(m.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'plan'::text, p.id, p.name_ar, p.name_en, p.code,
+             ts_rank(p.search_vector, (select q from tsq))
+      from public.plans p, tsq
+      where p.search_vector @@ tsq.q
+      order by ts_rank(p.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'product'::text, pr.id, pr.name_ar, pr.name_en, pr.category,
+             ts_rank(pr.search_vector, (select q from tsq))
+      from public.products pr, tsq
+      where pr.search_vector @@ tsq.q
+      order by ts_rank(pr.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'fixture'::text, f.id, f.opponent_ar, f.opponent_en, f.venue,
+             ts_rank(f.search_vector, (select q from tsq))
+      from public.fixtures f, tsq
+      where f.search_vector @@ tsq.q
+      order by ts_rank(f.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'news_article'::text, n.id, n.title_ar, n.title_en, n.excerpt_en,
+             ts_rank(n.search_vector, (select q from tsq))
+      from public.news_articles n, tsq
+      where n.search_vector @@ tsq.q
+      order by ts_rank(n.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'staff'::text, s.id, s.full_name_ar, s.full_name_en, s.job_title_en,
+             ts_rank(s.search_vector, (select q from tsq))
+      from public.staff_profiles s, tsq
+      where s.search_vector @@ tsq.q
+      order by ts_rank(s.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'facility'::text, fac.id, fac.name_ar, fac.name_en, fac.facility_type,
+             ts_rank(fac.search_vector, (select q from tsq))
+      from public.facilities fac, tsq
+      where fac.search_vector @@ tsq.q
+      order by ts_rank(fac.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+    union all
+    (
+      select 'squad'::text, sq.id, sq.name_ar, sq.name_en, sq.season,
+             ts_rank(sq.search_vector, (select q from tsq))
+      from public.squads sq, tsq
+      where sq.search_vector @@ tsq.q
+      order by ts_rank(sq.search_vector, tsq.q) desc
+      limit max_per_kind
+    )
+  ) ranked
+  order by ranked.rank desc
   limit 40;
 $$;
 
