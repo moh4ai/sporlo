@@ -83,6 +83,65 @@
       "live": "تُلعب الآن"
     }
   },
+  "stadium": {
+    "eyebrow": "بيت النادي",
+    "untitled": "ملعبنا",
+    "openMap": "فتح في الخرائط",
+    "stats": {
+      "capacity": "السعة",
+      "opened": "افتُتح",
+      "parking": "المواقف",
+      "accessibility": "الوصول",
+      "available": "متاح"
+    },
+    "notes": {
+      "parking": "المواقف وكيف تصل",
+      "accessibility": "الوصول"
+    }
+  },
+  "stadiumAdmin": {
+    "sections": {
+      "identity": "هوية الملعب",
+      "identityHint": "الاسم والعنوان كما يراهما المشجعون.",
+      "stats": "السعة والموقع",
+      "statsHint": "الأرقام وإحداثيات الخريطة لرابط 'فتح في الخرائط'.",
+      "notes": "ملاحظات يوم المباراة",
+      "notesHint": "ملاحظات حرة ثنائية اللغة للمشجعين القادمين."
+    },
+    "fields": {
+      "nameAr": "الاسم (عربي)",
+      "nameEn": "الاسم (إنجليزي)",
+      "addressAr": "العنوان (عربي)",
+      "addressEn": "العنوان (إنجليزي)",
+      "cityAr": "المدينة (عربي)",
+      "cityEn": "المدينة (إنجليزي)",
+      "capacity": "السعة",
+      "openedYear": "سنة الافتتاح",
+      "mapLat": "خط العرض",
+      "mapLng": "خط الطول",
+      "parkingAr": "المواقف (عربي)",
+      "parkingEn": "المواقف (إنجليزي)",
+      "accessibilityAr": "الوصول (عربي)",
+      "accessibilityEn": "الوصول (إنجليزي)"
+    },
+    "actions": {
+      "save": "حفظ",
+      "saving": "جاري الحفظ…"
+    },
+    "toast": {
+      "saved": "تم تحديث بيانات الملعب",
+      "failed": "تعذّر الحفظ"
+    }
+  },
+  "membershipTiers": {
+    "eyebrow": "كن عضواً",
+    "title": "انضم إلى النادي",
+    "subtitle": "اختر الباقة التي تناسب حضورك. يمكنك الإلغاء في أي وقت.",
+    "popular": "الأكثر طلباً",
+    "perDuration": "لمدة {count, plural, =1 {شهر واحد} other {# أشهر}}",
+    "cta": "ابدأ الاشتراك",
+    "footerNote": "العضوية تشمل الحجز المسبق للتذاكر، خصومات المتجر، وفعاليات حصرية. للاستفسار، تواصل مع إدارة النادي."
+  },
   "playerProfile": {
     "breadcrumb": {
       "squads": "الفرق"
@@ -337,6 +396,8 @@
       "fixtures": "المباريات",
       "squad": "الفريق",
       "shop": "المتجر",
+      "membership": "العضوية",
+      "stadium": "الملعب",
       "memberPortal": "بوابة العضو"
     },
     "footer": {

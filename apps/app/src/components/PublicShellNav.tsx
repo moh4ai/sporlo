@@ -12,6 +12,8 @@ const NAV = [
   { key: "fixtures", href: "/fixtures" },
   { key: "squad", href: "/squads" },
   { key: "shop", href: "/shop" },
+  { key: "membership", href: "/membership" },
+  { key: "stadium", href: "/welcome/stadium" },
 ] as const;
 
 function isActive(pathname: string, href: string): boolean {

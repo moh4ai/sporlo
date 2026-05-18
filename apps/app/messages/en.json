@@ -87,6 +87,65 @@
       "live": "Live now"
     }
   },
+  "stadium": {
+    "eyebrow": "Home of the club",
+    "untitled": "Our stadium",
+    "openMap": "Open in Maps",
+    "stats": {
+      "capacity": "Capacity",
+      "opened": "Opened",
+      "parking": "Parking",
+      "accessibility": "Accessibility",
+      "available": "Available"
+    },
+    "notes": {
+      "parking": "Parking & getting here",
+      "accessibility": "Accessibility"
+    }
+  },
+  "stadiumAdmin": {
+    "sections": {
+      "identity": "Stadium identity",
+      "identityHint": "Name and address fans see on the public site.",
+      "stats": "Capacity & location",
+      "statsHint": "Numeric facts + map coordinates for the 'Open in Maps' link.",
+      "notes": "Match-day notes",
+      "notesHint": "Free-form bilingual notes shown to fans planning a visit."
+    },
+    "fields": {
+      "nameAr": "Name (Arabic)",
+      "nameEn": "Name (English)",
+      "addressAr": "Address (Arabic)",
+      "addressEn": "Address (English)",
+      "cityAr": "City (Arabic)",
+      "cityEn": "City (English)",
+      "capacity": "Capacity",
+      "openedYear": "Opened",
+      "mapLat": "Latitude",
+      "mapLng": "Longitude",
+      "parkingAr": "Parking (Arabic)",
+      "parkingEn": "Parking (English)",
+      "accessibilityAr": "Accessibility (Arabic)",
+      "accessibilityEn": "Accessibility (English)"
+    },
+    "actions": {
+      "save": "Save",
+      "saving": "Saving…"
+    },
+    "toast": {
+      "saved": "Stadium info updated",
+      "failed": "Couldn't save"
+    }
+  },
+  "membershipTiers": {
+    "eyebrow": "Become a member",
+    "title": "Join the club",
+    "subtitle": "Pick the tier that matches how often you turn up. Cancel anytime.",
+    "popular": "Most popular",
+    "perDuration": "for {count, plural, =1 {1 month} other {# months}}",
+    "cta": "Get started",
+    "footerNote": "Membership covers ticket presale, store discounts, and member-only events. Questions? Reach out to the club office."
+  },
   "playerProfile": {
     "breadcrumb": {
       "squads": "Squads"
@@ -337,6 +396,8 @@
       "fixtures": "Fixtures",
       "squad": "Squad",
       "shop": "Shop",
+      "membership": "Membership",
+      "stadium": "Stadium",
       "memberPortal": "Member portal"
     },
     "footer": {
