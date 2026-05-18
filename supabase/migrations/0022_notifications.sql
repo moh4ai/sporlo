@@ -40,3 +40,8 @@ create policy notifications_super_admin on public.notifications
 -- Inserts happen exclusively via service-role from Server Actions. No
 -- policy is created for the authenticated role, so anon/auth INSERTs fail
 -- as intended.
+
+-- Enable Supabase Realtime broadcasts on this table so the NotificationBell
+-- client subscription receives live INSERT events. Without this the table
+-- is not in the supabase_realtime publication and subscribers get nothing.
+alter publication supabase_realtime add table public.notifications;
