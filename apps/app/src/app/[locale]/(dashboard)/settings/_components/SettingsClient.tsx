@@ -9,7 +9,6 @@ import {
   FormGroup,
   Input,
   Select,
-  Switch,
   useToast,
 } from "@sporlo/ui";
 
@@ -300,10 +299,12 @@ function NotificationsSection({
                     const key = `${ev}:${c}`;
                     return (
                       <td key={c} className="px-3 py-2 text-center">
-                        <Switch
+                        <input
+                          type="checkbox"
                           checked={state[key] ?? true}
                           onChange={() => toggle(ev, c)}
-                          label=""
+                          className="h-5 w-5 cursor-pointer accent-spo-green"
+                          aria-label={`${t(`events.${ev}`)} — ${t(`channels.${c}`)}`}
                         />
                       </td>
                     );
@@ -386,31 +387,33 @@ function AppearanceSection({
         </header>
 
         <div className="space-y-3">
-          <div className="flex items-start justify-between gap-3">
+          <label className="flex cursor-pointer items-start justify-between gap-3">
             <div>
-              <div className="text-sm text-spo-ink-2">{t("fields.highContrast")}</div>
+              <div className="text-sm font-medium text-spo-ink-2">{t("fields.highContrast")}</div>
               <p className="text-xs text-spo-muted">{t("fields.highContrastHint")}</p>
             </div>
-            <Switch
+            <input
+              type="checkbox"
               checked={highContrast}
-              onChange={flipHighContrast}
-              label=""
+              onChange={(e) => flipHighContrast(e.target.checked)}
               disabled={pending}
+              className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-spo-green"
             />
-          </div>
+          </label>
 
-          <div className="flex items-start justify-between gap-3 border-t border-spo-line pt-3">
+          <label className="flex cursor-pointer items-start justify-between gap-3 border-t border-spo-line pt-3">
             <div>
-              <div className="text-sm text-spo-ink-2">{t("fields.reducedMotion")}</div>
+              <div className="text-sm font-medium text-spo-ink-2">{t("fields.reducedMotion")}</div>
               <p className="text-xs text-spo-muted">{t("fields.reducedMotionHint")}</p>
             </div>
-            <Switch
+            <input
+              type="checkbox"
               checked={reducedMotion}
-              onChange={flipReducedMotion}
-              label=""
+              onChange={(e) => flipReducedMotion(e.target.checked)}
               disabled={pending}
+              className="mt-1 h-5 w-5 shrink-0 cursor-pointer accent-spo-green"
             />
-          </div>
+          </label>
         </div>
       </div>
     </Card>
