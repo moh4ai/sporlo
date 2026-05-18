@@ -34,7 +34,6 @@ const CATEGORY_ORDER: IntegrationCategory[] = [
   "marketing",
   "analytics",
   "payments",
-  "sports",
   "social",
   "support",
   "automation",

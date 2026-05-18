@@ -4,6 +4,13 @@ import type { IntegrationCategory, IntegrationKind } from "./index";
 // migrations 0020 + 0023; mirrored here so the UI can render before the DB
 // row loads and so future provider implementations can branch on entry.slug
 // without round-tripping.
+//
+// SCOPE NOTE: only brands whose logo is in the bundled icon registry land
+// here. Saudi-specific providers (Moyasar, Tap, PayTabs, STC Pay, Unifonic,
+// Veo, Wyscout, Spond, TeamSnap) and brands missing from simple-icons v13
+// upstream (Microsoft Teams/Outlook/OneDrive, Hudl, Klaviyo, ActiveCampaign,
+// Amplitude, Freshdesk) are temporarily removed from the catalog UI. Re-add
+// once we hand-curate their SVG paths into the registry.
 
 export interface CatalogEntry {
   slug: string;
@@ -13,24 +20,13 @@ export interface CatalogEntry {
   short_description_ar: string;
   short_description_en: string;
   kinds: ReadonlyArray<IntegrationKind>;
-  /**
-   * "available" — real provider exists and can be installed.
-   * "coming_soon" — listed in the catalog but not yet wired. Most entries
-   *   start here; clubs can hit "request integration" to vote-up demand.
-   */
   availability: "available" | "coming_soon";
-  /**
-   * Slug recognised by https://cdn.simpleicons.org/<slug>. Null when the
-   * brand isn't on Simple Icons (mostly Saudi-specific providers) — the UI
-   * falls back to a gradient initial badge.
-   */
   simple_icon: string | null;
-  /** Brand hex (no leading #). Used as the icon tint + card accent. */
   brand_color: string;
 }
 
 export const CATALOG: ReadonlyArray<CatalogEntry> = [
-  // ─── Communications (8) ─────────────────────────────────────
+  // ─── Communications (6) ─────────────────────────────────────
   {
     slug: "slack",
     name_ar: "سلاك",
@@ -42,18 +38,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "slack",
     brand_color: "611F69",
-  },
-  {
-    slug: "microsoft-teams",
-    name_ar: "Microsoft Teams",
-    name_en: "Microsoft Teams",
-    category: "communications",
-    short_description_ar: "تنبيهات النادي داخل قنوات Microsoft Teams.",
-    short_description_en: "Surface club alerts inside Microsoft Teams channels.",
-    kinds: ["send_message"],
-    availability: "coming_soon",
-    simple_icon: "microsoftteams",
-    brand_color: "6264A7",
   },
   {
     slug: "whatsapp-railway",
@@ -115,20 +99,8 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     simple_icon: "twilio",
     brand_color: "F22F46",
   },
-  {
-    slug: "unifonic",
-    name_ar: "يونيفونيك",
-    name_en: "Unifonic",
-    category: "communications",
-    short_description_ar: "مزوّد رسائل نصية محلي معتمد في السعودية.",
-    short_description_en: "Saudi-licensed SMS provider for member notifications.",
-    kinds: ["send_message"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "0F4C81",
-  },
 
-  // ─── Productivity (10) ──────────────────────────────────────
+  // ─── Productivity (8) ───────────────────────────────────────
   {
     slug: "google-calendar",
     name_ar: "تقويم Google",
@@ -140,18 +112,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "googlecalendar",
     brand_color: "4285F4",
-  },
-  {
-    slug: "outlook",
-    name_ar: "Outlook",
-    name_en: "Microsoft Outlook",
-    category: "productivity",
-    short_description_ar: "نفس مزامنة التقويم لمستخدمي Microsoft 365.",
-    short_description_en: "Same calendar sync for Microsoft 365 shops.",
-    kinds: ["sync_calendar"],
-    availability: "coming_soon",
-    simple_icon: "microsoftoutlook",
-    brand_color: "0078D4",
   },
   {
     slug: "notion",
@@ -176,18 +136,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "googledrive",
     brand_color: "1FA463",
-  },
-  {
-    slug: "onedrive",
-    name_ar: "OneDrive",
-    name_en: "Microsoft OneDrive",
-    category: "productivity",
-    short_description_ar: "بديل Drive لمستخدمي Microsoft 365.",
-    short_description_en: "Drive alternative for Microsoft 365 setups.",
-    kinds: ["sync_contacts"],
-    availability: "coming_soon",
-    simple_icon: "microsoftonedrive",
-    brand_color: "0364B8",
   },
   {
     slug: "dropbox",
@@ -250,7 +198,7 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     brand_color: "0B5CFF",
   },
 
-  // ─── Marketing (7) ──────────────────────────────────────────
+  // ─── Marketing (5) ──────────────────────────────────────────
   {
     slug: "mailchimp",
     name_ar: "Mailchimp",
@@ -311,32 +259,8 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     simple_icon: "hubspot",
     brand_color: "FF7A59",
   },
-  {
-    slug: "activecampaign",
-    name_ar: "ActiveCampaign",
-    name_en: "ActiveCampaign",
-    category: "marketing",
-    short_description_ar: "حملات بريد ذكية بمنطق آلي للأعضاء.",
-    short_description_en: "Smart email campaigns with automation logic.",
-    kinds: ["send_email", "sync_contacts"],
-    availability: "coming_soon",
-    simple_icon: "activecampaign",
-    brand_color: "356AE6",
-  },
-  {
-    slug: "klaviyo",
-    name_ar: "Klaviyo",
-    name_en: "Klaviyo",
-    category: "marketing",
-    short_description_ar: "تسويق ذكي للمتجر الإلكتروني للنادي.",
-    short_description_en: "Smart marketing tuned for the club's online store.",
-    kinds: ["send_email", "sync_contacts"],
-    availability: "coming_soon",
-    simple_icon: "klaviyo",
-    brand_color: "232227",
-  },
 
-  // ─── Analytics (5) ──────────────────────────────────────────
+  // ─── Analytics (4) ──────────────────────────────────────────
   {
     slug: "google-analytics",
     name_ar: "Google Analytics",
@@ -360,18 +284,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "mixpanel",
     brand_color: "7856FF",
-  },
-  {
-    slug: "amplitude",
-    name_ar: "Amplitude",
-    name_en: "Amplitude",
-    category: "analytics",
-    short_description_ar: "تحليل سلوك المشجعين عبر الواجهات العامة.",
-    short_description_en: "Fan behaviour analytics across public surfaces.",
-    kinds: ["track_event"],
-    availability: "coming_soon",
-    simple_icon: "amplitude",
-    brand_color: "1E61F0",
   },
   {
     slug: "hotjar",
@@ -398,55 +310,7 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     brand_color: "5850EC",
   },
 
-  // ─── Payments (6) ───────────────────────────────────────────
-  {
-    slug: "moyasar",
-    name_ar: "ميسر",
-    name_en: "Moyasar",
-    category: "payments",
-    short_description_ar: "بوابة الدفع الأساسية للاشتراكات والتذاكر والمتجر.",
-    short_description_en: "Primary payment gateway for memberships, tickets, store.",
-    kinds: ["receive_payment"],
-    availability: "available",
-    simple_icon: null,
-    brand_color: "0E7A52",
-  },
-  {
-    slug: "tap",
-    name_ar: "Tap",
-    name_en: "Tap Payments",
-    category: "payments",
-    short_description_ar: "بوابة دفع بديلة للأندية ذات الفوترة الإقليمية.",
-    short_description_en: "Alternate gateway for regional billing requirements.",
-    kinds: ["receive_payment"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "2A89FF",
-  },
-  {
-    slug: "paytabs",
-    name_ar: "PayTabs",
-    name_en: "PayTabs",
-    category: "payments",
-    short_description_ar: "بوابة دفع سعودية مرخّصة لأندية الدرجات العليا.",
-    short_description_en: "Saudi-licensed payment gateway for top-tier clubs.",
-    kinds: ["receive_payment"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "EA632E",
-  },
-  {
-    slug: "stc-pay",
-    name_ar: "STC Pay",
-    name_en: "STC Pay",
-    category: "payments",
-    short_description_ar: "محفظة STC Pay لمدفوعات المتجر داخل المملكة.",
-    short_description_en: "STC Pay wallet for in-Kingdom store checkouts.",
-    kinds: ["receive_payment"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "4F2683",
-  },
+  // ─── Payments (2) ───────────────────────────────────────────
   {
     slug: "stripe",
     name_ar: "Stripe",
@@ -470,68 +334,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "applepay",
     brand_color: "000000",
-  },
-
-  // ─── Sports (5) ─────────────────────────────────────────────
-  {
-    slug: "hudl",
-    name_ar: "Hudl",
-    name_en: "Hudl",
-    category: "sports",
-    short_description_ar: "تحليل فيديو احترافي للفرق والأكاديميات.",
-    short_description_en: "Pro-level video analysis for senior + academy teams.",
-    kinds: ["analyze_video"],
-    availability: "coming_soon",
-    simple_icon: "hudl",
-    brand_color: "FF6B00",
-  },
-  {
-    slug: "veo",
-    name_ar: "Veo",
-    name_en: "Veo",
-    category: "sports",
-    short_description_ar: "كاميرا ذكية لتسجيل المباريات تلقائياً.",
-    short_description_en: "AI camera that auto-records matches without an operator.",
-    kinds: ["analyze_video"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "1E2333",
-  },
-  {
-    slug: "wyscout",
-    name_ar: "Wyscout",
-    name_en: "Wyscout",
-    category: "sports",
-    short_description_ar: "منصة استكشاف وتحليل اللاعبين الأوسع عالمياً.",
-    short_description_en: "World's largest player scouting + analysis platform.",
-    kinds: ["analyze_video"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "002E5D",
-  },
-  {
-    slug: "spond",
-    name_ar: "Spond",
-    name_en: "Spond",
-    category: "sports",
-    short_description_ar: "تواصل مع أولياء أمور الأكاديمية وإدارة الحضور.",
-    short_description_en: "Parent comms + attendance tracking for academies.",
-    kinds: ["manage_team"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "FF6E40",
-  },
-  {
-    slug: "teamsnap",
-    name_ar: "TeamSnap",
-    name_en: "TeamSnap",
-    category: "sports",
-    short_description_ar: "إدارة الفرق وجدولة التدريبات والمباريات.",
-    short_description_en: "Team management with practice + game scheduling.",
-    kinds: ["manage_team"],
-    availability: "coming_soon",
-    simple_icon: null,
-    brand_color: "F46A1F",
   },
 
   // ─── Social (6) ─────────────────────────────────────────────
@@ -608,7 +410,7 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     brand_color: "168EEA",
   },
 
-  // ─── Support (3) ────────────────────────────────────────────
+  // ─── Support (2) ────────────────────────────────────────────
   {
     slug: "zendesk",
     name_ar: "Zendesk",
@@ -632,18 +434,6 @@ export const CATALOG: ReadonlyArray<CatalogEntry> = [
     availability: "coming_soon",
     simple_icon: "intercom",
     brand_color: "1F8DED",
-  },
-  {
-    slug: "freshdesk",
-    name_ar: "Freshdesk",
-    name_en: "Freshdesk",
-    category: "support",
-    short_description_ar: "بديل مبسّط لـ Zendesk بسعر منخفض.",
-    short_description_en: "Simpler, lower-cost alternative to Zendesk.",
-    kinds: ["customer_support"],
-    availability: "coming_soon",
-    simple_icon: "freshworks",
-    brand_color: "169D5E",
   },
 
   // ─── Automation (2) ─────────────────────────────────────────
@@ -679,7 +469,6 @@ export const CATEGORY_ORDER: ReadonlyArray<IntegrationCategory> = [
   "marketing",
   "analytics",
   "payments",
-  "sports",
   "social",
   "support",
   "automation",
