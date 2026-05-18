@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 
@@ -13,6 +14,16 @@ import {
   TenantError,
 } from "@/lib/tenant";
 import type { Locale } from "@/i18n/routing";
+
+// When a visitor is on a tenant subdomain (cookie set by proxy.ts) and has
+// no session, we send them to the public club landing page instead of
+// straight to sign-in. Bare-host visitors still go to sign-in.
+async function noSessionRedirect(locale: string): Promise<never> {
+  const cookieStore = await cookies();
+  const tenantSlug = cookieStore.get("sporlo-tenant-slug")?.value;
+  if (tenantSlug) redirect(`/${locale}/welcome`);
+  redirect(`/${locale}/sign-in`);
+}
 
 export default async function DashboardLayout({
   children,
@@ -30,9 +41,9 @@ export default async function DashboardLayout({
     await enforceHostMatchesOrg(tenant);
   } catch (err) {
     if (err instanceof TenantError) {
-      if (err.message === "no-session") redirect(`/${locale}/sign-in`);
+      if (err.message === "no-session") await noSessionRedirect(locale);
       if (err.message === "no-org-claim") redirect(`/${locale}/onboarding`);
-      if (err.message === "host-org-mismatch") redirect(`/${locale}/sign-in`);
+      if (err.message === "host-org-mismatch") await noSessionRedirect(locale);
     }
     throw err;
   }

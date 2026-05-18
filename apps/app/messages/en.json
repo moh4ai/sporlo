@@ -19,6 +19,39 @@
       "failed": "Couldn't update notifications"
     }
   },
+  "fansLanding": {
+    "hero": {
+      "eyebrow": "Welcome to",
+      "memberPortal": "Member portal",
+      "becomeMember": "Become a member"
+    },
+    "nextMatch": {
+      "eyebrow": "Next match",
+      "buyTickets": "Buy tickets"
+    },
+    "news": {
+      "eyebrow": "Latest from the club",
+      "title": "News"
+    },
+    "squad": {
+      "eyebrow": "On the pitch",
+      "title": "First team"
+    },
+    "shop": {
+      "eyebrow": "Official store",
+      "title": "Shop"
+    },
+    "common": {
+      "viewAll": "View all"
+    },
+    "countdown": {
+      "days": "{count}d",
+      "hours": "{count}h",
+      "minutes": "{count}m",
+      "soon": "Soon",
+      "live": "Live now"
+    }
+  },
   "cmdk": {
     "trigger": "Search",
     "placeholder": "Search members, plans, fixtures, products…",

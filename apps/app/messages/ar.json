@@ -15,6 +15,39 @@
       "failed": "تعذّر تحديث الإشعارات"
     }
   },
+  "fansLanding": {
+    "hero": {
+      "eyebrow": "أهلاً بكم في",
+      "memberPortal": "بوابة الأعضاء",
+      "becomeMember": "كن عضواً"
+    },
+    "nextMatch": {
+      "eyebrow": "المباراة القادمة",
+      "buyTickets": "شراء التذاكر"
+    },
+    "news": {
+      "eyebrow": "آخر أخبار النادي",
+      "title": "الأخبار"
+    },
+    "squad": {
+      "eyebrow": "على أرض الملعب",
+      "title": "الفريق الأول"
+    },
+    "shop": {
+      "eyebrow": "المتجر الرسمي",
+      "title": "المتجر"
+    },
+    "common": {
+      "viewAll": "عرض الكل"
+    },
+    "countdown": {
+      "days": "{count} ي",
+      "hours": "{count} س",
+      "minutes": "{count} د",
+      "soon": "قريباً",
+      "live": "تُلعب الآن"
+    }
+  },
   "cmdk": {
     "trigger": "بحث",
     "placeholder": "ابحث في الأعضاء، الباقات، المباريات، المنتجات…",
