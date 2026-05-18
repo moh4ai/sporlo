@@ -172,12 +172,65 @@
     "settings": "Settings"
   },
   "dashboard": {
-    "welcome": "Welcome to Sporlo",
-    "intro": "Sprint 0 walking skeleton. Each module lights up in a later phase.",
+    "welcome": "Control panel",
+    "intro": "At-a-glance view of your club today. Tiles + charts pull live data from every module.",
     "tier": "Current tier",
     "tierValue": "Not set",
     "lastSync": "Last sync",
-    "activeMembers": "Active members"
+    "activeMembers": "Active members",
+    "metrics": {
+      "activeMembers": "Active members",
+      "activeMembersHint": "Members with status = active",
+      "revenue30": "Revenue · 30d",
+      "revenue30Hint": "Paid payments in the last 30 days",
+      "upcomingMatches": "Upcoming matches",
+      "upcomingMatchesHint": "Scheduled fixtures from today",
+      "pendingRefunds": "Pending refunds",
+      "pendingRefundsHint": "Awaiting your approval"
+    },
+    "tip": {
+      "title": "Tip",
+      "body": "Hit ⌘K (or Ctrl+K) anywhere to jump to a member, plan, fixture, or product in one search."
+    }
+  },
+  "dashboardCharts": {
+    "revenue": {
+      "title": "Revenue · last 6 months",
+      "subtitle": "Sum of paid payments per month"
+    },
+    "mix": {
+      "title": "Subscription mix",
+      "subtitle": "Current status across all subscriptions",
+      "active": "Active",
+      "frozen": "Frozen",
+      "cancelled": "Cancelled",
+      "expired": "Expired",
+      "total": "Total",
+      "empty": "No subscriptions yet."
+    },
+    "activity": {
+      "title": "Recent activity",
+      "subtitle": "Last 10 KPI events across modules",
+      "empty": "No activity yet.",
+      "events": {
+        "member_added": "New member added",
+        "subscription_started": "Subscription started",
+        "subscription_renewed": "Subscription renewed",
+        "subscription_frozen": "Subscription frozen",
+        "subscription_cancelled": "Subscription cancelled",
+        "revenue_recorded": "Revenue recorded",
+        "ticket_sold": "Ticket sold",
+        "merch_revenue": "Store sale",
+        "facility_booked": "Facility booked",
+        "academy_session_held": "Academy session held",
+        "training_held": "Training held",
+        "staff_certified": "Staff certified",
+        "event_held": "Event held",
+        "attendance_recorded": "Attendance recorded",
+        "coupon_redeemed": "Coupon redeemed",
+        "refund_processed": "Refund processed"
+      }
+    }
   },
   "signIn": {
     "headlineSignIn": "Sign in to Sporlo",

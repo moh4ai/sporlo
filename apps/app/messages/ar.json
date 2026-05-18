@@ -172,12 +172,65 @@
     "settings": "الإعدادات"
   },
   "dashboard": {
-    "welcome": "أهلاً بك في سبورلو",
-    "intro": "هيكل مبدئي للوحة النادي. كل وحدة ستفعّل في طور لاحق وفق خطة سبرنت ٠.",
+    "welcome": "لوحة التحكم",
+    "intro": "نظرة عامة لحالة ناديك اليوم. البطاقات والرسوم تُحدَّث من كل وحدة آلياً.",
     "tier": "التصنيف الحالي",
     "tierValue": "غير محدد",
     "lastSync": "آخر مزامنة",
-    "activeMembers": "الأعضاء النشطون"
+    "activeMembers": "الأعضاء النشطون",
+    "metrics": {
+      "activeMembers": "الأعضاء النشطون",
+      "activeMembersHint": "الأعضاء بحالة نشط",
+      "revenue30": "إيرادات · 30 يوم",
+      "revenue30Hint": "إجمالي المدفوعات المكتملة خلال 30 يوم",
+      "upcomingMatches": "المباريات القادمة",
+      "upcomingMatchesHint": "المباريات المجدولة من اليوم",
+      "pendingRefunds": "طلبات الاسترداد المعلّقة",
+      "pendingRefundsHint": "بانتظار موافقتك"
+    },
+    "tip": {
+      "title": "نصيحة",
+      "body": "اضغط ⌘K (أو Ctrl+K) للقفز سريعاً إلى أي عضو، باقة، مباراة، أو منتج."
+    }
+  },
+  "dashboardCharts": {
+    "revenue": {
+      "title": "الإيرادات · آخر 6 أشهر",
+      "subtitle": "إجمالي المدفوعات المكتملة لكل شهر"
+    },
+    "mix": {
+      "title": "توزيع الاشتراكات",
+      "subtitle": "الحالة الحالية لكل الاشتراكات",
+      "active": "نشطة",
+      "frozen": "مجمّدة",
+      "cancelled": "ملغاة",
+      "expired": "منتهية",
+      "total": "الإجمالي",
+      "empty": "لا توجد اشتراكات بعد."
+    },
+    "activity": {
+      "title": "النشاط الأخير",
+      "subtitle": "آخر 10 أحداث KPI عبر الوحدات",
+      "empty": "لا يوجد نشاط بعد.",
+      "events": {
+        "member_added": "إضافة عضو",
+        "subscription_started": "بدء اشتراك",
+        "subscription_renewed": "تجديد اشتراك",
+        "subscription_frozen": "تجميد اشتراك",
+        "subscription_cancelled": "إلغاء اشتراك",
+        "revenue_recorded": "تسجيل إيراد",
+        "ticket_sold": "بيع تذكرة",
+        "merch_revenue": "مبيعات المتجر",
+        "facility_booked": "حجز منشأة",
+        "academy_session_held": "حصة أكاديمية",
+        "training_held": "تدريب",
+        "staff_certified": "شهادة موظف",
+        "event_held": "إقامة حدث",
+        "attendance_recorded": "تسجيل حضور",
+        "coupon_redeemed": "استرداد كوبون",
+        "refund_processed": "معالجة استرداد"
+      }
+    }
   },
   "signIn": {
     "headlineSignIn": "تسجيل الدخول إلى سبورلو",
