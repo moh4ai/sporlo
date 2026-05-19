@@ -39,3 +39,10 @@ yarn-error.log*
 # scratch
 .screenshots/
 .lighthouse/
+
+# local-only artefacts (decks, drafts, exports — keep these out of git)
+Sporlo*Pitch*.html
+*.pptx
+*.pdf
+*.key
+*.docx
