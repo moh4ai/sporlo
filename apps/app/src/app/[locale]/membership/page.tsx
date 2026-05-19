@@ -133,7 +133,7 @@ export default async function MembershipPage({
                       })}
                     </ul>
                   )}
-                  <Link href="/sign-in" className="block">
+                  <Link href={`/sign-in?plan=${plan.code}`} className="block">
                     <Button
                       className="w-full"
                       variant={isPopular ? "primary" : "secondary"}

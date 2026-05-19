@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Calendar, CheckCircle2 } from "lucide-react";
 
-import { Badge, Card } from "@sporlo/ui";
+import { Badge, Button, Card } from "@sporlo/ui";
 
 import { Link } from "@/i18n/navigation";
 import { createServiceRoleClient } from "@/lib/supabase-server";
@@ -11,10 +11,13 @@ import type { Locale } from "@/i18n/routing";
 
 export default async function MePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ paid?: string }>;
 }) {
   const { locale } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale as Locale);
 
   const tenant = await getActiveTenant();
@@ -100,6 +103,19 @@ export default async function MePage({
 
   return (
     <div className="mx-auto max-w-3xl space-y-8 px-4 py-10 sm:px-6">
+      {/* Post-checkout banner (paid=1 → green, paid=pending → amber). Driven
+          by the query string the Moyasar callback and manual flow set. */}
+      {sp.paid === "1" && (
+        <div className="rounded-card border border-spo-green/40 bg-spo-green-soft p-4 text-sm text-spo-green-deep">
+          {t("postCheckout.success")}
+        </div>
+      )}
+      {sp.paid === "pending" && (
+        <div className="rounded-card border border-spo-amber/40 bg-spo-amber/10 p-4 text-sm text-spo-ink-2">
+          {t("postCheckout.pending")}
+        </div>
+      )}
+
       {/* Hero */}
       <header className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
@@ -156,6 +172,13 @@ export default async function MePage({
             <Badge tone="neutral">{t("subscription.statusNone")}</Badge>
           )}
         </div>
+        {!activeSub && (
+          <div className="mt-4">
+            <Link href="/membership">
+              <Button size="sm">{t("subscription.choosePlan")}</Button>
+            </Link>
+          </div>
+        )}
       </Card>
 
       {/* Upcoming fixtures */}

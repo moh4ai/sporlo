@@ -37,9 +37,11 @@ export async function GET(req: NextRequest) {
       ? `/${locale}/fixtures/${fixtureId}`
       : kind === "order"
         ? `/${locale}/shop`
-        : memberId
-          ? `/${locale}/memberships/members/${memberId}`
-          : `/${locale}`;
+        : kind === "member-subscription"
+          ? `/${locale}/me`
+          : memberId
+            ? `/${locale}/memberships/members/${memberId}`
+            : `/${locale}`;
 
   try {
     const remote = await fetchPayment(moyasarPaymentId);
@@ -57,6 +59,9 @@ export async function GET(req: NextRequest) {
           amount_sar: halalasToSar(remote.amount),
         });
       } else {
+        // subscription (staff) and member-subscription (fan portal) share
+        // the same finalize path — both insert into `subscriptions` + mark
+        // the payment paid.
         await finalizeMoyasarPayment({
           paymentId: sporloPaymentId,
           provider_payment_id: remote.id,

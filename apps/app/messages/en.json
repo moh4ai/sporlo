@@ -153,6 +153,36 @@
     "cta": "Get started",
     "footerNote": "Membership covers ticket presale, store discounts, and member-only events. Questions? Reach out to the club office."
   },
+  "membershipCheckout": {
+    "eyebrow": "Confirm membership",
+    "title": "Join as {plan}",
+    "subtitle": "Review your plan and pick how you'd like to pay.",
+    "summary": {
+      "label": "You're subscribing to",
+      "duration": "Billed once for {count, plural, =1 {1 month} other {# months}}."
+    },
+    "methodLabel": "Payment method",
+    "methodMoyasar": "Credit / debit card, Apple Pay, STC Pay",
+    "methodManual": "Pay later at the club office",
+    "moyasarUnavailable": "Card payments aren't enabled for this club yet. Choose pay-later to continue.",
+    "submit": "Confirm subscription",
+    "submitting": "Working…",
+    "errors": {
+      "generic": "Something went wrong. Try again or contact the club.",
+      "noSession": "Your sign-in expired. Sign in again to continue.",
+      "noTenant": "We couldn't tell which club this is. Reopen the link from the club's site.",
+      "planUnavailable": "This plan is no longer available."
+    },
+    "toast": {
+      "failed": "Couldn't start your subscription",
+      "pendingManual": "Subscription saved — pay at the office to activate."
+    },
+    "widget": {
+      "title": "Payment",
+      "subtitle": "Your card details are handled by Moyasar. Sporlo never sees them.",
+      "missingKey": "Card payments aren't configured for this club yet."
+    }
+  },
   "playerProfile": {
     "breadcrumb": {
       "squads": "Squads"
@@ -290,9 +320,14 @@
       "title": "Subscription",
       "expires": "Expires",
       "none": "No active subscription",
-      "noneHint": "Talk to your club admin to renew or sign up.",
+      "noneHint": "Pick a tier to join the club.",
       "statusActive": "Active",
-      "statusNone": "None"
+      "statusNone": "None",
+      "choosePlan": "Choose a plan"
+    },
+    "postCheckout": {
+      "success": "Payment received — your subscription is active.",
+      "pending": "We've saved your subscription. Visit the club office to complete payment and activate it."
     },
     "fixtures": {
       "title": "Upcoming matches",

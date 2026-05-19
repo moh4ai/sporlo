@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { parseClaims } from "@sporlo/auth";
@@ -15,12 +16,28 @@ type Mode = "sign-in" | "sign-up";
 export function SignInForm({ locale }: { locale: "ar" | "en" }) {
   const t = useTranslations("signIn");
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>("sign-in");
+  const searchParams = useSearchParams();
+  // When the fan portal sends a visitor here from /membership we carry the
+  // selected plan code as ?plan=. Default the form to sign-up (most clickers
+  // are new members) and route back into checkout after auth.
+  const planCode = searchParams.get("plan");
+  const [mode, setMode] = useState<Mode>(planCode ? "sign-up" : "sign-in");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+
+  // If the user landed with ?plan= but then toggles modes back and forth,
+  // keep the default aligned with the param the first time it appears.
+  useEffect(() => {
+    if (planCode) setMode("sign-up");
+  }, [planCode]);
+
+  function nextDestination(role: string | undefined): string {
+    if (planCode) return `/membership/checkout?plan=${encodeURIComponent(planCode)}`;
+    return role === "member" ? "/me" : "/";
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -36,7 +53,7 @@ export function SignInForm({ locale }: { locale: "ar" | "en" }) {
         });
         if (err) throw err;
         if (data.session) {
-          router.replace("/");
+          router.replace(nextDestination(undefined));
           router.refresh();
         } else {
           // Email confirmation required.
@@ -48,9 +65,8 @@ export function SignInForm({ locale }: { locale: "ar" | "en" }) {
           password,
         });
         if (err) throw err;
-        // Members land on /me, everyone else on the staff dashboard.
         const claims = data.session ? parseClaims(data.session.access_token) : null;
-        router.replace(claims?.role === "member" ? "/me" : "/");
+        router.replace(nextDestination(claims?.role ?? undefined));
         router.refresh();
       }
     } catch {
