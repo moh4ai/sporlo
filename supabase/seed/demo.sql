@@ -94,11 +94,35 @@ begin
   v_org    := (select id from public.organizations where slug = 'demo-club' limit 1);
   v_branch := (select id from public.branches where org_id = v_org and name_en = 'Riyadh HQ' limit 1);
 
-  insert into public.plans (org_id, code, name_ar, name_en, duration_months, price_sar, member_only_store_discount_pct, active) values
-    (v_org, 'gold-12mo',  'الذهبية',   'Gold - 12 months',  12, 1500.00, 15, true),
-    (v_org, 'silver-6mo', 'الفضية',    'Silver - 6 months',  6,  900.00, 10, true),
-    (v_org, 'bronze-3mo', 'البرونزية', 'Bronze - 3 months',  3,  500.00,  5, true)
-  on conflict (org_id, code) do nothing;
+  insert into public.plans (org_id, code, name_ar, name_en, duration_months, price_sar, member_only_store_discount_pct, active, public_visible, benefits_jsonb) values
+    (v_org, 'gold-12mo',  'الذهبية',   'Gold - 12 months',  12, 1500.00, 15, true, true,
+      jsonb_build_array(
+        jsonb_build_object('ar', 'تذكرة موسم لجميع مباريات الفريق الأول', 'en', 'Season ticket for every first-team home match'),
+        jsonb_build_object('ar', 'دخول مبكر للملعب قبل ساعة من المباراة',  'en', 'Stadium gates open 1 hour early for Gold members'),
+        jsonb_build_object('ar', 'خصم 15% على متجر النادي طوال السنة',   'en', '15% off the club store, all season long'),
+        jsonb_build_object('ar', 'دعوة لجلسة تدريب مفتوحة سنوية',       'en', 'Invite to one open-training session each season'),
+        jsonb_build_object('ar', 'بطاقة عضوية ذهبية باسم العضو',         'en', 'Personalised Gold membership card')
+      )),
+    (v_org, 'silver-6mo', 'الفضية',    'Silver - 6 months',  6,  900.00, 10, true, true,
+      jsonb_build_array(
+        jsonb_build_object('ar', 'حجز مسبق لتذاكر المباريات قبل البيع العام', 'en', 'Pre-sale window before tickets go public'),
+        jsonb_build_object('ar', 'خصم 10% على متجر النادي',                'en', '10% off the club store'),
+        jsonb_build_object('ar', 'نشرة بريدية حصرية للأعضاء',              'en', 'Members-only newsletter')
+      )),
+    (v_org, 'bronze-3mo', 'البرونزية', 'Bronze - 3 months',  3,  500.00,  5, true, true,
+      jsonb_build_array(
+        jsonb_build_object('ar', 'خصم 5% على متجر النادي',         'en', '5% off the club store'),
+        jsonb_build_object('ar', 'بطاقة عضوية برونزية رقمية',      'en', 'Digital Bronze membership card')
+      ))
+  on conflict (org_id, code) do update set
+    name_ar = excluded.name_ar,
+    name_en = excluded.name_en,
+    duration_months = excluded.duration_months,
+    price_sar = excluded.price_sar,
+    member_only_store_discount_pct = excluded.member_only_store_discount_pct,
+    active = excluded.active,
+    public_visible = excluded.public_visible,
+    benefits_jsonb = excluded.benefits_jsonb;
 
   insert into public.members (org_id, branch_id, full_name_ar, full_name_en, email, phone, member_number, status, joined_at) values
     (v_org, v_branch, 'أحمد الزهراني',  'Ahmad Al-Zahrani',    'ahmad@example.com',    '+966501000001', 'M-DEMO-00001', 'active',   now() - interval '8 months'),

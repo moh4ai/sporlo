@@ -6,6 +6,7 @@ import { Card } from "@sporlo/ui";
 import { Link } from "@/i18n/navigation";
 import { PublicShell } from "@/components/PublicShell";
 import { createServiceRoleClient } from "@/lib/supabase-server";
+import { resolvePublicMediaSrc } from "@/lib/public-media";
 import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
 
@@ -117,17 +118,23 @@ export default async function PublicNewsPage({
         ) : (
           <div className="space-y-10">
             {/* Featured hero */}
-            {featured && (
+            {featured && (() => {
+              const featuredCover = resolvePublicMediaSrc(
+                featured.cover_image_path,
+                admin,
+                "news-covers",
+              );
+              return (
               <Link
                 href={`/news/${featured.slug}`}
                 className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
               >
                 <div className="grid gap-0 md:grid-cols-2">
                   <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft md:aspect-auto">
-                    {featured.cover_image_path ? (
+                    {featuredCover ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={featured.cover_image_path}
+                        src={featuredCover}
                         alt=""
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
@@ -166,7 +173,8 @@ export default async function PublicNewsPage({
                   </div>
                 </div>
               </Link>
-            )}
+              );
+            })()}
 
             {/* Grid of the rest */}
             {rest.length > 0 && (
@@ -174,6 +182,11 @@ export default async function PublicNewsPage({
                 {rest.map((a) => {
                   const title = locale === "ar" ? a.title_ar : a.title_en;
                   const excerpt = locale === "ar" ? a.excerpt_ar : a.excerpt_en;
+                  const coverSrc = resolvePublicMediaSrc(
+                    a.cover_image_path,
+                    admin,
+                    "news-covers",
+                  );
                   return (
                     <li key={a.id}>
                       <Link
@@ -181,10 +194,10 @@ export default async function PublicNewsPage({
                         className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                       >
                         <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft">
-                          {a.cover_image_path ? (
+                          {coverSrc ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
-                              src={a.cover_image_path}
+                              src={coverSrc}
                               alt=""
                               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                             />

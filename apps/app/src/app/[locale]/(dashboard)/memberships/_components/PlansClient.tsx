@@ -261,7 +261,7 @@ function PlanFormDrawer({
       setDuration("12");
       setPrice("0");
       setDiscount("0");
-      setPublicVisible(false);
+      setPublicVisible(true);
       setBenefits([]);
     } else {
       setCode(state.plan.code);

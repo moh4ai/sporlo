@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { PublicShell } from "@/components/PublicShell";
 import { MatchCountdown } from "@/components/fans/MatchCountdown";
 import { createServiceRoleClient } from "@/lib/supabase-server";
+import { resolvePublicMediaSrc } from "@/lib/public-media";
 import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
 
@@ -494,6 +495,11 @@ export default async function ClubLandingPage({
               {news.map((a) => {
                 const title = locale === "ar" ? a.title_ar : a.title_en;
                 const excerpt = locale === "ar" ? a.excerpt_ar : a.excerpt_en;
+                const coverSrc = resolvePublicMediaSrc(
+                  a.cover_image_path as string | null,
+                  admin,
+                  "news-covers",
+                );
                 return (
                   <li key={a.id}>
                     <Link
@@ -501,10 +507,10 @@ export default async function ClubLandingPage({
                       className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                     >
                       <div className="relative aspect-[16/10] overflow-hidden bg-spo-green-soft">
-                        {a.cover_image_path ? (
+                        {coverSrc ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src={a.cover_image_path as string}
+                            src={coverSrc}
                             alt=""
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                           />
@@ -548,17 +554,23 @@ export default async function ClubLandingPage({
               </Link>
             </div>
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {roster.map((r) => (
+              {roster.map((r) => {
+                const photoSrc = resolvePublicMediaSrc(
+                  r.photo_path as string | null,
+                  admin,
+                  "roster-photos",
+                );
+                return (
                 <li key={r.id}>
                   <Link
                     href={`/squads/${r.squad_id}/players/${r.id}`}
                     className="group block rounded-card border border-spo-line bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                   >
                     <div className="mb-3 flex h-32 w-full items-center justify-center overflow-hidden rounded-md bg-spo-green-soft">
-                      {r.photo_path ? (
+                      {photoSrc ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
-                          src={r.photo_path as string}
+                          src={photoSrc}
                           alt=""
                           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
@@ -582,7 +594,8 @@ export default async function ClubLandingPage({
                     </div>
                   </Link>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         </section>

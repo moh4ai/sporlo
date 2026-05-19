@@ -19,6 +19,7 @@ export default async function PublicSquadDetailPage({
   const t = await getTranslations({ locale, namespace: "team.public" });
 
   const tenant = await resolvePublicTenant();
+  if (!tenant) notFound();
   const admin = createServiceRoleClient();
   const { data: squad } = await admin
     .from("squads")
