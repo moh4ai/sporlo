@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 /* ─────────────────────────────────────────────
    Sporlo Brand System — single source of truth
    Ported from sporlo-web/src/app/globals.css, which itself was
@@ -7,6 +5,10 @@
 
    This file is the AUTHORITATIVE token set for the product monorepo.
    apps/app/src/app/globals.css imports it; do not redefine tokens there.
+
+   `@import "tailwindcss"` lives in each app's own globals.css (not here):
+   PostCSS resolves CSS imports relative to the importing file, and this
+   package has no tailwindcss in its node_modules tree.
    ───────────────────────────────────────────── */
 
 @theme {
