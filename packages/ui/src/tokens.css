@@ -36,9 +36,9 @@
   --color-spo-danger: #b91c1c;
 
   /* Type stacks — actual font files loaded via next/font in app layout */
-  --font-display: var(--font-baumans), "Manrope", system-ui, sans-serif;
+  --font-display: var(--font-bebas), "Manrope", system-ui, sans-serif;
   --font-body: var(--font-manrope), system-ui, sans-serif;
-  --font-ar: var(--font-rubik), "Tajawal", "Segoe UI", system-ui, sans-serif;
+  --font-ar: var(--font-tajawal), "Segoe UI", system-ui, sans-serif;
 
   /* Radii — three tiers + pill (Phase A foundation).
      `--radius-card` kept as alias of `--radius-lg` for the in-flight pages
