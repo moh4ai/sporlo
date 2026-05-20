@@ -64,6 +64,11 @@ const CURATED = {
   // Stadium hero — aerial / dramatic stadium shot.
   stadium: "1577223625816-7546f13df25d",
 
+  // Welcome-page hero — full-bleed photo behind the club logo + tagline.
+  // Picked for match-day atmosphere; swap if the gradient overlay needs
+  // a different base.
+  welcomeHero: "1675474463858-54ea69949dfe",
+
   // News article covers — one per article slug. Order matches demo.sql
   // chunk 10A: season-launch, academy-open-day, community-csr,
   // new-jersey-launch, draft-piece.
@@ -88,6 +93,9 @@ const CURATED = {
         "1526232761682-d26e03ac148e",
         "1551958219-acbc608c6377",
         "1591197172062-c718f82aba20",
+        "1677752793570-acb0b3c54542",
+        "1675474463858-54ea69949dfe",
+        "1658262537524-bcb660b5371e",
       ],
     },
     {
@@ -100,6 +108,9 @@ const CURATED = {
         "1518604666860-9ed391f76460",
         "1599058917765-a780eda07a3e",
         "1517466787929-bc90951d0974",
+        "1526232761682-d26e03ac148e",
+        "1574629810360-7efbbe195018",
+        "1552674605-db6ffd4facb5",
       ],
     },
     {
@@ -112,6 +123,9 @@ const CURATED = {
         "1574629810360-7efbbe195018",
         "1522778526097-ce0a22ceb253",
         "1518604666860-9ed391f76460",
+        "1650826201320-c35f1a461390",
+        "1643700700063-5e28d813d88e",
+        "1576091160550-2173dba999ef",
       ],
     },
   ],
@@ -210,18 +224,58 @@ async function uploadFile(bucket, path, buffer, contentType) {
 }
 
 function svgClubLogo(initials, bgColor, fgColor) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  // Football-crest style: shield silhouette with double border, a stylised
+  // football icon, the club initials on a ribbon, and the founding year
+  // banner. Renders crisp at any size.
+  const dark = shade(bgColor, -28);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="${bgColor}"/>
-      <stop offset="100%" stop-color="${shade(bgColor, -20)}"/>
+      <stop offset="100%" stop-color="${dark}"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${fgColor}"/>
+      <stop offset="100%" stop-color="${shade(fgColor, -8)}"/>
     </linearGradient>
   </defs>
-  <rect x="10" y="10" width="180" height="180" rx="28" fill="url(#g)"/>
-  <rect x="10" y="10" width="180" height="180" rx="28" fill="none" stroke="${fgColor}" stroke-width="3" stroke-opacity="0.3"/>
-  <text x="100" y="120" font-family="Georgia, serif" font-weight="bold" font-size="78" text-anchor="middle" fill="${fgColor}">${initials}</text>
-  <line x1="40" y1="145" x2="160" y2="145" stroke="${fgColor}" stroke-width="2" stroke-opacity="0.6"/>
-  <text x="100" y="170" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="${fgColor}" letter-spacing="3">EST. 2024</text>
+
+  <!-- Outer shield silhouette -->
+  <path d="M100 8 L184 28 L184 110 C184 158 148 196 100 212 C52 196 16 158 16 110 L16 28 Z"
+        fill="url(#shield)"
+        stroke="${fgColor}" stroke-width="4" stroke-opacity="0.85"/>
+  <!-- Inner border -->
+  <path d="M100 18 L174 36 L174 108 C174 152 142 186 100 200 C58 186 26 152 26 108 L26 36 Z"
+        fill="none" stroke="${fgColor}" stroke-width="1.5" stroke-opacity="0.45"/>
+
+  <!-- Top ribbon with initials -->
+  <path d="M30 46 L170 46 L162 70 L38 70 Z"
+        fill="${fgColor}" fill-opacity="0.95"/>
+  <text x="100" y="64" font-family="'Arial Black', Helvetica, sans-serif"
+        font-weight="900" font-size="20" text-anchor="middle"
+        fill="${dark}" letter-spacing="6">${initials}</text>
+
+  <!-- Football icon (centred) -->
+  <g transform="translate(100 124)">
+    <circle r="28" fill="${fgColor}" stroke="${dark}" stroke-width="2"/>
+    <polygon points="0,-14 13,-4 8,11 -8,11 -13,-4"
+             fill="${dark}"/>
+    <line x1="0" y1="-14" x2="0" y2="-28" stroke="${dark}" stroke-width="1.5"/>
+    <line x1="13" y1="-4" x2="26" y2="-9" stroke="${dark}" stroke-width="1.5"/>
+    <line x1="-13" y1="-4" x2="-26" y2="-9" stroke="${dark}" stroke-width="1.5"/>
+    <line x1="8" y1="11" x2="16" y2="22" stroke="${dark}" stroke-width="1.5"/>
+    <line x1="-8" y1="11" x2="-16" y2="22" stroke="${dark}" stroke-width="1.5"/>
+  </g>
+
+  <!-- Year banner -->
+  <rect x="58" y="172" width="84" height="20" rx="3"
+        fill="${fgColor}" fill-opacity="0.95"/>
+  <text x="100" y="187" font-family="Georgia, serif" font-weight="700"
+        font-size="13" text-anchor="middle" fill="${dark}" letter-spacing="2">EST. 2024</text>
+
+  <!-- Decorative side accents -->
+  <circle cx="40" cy="124" r="3" fill="${fgColor}" fill-opacity="0.55"/>
+  <circle cx="160" cy="124" r="3" fill="${fgColor}" fill-opacity="0.55"/>
 </svg>`;
 }
 
@@ -277,6 +331,7 @@ async function probeCuratedIds() {
   for (const id of Object.values(CURATED.facilities)) ids.add(id);
   for (const id of Object.values(CURATED.pages)) ids.add(id);
   ids.add(CURATED.stadium);
+  ids.add(CURATED.welcomeHero);
 
   console.log(`Probing ${ids.size} unique photo IDs…`);
   const dead = [];
@@ -317,7 +372,7 @@ async function main() {
   const orgId = org.id;
   const primary = org.primary_color || "#0f6e3f";
 
-  // ─── 1. Org logo ────────────────────────────────────────────────
+  // ─── 1. Org logo + welcome-page hero ───────────────────────────
   {
     const initials = "DSC";
     const svg = svgClubLogo(initials, primary, "#ffffff");
@@ -325,6 +380,21 @@ async function main() {
     await uploadFile("org-branding", path, Buffer.from(svg, "utf8"), "image/svg+xml");
     await pg.query("update organizations set logo_path=$1 where id=$2", [path, orgId]);
     console.log("  ✓ org logo");
+
+    // Welcome-page hero — full-bleed background behind the logo block.
+    const heroBuf = await tryDownload(
+      unsplashUrl(CURATED.welcomeHero, 2400, 1200),
+      `welcome hero`,
+    );
+    if (heroBuf) {
+      const heroPath = `${orgId}/welcome-hero-${Date.now()}.jpg`;
+      await uploadFile("org-branding", heroPath, heroBuf, "image/jpeg");
+      await pg.query(
+        "update organizations set welcome_hero_image_path=$1 where id=$2",
+        [heroPath, orgId],
+      );
+      console.log("  ✓ welcome hero");
+    }
   }
 
   // ─── 2. News covers ─────────────────────────────────────────────

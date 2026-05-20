@@ -47,7 +47,7 @@ export default async function ClubLandingPage({
     admin
       .from("organizations")
       .select(
-        "tagline_ar, tagline_en, logo_path, primary_color, social_jsonb, app_store_url, play_store_url, newsletter_provider",
+        "tagline_ar, tagline_en, logo_path, primary_color, social_jsonb, app_store_url, play_store_url, newsletter_provider, welcome_hero_image_path",
       )
       .eq("id", tenant.org_id)
       .maybeSingle(),
@@ -259,6 +259,11 @@ export default async function ClubLandingPage({
   const logoUrl = orgRow?.logo_path
     ? admin.storage.from("org-branding").getPublicUrl(orgRow.logo_path as string).data.publicUrl
     : null;
+  const heroImageUrl = orgRow?.welcome_hero_image_path
+    ? admin.storage
+        .from("org-branding")
+        .getPublicUrl(orgRow.welcome_hero_image_path as string).data.publicUrl
+    : null;
   const primaryColor = (orgRow?.primary_color as string | null) ?? null;
 
   return (
@@ -269,35 +274,82 @@ export default async function ClubLandingPage({
         <section
           className="relative overflow-hidden bg-white"
           style={
-            primaryColor
+            !heroImageUrl && primaryColor
               ? {
                   // Stronger top tint (30% → transparent) plus a soft radial
-                  // around the logo for depth on bare-tenant setups.
+                  // around the logo for depth on bare-tenant setups without
+                  // a hero photo.
                   backgroundImage: `linear-gradient(180deg, ${primaryColor}30 0%, transparent 60%)`,
                 }
               : undefined
           }
         >
-          {primaryColor && (
+          {heroImageUrl && (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={heroImageUrl}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+              {/* Dual overlay — dark vignette for legibility + brand-tinted
+                  wash on top so the org's primary colour still reads. */}
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-b from-spo-ink/65 via-spo-ink/45 to-spo-ink/75"
+              />
+              {primaryColor && (
+                <div
+                  aria-hidden
+                  className="absolute inset-0 mix-blend-multiply opacity-40"
+                  style={{
+                    background: `linear-gradient(135deg, ${primaryColor} 0%, transparent 60%)`,
+                  }}
+                />
+              )}
+            </>
+          )}
+          {!heroImageUrl && primaryColor && (
             <div
               aria-hidden
               className="absolute -end-32 -top-32 h-96 w-96 rounded-full opacity-40 blur-3xl"
               style={{ backgroundColor: primaryColor }}
             />
           )}
-          <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between md:py-24">
+          <div
+            className={
+              "relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between md:py-24 " +
+              (heroImageUrl ? "text-white" : "")
+            }
+          >
             <div className="max-w-2xl space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+              <p
+                className={
+                  "text-xs font-semibold uppercase tracking-wider " +
+                  (heroImageUrl ? "text-white/85" : "text-spo-green-deep")
+                }
+              >
                 {t("hero.eyebrow")}
               </p>
               <h1
-                className="text-4xl font-semibold text-spo-ink sm:text-5xl md:text-6xl"
+                className={
+                  "text-4xl font-semibold sm:text-5xl md:text-6xl " +
+                  (heroImageUrl ? "text-white drop-shadow-lg" : "text-spo-ink")
+                }
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {orgName}
               </h1>
               {tagline && (
-                <p className="max-w-xl text-lg text-spo-ink-2 sm:text-xl">{tagline}</p>
+                <p
+                  className={
+                    "max-w-xl text-lg sm:text-xl " +
+                    (heroImageUrl ? "text-white/90" : "text-spo-ink-2")
+                  }
+                >
+                  {tagline}
+                </p>
               )}
               <div className="flex flex-wrap gap-2 pt-2">
                 <Link href="/membership">
