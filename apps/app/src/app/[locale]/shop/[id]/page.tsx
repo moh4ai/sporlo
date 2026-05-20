@@ -3,7 +3,6 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Alert, Breadcrumb } from "@sporlo/ui";
 
-import { Link } from "@/i18n/navigation";
 import { createServiceRoleClient } from "@/lib/supabase-server";
 import { resolvePublicMediaSrc } from "@/lib/public-media";
 import { detectPublicMember } from "@/lib/public-member";
@@ -80,16 +79,18 @@ export default async function ProductDetailPublicPage({
     <main className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
       <Breadcrumb
         items={[
-          { label: t("breadcrumb"), href: "/shop" },
-          ...(category ? [{ label: category, href: `/shop?category=${encodeURIComponent(category)}` }] : []),
+          { label: t("breadcrumb"), href: `/${locale}/shop` },
+          ...(category
+            ? [
+                {
+                  label: category,
+                  href: `/${locale}/shop?category=${encodeURIComponent(category)}`,
+                },
+              ]
+            : []),
           { label: name, current: true },
         ]}
         separator={locale === "ar" ? "›" : "/"}
-        renderLink={(item, className) => (
-          <Link href={(item.href as string) ?? "#"} className={className}>
-            {item.label}
-          </Link>
-        )}
       />
 
       <div className="grid gap-8 lg:grid-cols-12">
