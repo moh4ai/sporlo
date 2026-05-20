@@ -457,21 +457,15 @@ async function main() {
   // colour badges, not the real trademarked club logos.
   {
     const crestByOpponent = {
-      "Al-Ittihad": {
-        initials: "IFC",
-        primary: "#000000",
-        accent: "#f7c000",
-      },
-      "Al-Hilal":   {
-        initials: "AH",
-        primary: "#0033a0",
-        accent: "#ffffff",
-      },
-      "Al-Nassr":   {
-        initials: "AN",
-        primary: "#f7c000",
-        accent: "#0033a0",
-      },
+      "Al-Ittihad": { initials: "IFC", primary: "#000000", accent: "#f7c000" },
+      "Al-Hilal":   { initials: "AH",  primary: "#0033a0", accent: "#ffffff" },
+      "Al-Nassr":   { initials: "AN",  primary: "#f7c000", accent: "#0033a0" },
+      "Al-Ahli":    { initials: "AA",  primary: "#005844", accent: "#ffffff" },
+      "Al-Ettifaq": { initials: "AE",  primary: "#b71234", accent: "#ffffff" },
+      "Al-Shabab":  { initials: "AS",  primary: "#ffffff", accent: "#0a1a2f" },
+      "Al-Taawoun": { initials: "AT",  primary: "#6b1d92", accent: "#ffd700" },
+      "Al-Fateh":   { initials: "AF",  primary: "#ff5a1f", accent: "#0a1a2f" },
+      "Al-Raed":    { initials: "AR",  primary: "#1f1f1f", accent: "#ffd700" },
     };
 
     const { rows: fixtures } = await pg.query(
