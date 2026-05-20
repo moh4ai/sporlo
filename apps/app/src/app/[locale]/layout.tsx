@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope } from "next/font/google";
-import localFont from "next/font/local";
+import { Bebas_Neue, Manrope, Tajawal } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -20,18 +19,22 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const baumans = localFont({
-  src: "../../../public/fonts/Baumans.ttf",
-  variable: "--font-baumans",
-  display: "swap",
+// Bebas Neue — single-weight condensed display font, widely used in sports
+// branding. Drives `--font-display` for English headlines + the wordmark.
+const bebas = Bebas_Neue({
+  subsets: ["latin"],
+  variable: "--font-bebas",
   weight: "400",
+  display: "swap",
 });
 
-const rubik = localFont({
-  src: "../../../public/fonts/Rubik-VF.ttf",
-  variable: "--font-rubik",
+// Tajawal — clean Arabic body+display family used by Saudi sports media.
+// Drives `--font-ar` for the entire Arabic locale (display and body).
+const tajawal = Tajawal({
+  subsets: ["arabic"],
+  variable: "--font-tajawal",
+  weight: ["300", "400", "500", "700", "800", "900"],
   display: "swap",
-  weight: "300 900",
 });
 
 export const viewport: Viewport = {
@@ -80,7 +83,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${manrope.variable} ${baumans.variable} ${rubik.variable}`}
+      className={`${manrope.variable} ${bebas.variable} ${tajawal.variable}`}
     >
       <body className="min-h-screen bg-spo-paper text-spo-ink antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
