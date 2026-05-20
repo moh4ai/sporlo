@@ -466,6 +466,10 @@ async function main() {
       "Al-Taawoun": { initials: "AT",  primary: "#6b1d92", accent: "#ffd700" },
       "Al-Fateh":   { initials: "AF",  primary: "#ff5a1f", accent: "#0a1a2f" },
       "Al-Raed":    { initials: "AR",  primary: "#1f1f1f", accent: "#ffd700" },
+      "Al-Batin":   { initials: "AB",  primary: "#005a3c", accent: "#ffd700" },
+      "Al-Khaleej": { initials: "AK",  primary: "#0a1a2f", accent: "#f7c000" },
+      "Al-Wehda":   { initials: "AW",  primary: "#b71234", accent: "#0a1a2f" },
+      "Damac":      { initials: "DFC", primary: "#0a1a2f", accent: "#ff5a1f" },
     };
 
     const { rows: fixtures } = await pg.query(

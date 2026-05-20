@@ -97,7 +97,9 @@ export default async function ClubLandingPage({
       .limit(4),
     admin
       .from("products")
-      .select("id, name_ar, name_en, description_ar, description_en")
+      .select(
+        "id, name_ar, name_en, description_ar, description_en, image_path, image_paths",
+      )
       .eq("org_id", tenant.org_id)
       .eq("active", true)
       .order("created_at", { ascending: false })
@@ -744,13 +746,40 @@ export default async function ClubLandingPage({
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {products.map((p) => {
                 const name = locale === "ar" ? p.name_ar : p.name_en;
+                const paths: string[] = Array.isArray(p.image_paths)
+                  ? (p.image_paths as string[])
+                  : [];
+                const coverPath =
+                  paths[0] ?? (p.image_path as string | null) ?? null;
+                const imageUrl = resolvePublicMediaSrc(
+                  coverPath,
+                  admin,
+                  "product-images",
+                );
                 return (
                   <li key={p.id}>
                     <Link
                       href={`/shop/${p.id}`}
                       className="group flex h-full flex-col overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
                     >
-                      <div className="aspect-square bg-spo-green-soft transition-transform duration-300 group-hover:scale-105" />
+                      <div className="aspect-square overflow-hidden bg-spo-paper-warm">
+                        {imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={imageUrl}
+                            alt={name ?? ""}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div
+                            aria-hidden
+                            className="flex h-full w-full items-center justify-center text-3xl text-spo-green-deep/20"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            {(name ?? "—").slice(0, 1)}
+                          </div>
+                        )}
+                      </div>
                       <div className="p-4">
                         <div className="font-medium text-spo-ink transition-colors group-hover:text-spo-green-deep">
                           {name}
