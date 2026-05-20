@@ -2619,6 +2619,7 @@
       "emptyItems": "No photos yet. Upload one to get started.",
       "removeItemTitle": "Remove photo?",
       "removeItemBody": "This deletes the photo from storage and cannot be undone.",
+      "eyebrow": "Galleries",
       "publicTitle": "Photo galleries",
       "publicSubtitle": "Match days, training, community, behind the scenes.",
       "publicEmpty": "No galleries published yet. Check back soon.",
