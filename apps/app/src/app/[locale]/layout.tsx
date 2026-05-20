@@ -10,6 +10,7 @@ import { ToastProvider } from "@sporlo/ui";
 import { AxeReporter } from "@/components/AxeReporter";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { routing, type Locale } from "@/i18n/routing";
+import { CartProvider } from "@/lib/cart";
 import "../globals.css";
 
 const manrope = Manrope({
@@ -83,7 +84,9 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen bg-spo-paper text-spo-ink antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <ToastProvider>{children}</ToastProvider>
+          <ToastProvider>
+            <CartProvider>{children}</CartProvider>
+          </ToastProvider>
         </NextIntlClientProvider>
         <ServiceWorkerRegister />
         <AxeReporter />

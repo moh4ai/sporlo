@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+  type FormEvent,
+} from "react";
 import { useTranslations } from "next-intl";
 
 import { canPerform, type Principal } from "@sporlo/auth";
@@ -24,7 +31,16 @@ import {
 
 import { Link, useRouter } from "@/i18n/navigation";
 
-import { archiveProduct, createProduct, updateProduct } from "../actions";
+import {
+  archiveProduct,
+  createProduct,
+  removeProductImage,
+  reorderProductImages,
+  updateProduct,
+  uploadProductImages,
+} from "../actions";
+
+export type ProductImage = { path: string; url: string };
 
 export type ProductRow = {
   id: string;
@@ -32,6 +48,8 @@ export type ProductRow = {
   name_en: string;
   category: string | null;
   active: boolean;
+  image_url: string | null;
+  images: ProductImage[];
   variant_count: number;
   stock_total: number;
 };
@@ -104,12 +122,24 @@ export function ProductsClient({
             products.map((p) => (
               <TR key={p.id}>
                 <TD className="font-medium">
-                  <Link
-                    href={`/store/${p.id}`}
-                    className="text-spo-green-deep hover:underline"
-                  >
-                    {name(p)}
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    {p.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.image_url}
+                        alt=""
+                        className="size-10 shrink-0 rounded-md object-cover"
+                      />
+                    ) : (
+                      <div className="size-10 shrink-0 rounded-md bg-spo-paper-warm" />
+                    )}
+                    <Link
+                      href={`/store/${p.id}`}
+                      className="text-spo-green-deep hover:underline"
+                    >
+                      {name(p)}
+                    </Link>
+                  </div>
                 </TD>
                 <TD>{p.category ?? "—"}</TD>
                 <TD>{p.variant_count}</TD>
@@ -179,7 +209,10 @@ function ProductFormDrawer({
   const [descEn, setDescEn] = useState("");
   const [category, setCategory] = useState("");
   const [active, setActive] = useState(true);
+  const [images, setImages] = useState<ProductImage[]>([]);
+  const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const key = !state.open ? "closed" : state.mode === "create" ? "create" : `edit:${state.product.id}`;
   useEffect(() => {
@@ -191,6 +224,7 @@ function ProductFormDrawer({
       setDescEn("");
       setCategory("");
       setActive(true);
+      setImages([]);
     } else {
       setNameAr(state.product.name_ar);
       setNameEn(state.product.name_en);
@@ -198,9 +232,84 @@ function ProductFormDrawer({
       setDescEn("");
       setCategory(state.product.category ?? "");
       setActive(state.product.active);
+      setImages(state.product.images);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
+
+  async function handleFiles(files: FileList | null) {
+    if (!editing) {
+      toast.push({
+        tone: "error",
+        title: t("toast.saveFailed"),
+        description: t("products.form.imageSaveFirst"),
+      });
+      return;
+    }
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    const fd = new FormData();
+    fd.append("product_id", editing.id);
+    for (const file of Array.from(files)) fd.append("images", file);
+    const res = await uploadProductImages(fd);
+    setUploading(false);
+    if (res.ok) {
+      toast.push({ tone: "success", title: t("toast.productUpdated") });
+      onSaved();
+    } else {
+      toast.push({ tone: "error", title: t("toast.saveFailed"), description: res.error });
+    }
+  }
+
+  async function handleRemove(path: string) {
+    if (!editing) return;
+    const res = await removeProductImage({ product_id: editing.id, path });
+    if (res.ok) {
+      setImages((prev) => prev.filter((img) => img.path !== path));
+      toast.push({ tone: "success", title: t("toast.productUpdated") });
+      onSaved();
+    } else {
+      toast.push({ tone: "error", title: t("toast.saveFailed"), description: res.error });
+    }
+  }
+
+  async function handleReorder(nextPaths: string[]) {
+    if (!editing) return;
+    const res = await reorderProductImages({
+      product_id: editing.id,
+      paths: nextPaths,
+    });
+    if (res.ok) {
+      const byPath = new Map(images.map((img) => [img.path, img]));
+      setImages(
+        nextPaths
+          .map((p) => byPath.get(p))
+          .filter((img): img is ProductImage => !!img),
+      );
+      onSaved();
+    } else {
+      toast.push({ tone: "error", title: t("toast.saveFailed"), description: res.error });
+    }
+  }
+
+  function moveImage(index: number, delta: -1 | 1) {
+    const next = index + delta;
+    if (next < 0 || next >= images.length) return;
+    const arr = images.slice();
+    const tmp = arr[index]!;
+    arr[index] = arr[next]!;
+    arr[next] = tmp;
+    void handleReorder(arr.map((img) => img.path));
+  }
+
+  function setCover(index: number) {
+    if (index === 0) return;
+    const arr = images.slice();
+    const [picked] = arr.splice(index, 1);
+    if (!picked) return;
+    arr.unshift(picked);
+    void handleReorder(arr.map((img) => img.path));
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -255,6 +364,114 @@ function ProductFormDrawer({
           <Input value={category} onChange={(e) => setCategory(e.target.value)} />
         </FormGroup>
         <Switch checked={active} onChange={setActive} label={t("products.form.active")} />
+
+        {isEdit && editing && (
+          <div className="space-y-3 rounded-card border border-spo-line bg-spo-paper/40 p-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-medium text-spo-ink">
+                {t("products.form.image")}
+              </h3>
+              <span className="text-xs text-spo-muted">
+                {images.length}/6
+              </span>
+            </div>
+
+            {images.length > 0 ? (
+              <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                {images.map((img, i) => (
+                  <li
+                    key={img.path}
+                    className="group relative overflow-hidden rounded-md border border-spo-line bg-white"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.url}
+                      alt=""
+                      className="aspect-square w-full object-cover"
+                    />
+                    {i === 0 && (
+                      <span className="absolute start-1 top-1 rounded-pill bg-spo-green px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                        {t("products.form.coverBadge")}
+                      </span>
+                    )}
+                    <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-spo-ink/70 px-1.5 py-1 opacity-0 transition-opacity group-hover:opacity-100">
+                      <div className="flex gap-1">
+                        <button
+                          type="button"
+                          onClick={() => moveImage(i, -1)}
+                          disabled={i === 0}
+                          aria-label="Move left"
+                          className="rounded p-0.5 text-white hover:bg-white/20 disabled:opacity-30"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => moveImage(i, 1)}
+                          disabled={i === images.length - 1}
+                          aria-label="Move right"
+                          className="rounded p-0.5 text-white hover:bg-white/20 disabled:opacity-30"
+                        >
+                          ›
+                        </button>
+                        {i !== 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setCover(i)}
+                            aria-label="Set as cover"
+                            title={t("products.form.setCover")}
+                            className="rounded p-0.5 text-white hover:bg-white/20"
+                          >
+                            ★
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => handleRemove(img.path)}
+                        aria-label="Remove image"
+                        className="rounded p-0.5 text-white hover:bg-spo-danger"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-xs text-spo-muted">
+                {t("products.form.imageEmpty")}
+              </p>
+            )}
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              multiple
+              className="hidden"
+              disabled={uploading || images.length >= 6}
+              onChange={async (e) => {
+                await handleFiles(e.target.files);
+                e.target.value = "";
+              }}
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={uploading || images.length >= 6}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {uploading
+                ? t("products.form.imageUploading")
+                : t("products.form.imageAdd")}
+            </Button>
+            <p className="text-xs text-spo-muted">
+              {t("products.form.imageHint")}
+            </p>
+          </div>
+        )}
+
         <div className="flex items-center justify-end gap-2 pt-2">
           <Button type="button" variant="ghost" onClick={onClose} disabled={submitting}>
             {t("common.cancel")}

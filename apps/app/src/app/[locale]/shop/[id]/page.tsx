@@ -1,13 +1,17 @@
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Card } from "@sporlo/ui";
+import { Alert, Breadcrumb } from "@sporlo/ui";
 
 import { Link } from "@/i18n/navigation";
 import { createServiceRoleClient } from "@/lib/supabase-server";
+import { resolvePublicMediaSrc } from "@/lib/public-media";
+import { detectPublicMember } from "@/lib/public-member";
+import { hasMemberDiscount } from "@/lib/store-pricing";
 import type { Locale } from "@/i18n/routing";
 
 import { AddToCartClient } from "./_components/AddToCartClient";
+import { ProductGallery } from "./_components/ProductGallery";
 
 export default async function ProductDetailPublicPage({
   params,
@@ -21,7 +25,9 @@ export default async function ProductDetailPublicPage({
   const admin = createServiceRoleClient();
   const { data: product } = await admin
     .from("products")
-    .select("id, org_id, name_ar, name_en, description_ar, description_en, active")
+    .select(
+      "id, org_id, name_ar, name_en, description_ar, description_en, category, image_path, image_paths, active",
+    )
     .eq("id", id)
     .maybeSingle();
   if (!product || !product.active) notFound();
@@ -32,32 +38,100 @@ export default async function ProductDetailPublicPage({
     .eq("product_id", id)
     .eq("active", true);
 
+  const member = await detectPublicMember(product.org_id as string);
+  const isMember = member != null;
+  const planDiscountPct = member?.plan_discount_pct ?? 0;
+
   const name = locale === "ar" ? product.name_ar : product.name_en;
   const description = locale === "ar" ? product.description_ar : product.description_en;
+  const category = (product.category as string | null) ?? null;
+
+  const rawPaths: string[] = Array.isArray(product.image_paths)
+    ? (product.image_paths as string[])
+    : [];
+  const effectivePaths =
+    rawPaths.length > 0
+      ? rawPaths
+      : product.image_path
+        ? [product.image_path as string]
+        : [];
+  const galleryUrls = effectivePaths
+    .map((path) => resolvePublicMediaSrc(path, admin, "product-images"))
+    .filter((url): url is string => url != null);
+  const coverPath = effectivePaths[0] ?? null;
+
+  const mappedVariants = (variants ?? []).map((v) => ({
+    id: v.id,
+    sku: (v.sku as string | null) ?? null,
+    size: (v.size as string | null) ?? null,
+    color: (v.color as string | null) ?? null,
+    label:
+      [v.size, v.color].filter(Boolean).join(" / ") || (v.sku as string | null) || "",
+    price_sar: Number(v.price_sar),
+    member_price_sar:
+      v.member_price_sar != null ? Number(v.member_price_sar) : null,
+    stock: Number(v.stock),
+  }));
+  const showMemberBanner =
+    !isMember &&
+    mappedVariants.some((v) => hasMemberDiscount(v, planDiscountPct));
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 p-6">
-      <Link href="/shop" className="text-sm text-spo-muted hover:text-spo-ink">
-        ← {t("title")}
-      </Link>
-      <h1 className="text-2xl font-semibold text-spo-ink">{name}</h1>
-      {description && <p className="text-sm text-spo-muted">{description}</p>}
+    <main className="mx-auto max-w-6xl space-y-6 px-4 py-10 sm:px-6">
+      <Breadcrumb
+        items={[
+          { label: t("breadcrumb"), href: "/shop" },
+          ...(category ? [{ label: category, href: `/shop?category=${encodeURIComponent(category)}` }] : []),
+          { label: name, current: true },
+        ]}
+        separator={locale === "ar" ? "›" : "/"}
+        renderLink={(item, className) => (
+          <Link href={(item.href as string) ?? "#"} className={className}>
+            {item.label}
+          </Link>
+        )}
+      />
 
-      <Card>
-        <AddToCartClient
-          orgId={product.org_id}
-          productId={product.id}
-          productName={name}
-          variants={(variants ?? []).map((v) => ({
-            id: v.id,
-            label: [v.size, v.color].filter(Boolean).join(" / ") || (v.sku ?? ""),
-            price_sar: Number(v.price_sar),
-            member_price_sar: v.member_price_sar != null ? Number(v.member_price_sar) : null,
-            stock: Number(v.stock),
-          }))}
-          locale={locale as "ar" | "en"}
-        />
-      </Card>
+      <div className="grid gap-8 lg:grid-cols-12">
+        <div className="lg:col-span-7">
+          <ProductGallery images={galleryUrls} alt={name} />
+        </div>
+
+        <div className="lg:sticky lg:top-6 lg:col-span-5 lg:self-start">
+          <div className="space-y-5 rounded-card border border-spo-line bg-white p-5 shadow-[var(--shadow-1)]">
+            {category && (
+              <p className="text-[11px] font-semibold uppercase tracking-wider text-spo-muted">
+                {category}
+              </p>
+            )}
+            <h1 className="text-3xl font-semibold text-spo-ink sm:text-4xl">
+              {name}
+            </h1>
+            {description && (
+              <p className="text-sm leading-relaxed text-spo-ink-2 whitespace-pre-line">
+                {description}
+              </p>
+            )}
+
+            {showMemberBanner && (
+              <Alert tone="info" title={t("detail.memberBannerTitle")}>
+                {t("detail.memberBannerBody")}
+              </Alert>
+            )}
+
+            <AddToCartClient
+              orgId={product.org_id as string}
+              productId={product.id as string}
+              productName={name}
+              productCoverPath={coverPath}
+              variants={mappedVariants}
+              isMember={isMember}
+              planDiscountPct={planDiscountPct}
+              locale={locale as "ar" | "en"}
+            />
+          </div>
+        </div>
+      </div>
     </main>
   );
 }

@@ -78,6 +78,7 @@ export const CartLineSchema = z.object({
 export const OrderIntentSchema = z.object({
   org_id: UuidSchema,
   lines: z.array(CartLineSchema).min(1).max(20),
+  buyer_name: z.string().trim().min(2).max(120),
   buyer_email: EmailSchema,
   buyer_phone: z.preprocess(emptyToUndef, z.string().max(40).optional()),
   shipping_address: z.preprocess(emptyToUndef, z.string().max(500).optional()),
@@ -85,6 +86,29 @@ export const OrderIntentSchema = z.object({
 });
 
 export type OrderIntentInput = z.infer<typeof OrderIntentSchema>;
+
+// ─────────────────────────────────────────────
+// Product image gallery actions
+// ─────────────────────────────────────────────
+
+export const ProductImageReorderSchema = z.object({
+  product_id: UuidSchema,
+  paths: z.array(z.string().min(1).max(500)).max(20),
+});
+
+export const ProductImageRemoveSchema = z.object({
+  product_id: UuidSchema,
+  path: z.string().min(1).max(500),
+});
+
+export const MemberDiscountLookupSchema = z.object({
+  org_id: UuidSchema,
+  email: EmailSchema,
+});
+
+export type ProductImageReorderInput = z.infer<typeof ProductImageReorderSchema>;
+export type ProductImageRemoveInput = z.infer<typeof ProductImageRemoveSchema>;
+export type MemberDiscountLookupInput = z.infer<typeof MemberDiscountLookupSchema>;
 
 // ─────────────────────────────────────────────
 // Fulfillment

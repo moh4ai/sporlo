@@ -9,6 +9,7 @@ import {
   Button,
   Drawer,
   EmptyTableRow,
+  FileUpload,
   FormGroup,
   Input,
   Switch,
@@ -28,6 +29,7 @@ import {
   archiveFacility,
   createFacility,
   updateFacility,
+  uploadFacilityImage,
 } from "../actions";
 
 export type FacilityRow = {
@@ -39,6 +41,7 @@ export type FacilityRow = {
   hourly_rate_sar: number | null;
   member_hourly_rate_sar: number | null;
   notes: string | null;
+  image_url: string | null;
   active: boolean;
 };
 
@@ -116,12 +119,24 @@ export function FacilitiesListClient({
             facilities.map((f) => (
               <TR key={f.id}>
                 <TD className="font-medium">
-                  <Link
-                    href={`/facilities/${f.id}`}
-                    className="text-spo-green-deep hover:underline"
-                  >
-                    {locale === "ar" ? f.name_ar : f.name_en}
-                  </Link>
+                  <div className="flex items-center gap-3">
+                    {f.image_url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={f.image_url}
+                        alt=""
+                        className="size-10 shrink-0 rounded-md object-cover"
+                      />
+                    ) : (
+                      <div className="size-10 shrink-0 rounded-md bg-spo-paper-warm" />
+                    )}
+                    <Link
+                      href={`/facilities/${f.id}`}
+                      className="text-spo-green-deep hover:underline"
+                    >
+                      {locale === "ar" ? f.name_ar : f.name_en}
+                    </Link>
+                  </div>
                 </TD>
                 <TD>{f.facility_type ?? "—"}</TD>
                 <TD>{f.capacity ?? "—"}</TD>
@@ -195,6 +210,8 @@ function FacilityFormDrawer({
   const [memberRate, setMemberRate] = useState("");
   const [notes, setNotes] = useState("");
   const [active, setActive] = useState(true);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const key = !state.open ? "closed" : state.mode === "create" ? "create" : `edit:${state.facility.id}`;
@@ -209,6 +226,7 @@ function FacilityFormDrawer({
       setMemberRate("");
       setNotes("");
       setActive(true);
+      setImageUrl(null);
     } else {
       setNameAr(state.facility.name_ar);
       setNameEn(state.facility.name_en);
@@ -218,9 +236,33 @@ function FacilityFormDrawer({
       setMemberRate(state.facility.member_hourly_rate_sar != null ? String(state.facility.member_hourly_rate_sar) : "");
       setNotes(state.facility.notes ?? "");
       setActive(state.facility.active);
+      setImageUrl(state.facility.image_url);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
+
+  async function handleImageUpload(file: File) {
+    if (!editing) {
+      toast.push({
+        tone: "error",
+        title: t("toast.saveFailed"),
+        description: t("form.imageSaveFirst"),
+      });
+      return;
+    }
+    setUploading(true);
+    const fd = new FormData();
+    fd.append("facility_id", editing.id);
+    fd.append("image", file);
+    const res = await uploadFacilityImage(fd);
+    setUploading(false);
+    if (res.ok) {
+      toast.push({ tone: "success", title: t("toast.facilityUpdated") });
+      onSaved();
+    } else {
+      toast.push({ tone: "error", title: t("toast.saveFailed"), description: res.error });
+    }
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -303,6 +345,30 @@ function FacilityFormDrawer({
           <Textarea rows={2} value={notes} onChange={(e) => setNotes(e.target.value)} />
         </FormGroup>
         <Switch checked={active} onChange={setActive} label={t("common.active")} />
+
+        {isEdit && editing && (
+          <div className="space-y-2 rounded-card border border-spo-line bg-spo-paper/40 p-3">
+            <h3 className="text-sm font-medium text-spo-ink">
+              {t("form.image")}
+            </h3>
+            {imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={imageUrl}
+                alt=""
+                className="aspect-[16/9] w-full max-w-md rounded-card object-cover"
+              />
+            )}
+            <FileUpload
+              label={t("form.imageLabel")}
+              hint={t("form.imageHint")}
+              accept="image/png,image/jpeg,image/webp"
+              disabled={uploading}
+              onFile={handleImageUpload}
+            />
+          </div>
+        )}
+
         <div className="flex items-center justify-end gap-2 pt-2">
           <Button type="button" variant="ghost" onClick={onClose} disabled={submitting}>
             {t("common.cancel")}

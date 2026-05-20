@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
-import { Link } from "@/i18n/navigation";
+import { PublicShell } from "@/components/PublicShell";
+import { resolvePublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
 
 import { CartClient } from "./_components/CartClient";
@@ -13,13 +14,16 @@ export default async function CartPage({
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations({ locale, namespace: "store.shop" });
+  const tenant = await resolvePublicTenant();
+
   return (
-    <main className="mx-auto max-w-md space-y-4 p-6">
-      <Link href="/shop" className="text-sm text-spo-muted hover:text-spo-ink">
-        ← {t("title")}
-      </Link>
-      <h1 className="text-2xl font-semibold text-spo-ink">{t("cart.title")}</h1>
-      <CartClient locale={locale as "ar" | "en"} />
-    </main>
+    <PublicShell locale={locale} tenant={tenant}>
+      <div className="mx-auto max-w-5xl space-y-6 px-4 py-10 sm:px-6">
+        <h1 className="text-3xl font-semibold text-spo-ink sm:text-4xl">
+          {t("cart.title")}
+        </h1>
+        <CartClient locale={locale as "ar" | "en"} />
+      </div>
+    </PublicShell>
   );
 }

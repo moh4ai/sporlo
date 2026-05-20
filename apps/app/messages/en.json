@@ -1625,7 +1625,16 @@
         "descriptionAr": "Description (Arabic)",
         "descriptionEn": "Description (English)",
         "category": "Category",
-        "active": "Active"
+        "active": "Active",
+        "image": "Product images",
+        "imageLabel": "Upload an image",
+        "imageHint": "PNG, JPG or WebP up to 5MB each. Up to 6 images per product. The first image is the cover.",
+        "imageSaveFirst": "Save the product before uploading images.",
+        "imageAdd": "Add images",
+        "imageUploading": "Uploading…",
+        "imageEmpty": "No images yet. Add one to start.",
+        "coverBadge": "Cover",
+        "setCover": "Set as cover"
       }
     },
     "variants": {
@@ -1692,21 +1701,64 @@
     },
     "shop": {
       "title": "Shop",
+      "breadcrumb": "Shop",
       "empty": "No products available right now.",
       "viewDetails": "View",
       "addToCart": "Add to cart",
       "outOfStock": "Out of stock",
       "memberDiscount": "Member price",
       "regularPrice": "Regular price",
+      "variant": {
+        "size": "Size",
+        "color": "Colour",
+        "quantity": "Quantity"
+      },
+      "badge": {
+        "memberPrice": "Members"
+      },
+      "stock": {
+        "limited": "Limited stock",
+        "only": "Only {count} left",
+        "outOfStock": "Out of stock"
+      },
+      "gallery": {
+        "prev": "Previous image",
+        "next": "Next image",
+        "openLightbox": "View larger"
+      },
+      "filter": {
+        "all": "All",
+        "empty": "No products in this category.",
+        "sortLabel": "Sort",
+        "sort": {
+          "newest": "Newest",
+          "priceAsc": "Price: low to high",
+          "priceDesc": "Price: high to low"
+        }
+      },
+      "detail": {
+        "memberBannerTitle": "Members save on this product",
+        "memberBannerBody": "Sign in to your member account to see your price at checkout.",
+        "unavailableCombo": "This combination is unavailable. Pick another size or colour."
+      },
+      "miniCart": {
+        "title": "Your cart",
+        "empty": "Your cart is empty.",
+        "viewCart": "View cart",
+        "continueShopping": "Continue shopping"
+      },
       "cart": {
         "title": "Your cart",
         "empty": "Your cart is empty.",
         "remove": "Remove",
         "subtotal": "Subtotal",
-        "checkout": "Checkout"
+        "checkout": "Checkout",
+        "addedToast": "Added to cart",
+        "continueShopping": "Continue shopping"
       },
       "checkout": {
         "title": "Checkout",
+        "buyerName": "Full name",
         "email": "Email",
         "emailHint": "We'll match this against active memberships for discounts.",
         "phone": "Phone (optional)",
@@ -1716,6 +1768,9 @@
         "methodManual": "Pay later at the club",
         "moyasarUnavailable": "Card payment not configured; pay at the club.",
         "submit": "Place order",
+        "summaryTitle": "Order summary",
+        "total": "Total",
+        "memberDiscountApplied": "Member discount applied",
         "memberDetected": "Member detected — discount applied.",
         "outOfStock": "Sorry, one of the items just went out of stock.",
         "successManual": "Order placed. Pay at the club to dispatch."
@@ -1771,7 +1826,11 @@
       "capacity": "Capacity",
       "rate": "Hourly rate (SAR)",
       "memberRate": "Member hourly rate (SAR)",
-      "notes": "Notes"
+      "notes": "Notes",
+      "image": "Facility photo",
+      "imageLabel": "Upload a photo",
+      "imageHint": "PNG, JPG or WebP up to 5MB. Landscape orientation looks best.",
+      "imageSaveFirst": "Save the facility before uploading a photo."
     },
     "detail": {
       "schedule": "Schedule",

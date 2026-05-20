@@ -1625,7 +1625,16 @@
         "descriptionAr": "الوصف (عربي)",
         "descriptionEn": "الوصف (إنجليزي)",
         "category": "الفئة",
-        "active": "نشط"
+        "active": "نشط",
+        "image": "صور المنتج",
+        "imageLabel": "رفع صورة",
+        "imageHint": "PNG أو JPG أو WebP حتى 5 ميجابايت لكل صورة. حتى 6 صور لكل منتج. الصورة الأولى هي الغلاف.",
+        "imageSaveFirst": "احفظ المنتج أولاً قبل رفع الصور.",
+        "imageAdd": "أضف صوراً",
+        "imageUploading": "جارٍ الرفع…",
+        "imageEmpty": "لا توجد صور بعد. أضف أول صورة.",
+        "coverBadge": "الغلاف",
+        "setCover": "اجعلها الغلاف"
       }
     },
     "variants": {
@@ -1692,21 +1701,64 @@
     },
     "shop": {
       "title": "المتجر",
+      "breadcrumb": "المتجر",
       "empty": "لا توجد منتجات متاحة الآن.",
       "viewDetails": "عرض",
       "addToCart": "إضافة للسلة",
       "outOfStock": "غير متوفر",
       "memberDiscount": "سعر العضو",
       "regularPrice": "السعر العادي",
+      "variant": {
+        "size": "المقاس",
+        "color": "اللون",
+        "quantity": "الكمية"
+      },
+      "badge": {
+        "memberPrice": "للأعضاء"
+      },
+      "stock": {
+        "limited": "كمية محدودة",
+        "only": "تبقّى {count} فقط",
+        "outOfStock": "غير متوفر"
+      },
+      "gallery": {
+        "prev": "الصورة السابقة",
+        "next": "الصورة التالية",
+        "openLightbox": "عرض بحجم أكبر"
+      },
+      "filter": {
+        "all": "الكل",
+        "empty": "لا توجد منتجات في هذه الفئة.",
+        "sortLabel": "ترتيب",
+        "sort": {
+          "newest": "الأحدث",
+          "priceAsc": "السعر: من الأقل للأعلى",
+          "priceDesc": "السعر: من الأعلى للأقل"
+        }
+      },
+      "detail": {
+        "memberBannerTitle": "للأعضاء سعر أفضل",
+        "memberBannerBody": "سجّل الدخول لحسابك كعضو لترى سعرك عند الدفع.",
+        "unavailableCombo": "هذه التشكيلة غير متوفرة. اختر مقاساً أو لوناً آخر."
+      },
+      "miniCart": {
+        "title": "سلتك",
+        "empty": "سلتك فارغة.",
+        "viewCart": "عرض السلة",
+        "continueShopping": "متابعة التسوّق"
+      },
       "cart": {
         "title": "السلة",
         "empty": "سلتك فارغة.",
         "remove": "إزالة",
         "subtotal": "المجموع",
-        "checkout": "الدفع"
+        "checkout": "الدفع",
+        "addedToast": "أُضيف إلى السلة",
+        "continueShopping": "متابعة التسوّق"
       },
       "checkout": {
         "title": "إتمام الشراء",
+        "buyerName": "الاسم الكامل",
         "email": "البريد الإلكتروني",
         "emailHint": "سنطابق هذا البريد مع الاشتراكات النشطة لتطبيق الخصم.",
         "phone": "الجوال (اختياري)",
@@ -1716,6 +1768,9 @@
         "methodManual": "الدفع لاحقاً في النادي",
         "moyasarUnavailable": "الدفع بالبطاقة غير مفعّل. ادفع في النادي.",
         "submit": "إرسال الطلب",
+        "summaryTitle": "ملخص الطلب",
+        "total": "الإجمالي",
+        "memberDiscountApplied": "طُبّق خصم العضوية",
         "memberDetected": "تم التعرف على العضو — طُبّق الخصم.",
         "outOfStock": "للأسف نفد المخزون لأحد البنود.",
         "successManual": "تم إرسال الطلب. ادفع في النادي ليُشحن."
@@ -1771,7 +1826,11 @@
       "capacity": "السعة",
       "rate": "السعر بالساعة (ر.س)",
       "memberRate": "سعر الأعضاء بالساعة (ر.س)",
-      "notes": "ملاحظات"
+      "notes": "ملاحظات",
+      "image": "صورة المنشأة",
+      "imageLabel": "رفع صورة",
+      "imageHint": "PNG أو JPG أو WebP حتى 5 ميجابايت. الصور الأفقية تظهر أفضل.",
+      "imageSaveFirst": "احفظ المنشأة أولاً قبل رفع الصورة."
     },
     "detail": {
       "schedule": "الجدول",

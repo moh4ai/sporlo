@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { resolvePublicTenant, type PublicTenant } from "@/lib/public-tenant";
 import type { Locale } from "@/i18n/routing";
 
+import { PublicShellClient } from "./PublicShellClient";
 import { PublicShellNav } from "./PublicShellNav";
 
 /**
@@ -36,41 +37,43 @@ export async function PublicShell({
     : null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-spo-paper-warm">
-      <header className="border-b border-spo-line bg-white">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 text-spo-ink">
-            <Image
-              src="/brand/sporlo-logo-green.png"
-              alt="Sporlo"
-              width={28}
-              height={28}
-              priority
-            />
-            <span
-              className="text-lg font-semibold text-spo-green-deep"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              {orgName ?? "Sporlo"}
+    <PublicShellClient locale={locale as "ar" | "en"}>
+      <div className="flex min-h-screen flex-col bg-spo-paper-warm">
+        <header className="border-b border-spo-line bg-white">
+          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
+            <Link href="/" className="flex items-center gap-2 text-spo-ink">
+              <Image
+                src="/brand/sporlo-logo-green.png"
+                alt="Sporlo"
+                width={28}
+                height={28}
+                priority
+              />
+              <span
+                className="text-lg font-semibold text-spo-green-deep"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {orgName ?? "Sporlo"}
+              </span>
+            </Link>
+            {!minimal && (
+              <PublicShellNav locale={locale as Locale} hasTenant={!!tenant} />
+            )}
+          </div>
+        </header>
+
+        <main className="flex-1">{children}</main>
+
+        <footer className="border-t border-spo-line bg-white">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-spo-muted sm:px-6">
+            <span>
+              © {new Date().getFullYear()} {orgName ?? "Sporlo"} —{" "}
+              {t("footer.rights")}
             </span>
-          </Link>
-          {!minimal && (
-            <PublicShellNav locale={locale as Locale} hasTenant={!!tenant} />
-          )}
-        </div>
-      </header>
-
-      <main className="flex-1">{children}</main>
-
-      <footer className="border-t border-spo-line bg-white">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-xs text-spo-muted sm:px-6">
-          <span>
-            © {new Date().getFullYear()} {orgName ?? "Sporlo"} —{" "}
-            {t("footer.rights")}
-          </span>
-          <span>{t("footer.poweredBy")}</span>
-        </div>
-      </footer>
-    </div>
+            <span>{t("footer.poweredBy")}</span>
+          </div>
+        </footer>
+      </div>
+    </PublicShellClient>
   );
 }

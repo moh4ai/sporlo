@@ -10,7 +10,10 @@ import {
 } from "@sporlo/shared";
 import { EVT, recordEvent } from "@sporlo/governance";
 
-import { createSupabaseServerClient } from "@/lib/supabase-server";
+import {
+  createServiceRoleClient,
+  createSupabaseServerClient,
+} from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
 
 import {
@@ -147,6 +150,49 @@ export async function archiveFacility(
 
   revalidatePath("/[locale]/(dashboard)/facilities", "page");
   return actionOk(undefined);
+}
+
+export async function uploadFacilityImage(
+  form: FormData,
+): Promise<ActionResult<{ path: string }>> {
+  const id = form.get("facility_id");
+  if (typeof id !== "string" || !id) return actionError("missing-facility-id");
+
+  const { tenant, error } = await withPrincipal("update", "facilities");
+  if (error) return permissionError("update", "facilities");
+
+  const file = form.get("image");
+  if (!(file instanceof File) || file.size === 0) {
+    return actionError("no-file", "image");
+  }
+  if (file.size > 5 * 1024 * 1024) return actionError("too-large", "image");
+  const allowed = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowed.includes(file.type)) return actionError("invalid-type", "image");
+
+  const ext =
+    file.type === "image/png"
+      ? "png"
+      : file.type === "image/webp"
+        ? "webp"
+        : "jpg";
+  const path = `${tenant!.org_id}/${id}-${Date.now()}.${ext}`;
+
+  const admin = createServiceRoleClient();
+  const { error: upErr } = await admin.storage
+    .from("facility-images")
+    .upload(path, file, { contentType: file.type, upsert: true });
+  if (upErr) return actionError(upErr.message, "image");
+
+  const { error: updErr } = await admin
+    .from("facilities")
+    .update({ image_path: path })
+    .eq("id", id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/facilities", "page");
+  revalidatePath(`/[locale]/(dashboard)/facilities/${id}`, "page");
+  return actionOk({ path });
 }
 
 // ─────────────────────────────────────────────

@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageHeader } from "@/components/PageHeader";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getActiveTenant } from "@/lib/tenant";
+import { resolvePublicMediaSrc } from "@/lib/public-media";
 import type { Locale } from "@/i18n/routing";
 
 import {
@@ -24,7 +25,7 @@ export default async function FacilitiesPage({
   const { data } = await supabase
     .from("facilities")
     .select(
-      "id, name_ar, name_en, facility_type, capacity, hourly_rate_sar, member_hourly_rate_sar, notes, active",
+      "id, name_ar, name_en, facility_type, capacity, hourly_rate_sar, member_hourly_rate_sar, notes, image_path, active",
     )
     .order("created_at", { ascending: false });
 
@@ -38,6 +39,11 @@ export default async function FacilitiesPage({
     member_hourly_rate_sar:
       f.member_hourly_rate_sar != null ? Number(f.member_hourly_rate_sar) : null,
     notes: f.notes,
+    image_url: resolvePublicMediaSrc(
+      f.image_path as string | null,
+      supabase,
+      "facility-images",
+    ),
     active: f.active,
   }));
 

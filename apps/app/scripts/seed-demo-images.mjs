@@ -1,10 +1,18 @@
-// Seed the demo-club tenant with real images across every visual surface
-// so the polish pass has something to show. Idempotent: rerunning won't
-// duplicate galleries/sponsors (uses code/name uniqueness or upserts).
+// Seed the demo-club tenant with REAL sports imagery across every visual
+// surface, so the demo doesn't ship random landscape photos. Idempotent:
+// rerunning won't duplicate galleries/sponsors (uses code/name uniqueness
+// or upserts).
 //
 //   cd apps/app && node scripts/seed-demo-images.mjs
 //
-// Photos: picsum.photos seeded URLs. Logos: SVG generated inline.
+// PHOTOS:
+//   Curated Unsplash CDN URLs grouped under the CURATED constant below.
+//   Each entry is a photo-ID — easy to swap if a photo gets removed.
+//   If a URL 404s the seeder logs a warning and continues; the surface
+//   will show a broken image until you swap the ID and rerun.
+//
+// LOGOS:
+//   Org + sponsor logos are SVG generated inline (no external dependency).
 
 import dotenv from "dotenv";
 import { Client } from "pg";
@@ -26,8 +34,163 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
 });
 const pg = new Client({ connectionString: DB_URL });
 
-const pic = (seed, w = 1200, h = 800) =>
-  `https://picsum.photos/seed/${encodeURIComponent(seed)}/${w}/${h}`;
+// ─────────────────────────────────────────────────────────────────────
+// CURATED PHOTO LIST
+// Each value is an Unsplash photo ID. Swap any ID by browsing unsplash.com
+// → copy URL → paste the part after `photo-` here, and rerun the script.
+// ─────────────────────────────────────────────────────────────────────
+
+const CURATED = {
+  // Player portraits — soccer/football athletes. 15 entries to cover the
+  // full roster + bench seeded by demo.sql.
+  players: [
+    "1517466787929-bc90951d0974", // jersey backside
+    "1574629810360-7efbbe195018", // player portrait outdoor
+    "1551958219-acbc608c6377", // football kit close-up
+    "1526232761682-d26e03ac148e", // player with ball
+    "1571019613454-1cb2f99b2d8b", // gym athlete portrait
+    "1576091160550-2173dba999ef", // young footballer
+    "1552674605-db6ffd4facb5", // football closeup
+    "1486286701208-1d58e9338013", // training portrait
+    "1577223625816-7546f13df25d", // goalkeeper action
+    "1517649763962-0c623066013b", // training drill
+    "1599058917765-a780eda07a3e", // soccer cleats running
+    "1543351611-58f69d7c1781", // referee/sport portrait
+    "1522778526097-ce0a22ceb253", // match celebration
+    "1518604666860-9ed391f76460", // youth training
+    "1591197172062-c718f82aba20", // jersey kit display
+  ],
+
+  // Stadium hero — aerial / dramatic stadium shot.
+  stadium: "1577223625816-7546f13df25d",
+
+  // News article covers — one per article slug. Order matches demo.sql
+  // chunk 10A: season-launch, academy-open-day, community-csr,
+  // new-jersey-launch, draft-piece.
+  news: [
+    "1522778526097-ce0a22ceb253", // season launch — match celebration
+    "1518604666860-9ed391f76460", // academy open day — youth training
+    "1543351611-58f69d7c1781", // community CSR — neighbourhood pitch
+    "1591197172062-c718f82aba20", // new jersey launch — kit on display
+    "1517649763962-0c623066013b", // upcoming/draft — training drill
+  ],
+
+  // Gallery covers + 6 items each. Three galleries: Match Day, Training,
+  // Behind the Scenes.
+  galleries: [
+    {
+      key: "matchday",
+      cover: "1522778526097-ce0a22ceb253",
+      items: [
+        "1574629810360-7efbbe195018",
+        "1543351611-58f69d7c1781",
+        "1577223625816-7546f13df25d",
+        "1526232761682-d26e03ac148e",
+        "1551958219-acbc608c6377",
+        "1591197172062-c718f82aba20",
+      ],
+    },
+    {
+      key: "training",
+      cover: "1517649763962-0c623066013b",
+      items: [
+        "1571019613454-1cb2f99b2d8b",
+        "1486286701208-1d58e9338013",
+        "1576091160550-2173dba999ef",
+        "1518604666860-9ed391f76460",
+        "1599058917765-a780eda07a3e",
+        "1517466787929-bc90951d0974",
+      ],
+    },
+    {
+      key: "behindscenes",
+      cover: "1517466787929-bc90951d0974",
+      items: [
+        "1552674605-db6ffd4facb5",
+        "1591197172062-c718f82aba20",
+        "1517649763962-0c623066013b",
+        "1574629810360-7efbbe195018",
+        "1522778526097-ce0a22ceb253",
+        "1518604666860-9ed391f76460",
+      ],
+    },
+  ],
+
+  // Hospitality package covers — VIP / premium hospitality settings.
+  hospitality: [
+    "1414235077428-338989a2e8c0", // hospitality dining
+    "1517248135467-4c7edcad34c4", // lounge / club interior
+    "1564501049412-61c2a3083791", // premium seats
+    "1551918120-9739cb430c6d", // sports box / suite
+  ],
+
+  // Merchandise — each product gets 2-3 photos for the gallery. First entry
+  // is the cover. Order matches the products inserted by demo.sql chunk 5.
+  products: {
+    jersey: [
+      "1593032465175-481ac7f401a0", // green football jersey hero
+      "1517649763962-0c623066013b", // worn in training
+      "1591197172062-c718f82aba20", // kit display detail
+    ],
+    // TODO: swap to a scarf-specific photo once we find one with a stable ID.
+    scarf: [
+      "1551958219-acbc608c6377", // kit close-up (placeholder for scarf)
+      "1522778526097-ce0a22ceb253", // worn at a match
+    ],
+    cap: [
+      "1588850561407-ed78c282e89b", // sport cap front
+      "1574629810360-7efbbe195018", // worn lifestyle
+    ],
+    mug: [
+      "1517256064527-09c73fc73e38", // coffee mug hero
+      "1551958219-acbc608c6377", // styling shot
+    ],
+    bottle: [
+      "1602143407151-7111542de6e8", // sports water bottle
+      "1571019613454-1cb2f99b2d8b", // in use at the gym
+    ],
+  },
+
+  // Facilities — 4 entries matching demo.sql chunk 6:
+  // Pitch A (main 11v11), Pitch B (7v7 training), Gym, Pool.
+  facilities: {
+    pitch_main: "1577223625816-7546f13df25d", // football pitch hero
+    pitch_training: "1518604666860-9ed391f76460", // training pitch
+    gym: "1534438327276-14e5300c3a48", // indoor gym
+    pool: "1576013551627-0cc20b96c2a7", // swimming pool
+  },
+
+  // Staff portraits — professional headshots. 10 entries matching
+  // demo.sql chunk 8A.
+  staff: [
+    "1560250097-0b93528c311a", // ceo
+    "1573496359142-b8d87734a5a2", // marketing lead
+    "1519085360753-af0119f7cbe7", // finance
+    "1500648767791-00dcc994a43e", // sports
+    "1580489944761-15a19d654956", // hr
+    "1494790108377-be9c29b29330", // legal
+    "1438761681033-6461ffad8d80", // csr
+    "1531123897727-8f129e1688ce", // it
+    "1551836022-d5d88e9218df", // academy
+    "1573496359142-b8d87734a5a2", // events (reused — swap if you want)
+  ],
+
+  // Public page heroes — about, history, sponsors.
+  pages: {
+    about: "1577223625816-7546f13df25d", // stadium exterior
+    history: "1577223625816-7546f13df25d", // trophy/history vibe
+    sponsors: "1522778526097-ce0a22ceb253", // brand/celebration
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// helpers
+// ─────────────────────────────────────────────────────────────────────
+
+function unsplashUrl(id, w, h) {
+  // `auto=format&fit=crop&q=80` is Unsplash's standard CDN transform.
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
+}
 
 async function downloadJpeg(url) {
   const res = await fetch(url, { redirect: "follow" });
@@ -44,7 +207,6 @@ async function uploadFile(bucket, path, buffer, contentType) {
 }
 
 function svgClubLogo(initials, bgColor, fgColor) {
-  // Crest-style: rounded square + initials. Renders crisp at any size.
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
@@ -61,7 +223,6 @@ function svgClubLogo(initials, bgColor, fgColor) {
 }
 
 function svgSponsorLogo(name, bgColor) {
-  // Brand wordmark style: full word on coloured background.
   const fg = isLightColor(bgColor) ? "#0f172a" : "#ffffff";
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
   <rect width="300" height="100" rx="10" fill="${bgColor}"/>
@@ -78,11 +239,72 @@ function shade(hex, percent) {
 }
 function isLightColor(hex) {
   const n = parseInt(hex.replace("#", ""), 16);
-  const r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
-  return (r * 0.299 + g * 0.587 + b * 0.114) > 186;
+  const r = (n >> 16) & 0xff,
+    g = (n >> 8) & 0xff,
+    b = n & 0xff;
+  return r * 0.299 + g * 0.587 + b * 0.114 > 186;
 }
 
+// Try to download. On failure return null so the caller can decide to
+// skip rather than abort the whole script.
+async function tryDownload(url, label) {
+  try {
+    return await downloadJpeg(url);
+  } catch (e) {
+    console.warn(`  ! ${label} failed: ${e.message} — skipping`);
+    return null;
+  }
+}
+
+// Collect every Unsplash photo ID we plan to use, HEAD each, and warn on
+// any that 404. Caller still proceeds — this is diagnostic only.
+async function probeCuratedIds() {
+  const ids = new Set();
+  for (const id of CURATED.players) ids.add(id);
+  for (const id of CURATED.news) ids.add(id);
+  for (const g of CURATED.galleries) {
+    ids.add(g.cover);
+    for (const it of g.items) ids.add(it);
+  }
+  for (const id of CURATED.hospitality) ids.add(id);
+  for (const id of CURATED.staff) ids.add(id);
+  for (const arr of Object.values(CURATED.products)) {
+    for (const id of arr) ids.add(id);
+  }
+  for (const id of Object.values(CURATED.facilities)) ids.add(id);
+  for (const id of Object.values(CURATED.pages)) ids.add(id);
+  ids.add(CURATED.stadium);
+
+  console.log(`Probing ${ids.size} unique photo IDs…`);
+  const dead = [];
+  await Promise.all(
+    [...ids].map(async (id) => {
+      try {
+        const res = await fetch(
+          `https://images.unsplash.com/photo-${id}?w=100&q=10`,
+          { method: "HEAD", redirect: "follow" },
+        );
+        if (!res.ok) dead.push({ id, status: res.status });
+      } catch (e) {
+        dead.push({ id, status: e.message });
+      }
+    }),
+  );
+  if (dead.length === 0) {
+    console.log(`  ✓ all ${ids.size} IDs alive`);
+  } else {
+    console.warn(`  ! ${dead.length} dead photo IDs — swap in CURATED:`);
+    for (const d of dead) console.warn(`    - ${d.id} (${d.status})`);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// main
+// ─────────────────────────────────────────────────────────────────────
+
 async function main() {
+  await probeCuratedIds();
+
   await pg.connect();
   const { rows: [org] } = await pg.query(
     "select id, name_ar, name_en, primary_color from organizations where slug='demo-club'",
@@ -102,14 +324,15 @@ async function main() {
     console.log("  ✓ org logo");
   }
 
-  // ─── 2. News covers (15 articles) ───────────────────────────────
+  // ─── 2. News covers ─────────────────────────────────────────────
   {
     const { rows: articles } = await pg.query(
       "select id, slug from news_articles where org_id=$1 order by created_at",
       [orgId],
     );
     for (const [i, a] of articles.entries()) {
-      const url = pic(`sporlo-news-${i}-${a.slug}`, 1600, 1000);
+      const photoId = CURATED.news[i % CURATED.news.length];
+      const url = unsplashUrl(photoId, 1600, 1000);
       await pg.query(
         "update news_articles set cover_image_path=$1 where id=$2",
         [url, a.id],
@@ -118,14 +341,15 @@ async function main() {
     console.log(`  ✓ ${articles.length} news covers`);
   }
 
-  // ─── 3. Roster photos (15 players) ──────────────────────────────
+  // ─── 3. Roster photos ────────────────────────────────────────────
   {
     const { rows: players } = await pg.query(
       "select id, jersey_number from roster_entries where org_id=$1 order by jersey_number nulls last",
       [orgId],
     );
-    for (const p of players) {
-      const url = pic(`sporlo-player-${p.id}`, 600, 800);
+    for (const [i, p] of players.entries()) {
+      const photoId = CURATED.players[i % CURATED.players.length];
+      const url = unsplashUrl(photoId, 600, 800);
       await pg.query("update roster_entries set photo_path=$1 where id=$2", [
         url,
         p.id,
@@ -134,7 +358,7 @@ async function main() {
     console.log(`  ✓ ${players.length} player photos`);
   }
 
-  // ─── 4. Sponsors (6 across 4 tiers) ─────────────────────────────
+  // ─── 4. Sponsors (logos generated inline) ────────────────────────
   {
     const sponsors = [
       { name_en: "Aramco", name_ar: "أرامكو", tier: "strategic", color: "#0f6e3f" },
@@ -144,7 +368,6 @@ async function main() {
       { name_en: "Saudia", name_ar: "السعودية", tier: "official", color: "#15487d" },
       { name_en: "Tabuk Cement", name_ar: "أسمنت تبوك", tier: "supporter", color: "#7a7a7a" },
     ];
-    // Idempotent: delete any prior demo sponsors first
     await pg.query("delete from sponsors where org_id=$1", [orgId]);
     for (const [i, s] of sponsors.entries()) {
       const svg = svgSponsorLogo(s.name_en, s.color);
@@ -159,7 +382,7 @@ async function main() {
     console.log(`  ✓ ${sponsors.length} sponsors w/ logos`);
   }
 
-  // ─── 5. Galleries (3 published, with 6 items each) ──────────────
+  // ─── 5. Galleries (cover + 6 items each) ─────────────────────────
   {
     const galleries = [
       {
@@ -167,25 +390,31 @@ async function main() {
         title_en: "Match Day",
         description_ar: "أجواء المدرجات والمشجعين قبل المباراة وبعدها.",
         description_en: "Stands, fans, and atmosphere before and after the match.",
+        photos: CURATED.galleries[0],
       },
       {
         title_ar: "التدريبات",
         title_en: "Training Camp",
         description_ar: "من ملاعب التدريب اليومية إلى المعسكرات الخارجية.",
         description_en: "Daily drills to overseas training camps.",
+        photos: CURATED.galleries[1],
       },
       {
         title_ar: "خلف الكواليس",
         title_en: "Behind the Scenes",
         description_ar: "اللحظات التي لا تظهر في البث المباشر.",
         description_en: "Moments you won't see on the broadcast.",
+        photos: CURATED.galleries[2],
       },
     ];
-    // Idempotent: wipe prior demo galleries
     await pg.query("delete from media_galleries where org_id=$1", [orgId]);
     for (const [gi, g] of galleries.entries()) {
+      const coverBuf = await tryDownload(
+        unsplashUrl(g.photos.cover, 1600, 1200),
+        `gallery ${g.title_en} cover`,
+      );
+      if (!coverBuf) continue;
       const coverPath = `${orgId}/gallery-${gi}-cover.jpg`;
-      const coverBuf = await downloadJpeg(pic(`sporlo-gallery-${gi}-cover`, 1600, 1200));
       await uploadFile("media-galleries", coverPath, coverBuf, "image/jpeg");
       const { rows: [created] } = await pg.query(
         `insert into media_galleries (org_id, title_ar, title_en, description_ar, description_en, cover_image_path, published_at, display_order)
@@ -193,10 +422,13 @@ async function main() {
         [orgId, g.title_ar, g.title_en, g.description_ar, g.description_en, coverPath, gi],
       );
       const galleryId = created.id;
-      // 6 items per gallery
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < g.photos.items.length; i++) {
+        const itemBuf = await tryDownload(
+          unsplashUrl(g.photos.items[i], 1400, 1050),
+          `gallery ${g.title_en} item ${i}`,
+        );
+        if (!itemBuf) continue;
         const itemPath = `${orgId}/gallery-${gi}-${i}.jpg`;
-        const itemBuf = await downloadJpeg(pic(`sporlo-gallery-${gi}-item-${i}`, 1400, 1050));
         await uploadFile("media-galleries", itemPath, itemBuf, "image/jpeg");
         await pg.query(
           `insert into media_gallery_items (gallery_id, org_id, image_path, caption_ar, caption_en, display_order)
@@ -204,20 +436,25 @@ async function main() {
           [galleryId, orgId, itemPath, null, null, i],
         );
       }
-      console.log(`    · ${g.title_en} (+6 items)`);
+      console.log(`    · ${g.title_en} (+${g.photos.items.length} items)`);
     }
     console.log(`  ✓ ${galleries.length} galleries`);
   }
 
-  // ─── 6. Hospitality covers (4 packages) ─────────────────────────
+  // ─── 6. Hospitality covers ───────────────────────────────────────
   {
     const { rows: packages } = await pg.query(
       "select id, name_en from hospitality_packages where org_id=$1 order by display_order",
       [orgId],
     );
     for (const [i, p] of packages.entries()) {
+      const photoId = CURATED.hospitality[i % CURATED.hospitality.length];
+      const buf = await tryDownload(
+        unsplashUrl(photoId, 1600, 900),
+        `hospitality ${p.name_en}`,
+      );
+      if (!buf) continue;
       const path = `${orgId}/${i}-${Date.now()}.jpg`;
-      const buf = await downloadJpeg(pic(`sporlo-hosp-${p.id}`, 1600, 900));
       await uploadFile("hospitality-covers", path, buf, "image/jpeg");
       await pg.query(
         "update hospitality_packages set cover_image_path=$1 where id=$2",
@@ -227,9 +464,118 @@ async function main() {
     console.log(`  ✓ ${packages.length} hospitality covers`);
   }
 
-  // ─── 7. Stadium info ────────────────────────────────────────────
+  // ─── 7. Products (merchandise) — multi-image gallery ────────────
+  // Each product in demo.sql chunk 5 → an array of curated photos.
+  // First image becomes the cover (image_path); all uploaded paths land in
+  // image_paths so the public detail page can render a thumbnail strip.
   {
-    const photoUrl = pic("sporlo-stadium-hero", 2400, 1200);
+    const productPhotosByName = {
+      "Official home jersey 25/26": CURATED.products.jersey,
+      "Supporter scarf": CURATED.products.scarf,
+      "Club cap": CURATED.products.cap,
+      "Coffee mug": CURATED.products.mug,
+      "Sports water bottle": CURATED.products.bottle,
+    };
+    const { rows: products } = await pg.query(
+      "select id, name_en from products where org_id=$1",
+      [orgId],
+    );
+    let totalImages = 0;
+    let productsTouched = 0;
+    for (const p of products) {
+      const photoIds = productPhotosByName[p.name_en];
+      if (!photoIds || photoIds.length === 0) continue;
+      const uploadedPaths = [];
+      for (const [i, photoId] of photoIds.entries()) {
+        const buf = await tryDownload(
+          unsplashUrl(photoId, 1200, 1200),
+          `product ${p.name_en} image ${i + 1}`,
+        );
+        if (!buf) continue;
+        const path = `${orgId}/${p.id}-${Date.now()}-${i}.jpg`;
+        await uploadFile("product-images", path, buf, "image/jpeg");
+        uploadedPaths.push(path);
+        totalImages++;
+      }
+      if (uploadedPaths.length === 0) continue;
+      await pg.query(
+        "update products set image_path=$1, image_paths=$2::jsonb where id=$3",
+        [uploadedPaths[0], JSON.stringify(uploadedPaths), p.id],
+      );
+      productsTouched++;
+    }
+    console.log(`  ✓ ${totalImages} product images across ${productsTouched} products`);
+  }
+
+  // ─── 8. Facilities ───────────────────────────────────────────────
+  // Maps by name_en from demo.sql chunk 6.
+  {
+    const facilityPhotoByName = {
+      "Pitch A - Main": CURATED.facilities.pitch_main,
+      "Pitch B - Training": CURATED.facilities.pitch_training,
+      "Gym": CURATED.facilities.gym,
+      "Pool": CURATED.facilities.pool,
+    };
+    const { rows: facilities } = await pg.query(
+      "select id, name_en from facilities where org_id=$1",
+      [orgId],
+    );
+    let n = 0;
+    for (const f of facilities) {
+      const photoId = facilityPhotoByName[f.name_en];
+      if (!photoId) continue;
+      const buf = await tryDownload(
+        unsplashUrl(photoId, 1600, 1000),
+        `facility ${f.name_en}`,
+      );
+      if (!buf) continue;
+      const path = `${orgId}/${f.id}-${Date.now()}.jpg`;
+      await uploadFile("facility-images", path, buf, "image/jpeg");
+      await pg.query("update facilities set image_path=$1 where id=$2", [path, f.id]);
+      n++;
+    }
+    console.log(`  ✓ ${n} facility images`);
+  }
+
+  // ─── 9. Staff portraits ──────────────────────────────────────────
+  {
+    const { rows: staff } = await pg.query(
+      "select id, full_name_en from staff_profiles where org_id=$1 order by created_at",
+      [orgId],
+    );
+    for (const [i, s] of staff.entries()) {
+      const photoId = CURATED.staff[i % CURATED.staff.length];
+      const url = unsplashUrl(photoId, 600, 800);
+      await pg.query("update staff_profiles set photo_path=$1 where id=$2", [
+        url,
+        s.id,
+      ]);
+    }
+    console.log(`  ✓ ${staff.length} staff portraits`);
+  }
+
+  // ─── 10. Public page heroes ──────────────────────────────────────
+  {
+    const pageHero = {
+      about: CURATED.pages.about,
+      history: CURATED.pages.history,
+      sponsors: CURATED.pages.sponsors,
+    };
+    let n = 0;
+    for (const [slug, photoId] of Object.entries(pageHero)) {
+      const url = unsplashUrl(photoId, 2000, 1000);
+      const { rowCount } = await pg.query(
+        "update public_pages set hero_image_path=$1 where org_id=$2 and slug=$3",
+        [url, orgId, slug],
+      );
+      if (rowCount) n++;
+    }
+    console.log(`  ✓ ${n} page heroes`);
+  }
+
+  // ─── 11. Stadium info ────────────────────────────────────────────
+  {
+    const photoUrl = unsplashUrl(CURATED.stadium, 2400, 1200);
     await pg.query(
       `insert into stadium_info (org_id, name_ar, name_en, address_ar, address_en, city_ar, city_en, capacity, opened_year, photo_path, parking_notes_ar, parking_notes_en, accessibility_notes_ar, accessibility_notes_en, map_lat, map_lng)
        values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)

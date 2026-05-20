@@ -7,6 +7,8 @@ import { Languages, Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
+import { CartIconButton } from "./CartIconButton";
+
 const NAV = [
   { key: "news", href: "/news" },
   { key: "galleries", href: "/galleries" },
@@ -58,6 +60,7 @@ export function PublicShellNav({
               </Link>
             );
           })}
+        {hasTenant && <CartIconButton className="ms-1" />}
         <Link
           href={pathname}
           locale={otherLocale}
@@ -68,16 +71,19 @@ export function PublicShellNav({
         </Link>
       </nav>
 
-      {/* Mobile burger */}
+      {/* Mobile cart + burger */}
       {hasTenant && (
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label={t("openMenu")}
-          className="rounded-md p-1.5 text-spo-ink-2 hover:bg-spo-paper md:hidden"
-        >
-          <Menu className="size-5" />
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <CartIconButton />
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label={t("openMenu")}
+            className="rounded-md p-1.5 text-spo-ink-2 hover:bg-spo-paper"
+          >
+            <Menu className="size-5" />
+          </button>
+        </div>
       )}
 
       {/* Mobile drawer */}

@@ -69,4 +69,13 @@ export {
   type SkeletonCardProps,
 } from "./components/Skeleton";
 export { Alert, type AlertProps, type AlertTone } from "./components/Alert";
+export {
+  QuantityStepper,
+  type QuantityStepperProps,
+} from "./components/QuantityStepper";
+export {
+  SwatchGroup,
+  type SwatchGroupProps,
+  type SwatchOption,
+} from "./components/SwatchGroup";
 export { cn } from "./lib/cn";

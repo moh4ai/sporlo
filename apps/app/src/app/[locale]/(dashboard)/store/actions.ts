@@ -18,9 +18,12 @@ import { getActiveTenant } from "@/lib/tenant";
 
 import {
   DeliverOrderSchema,
+  MemberDiscountLookupSchema,
   OrderIntentSchema,
   ProductArchiveSchema,
   ProductCreateSchema,
+  ProductImageRemoveSchema,
+  ProductImageReorderSchema,
   ProductUpdateSchema,
   ShipOrderSchema,
   StockAdjustSchema,
@@ -28,9 +31,12 @@ import {
   VariantDeleteSchema,
   VariantUpdateSchema,
   type DeliverOrderInput,
+  type MemberDiscountLookupInput,
   type OrderIntentInput,
   type ProductArchiveInput,
   type ProductCreateInput,
+  type ProductImageRemoveInput,
+  type ProductImageReorderInput,
   type ProductUpdateInput,
   type ShipOrderInput,
   type StockAdjustInput,
@@ -135,6 +141,192 @@ export async function archiveProduct(
 
   revalidatePath("/[locale]/(dashboard)/store", "page");
   return actionOk(undefined);
+}
+
+const MAX_PRODUCT_IMAGES = 6;
+const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp"];
+
+function imageExt(mime: string): string {
+  if (mime === "image/png") return "png";
+  if (mime === "image/webp") return "webp";
+  return "jpg";
+}
+
+export async function uploadProductImages(
+  form: FormData,
+): Promise<ActionResult<{ paths: string[] }>> {
+  const id = form.get("product_id");
+  if (typeof id !== "string" || !id) return actionError("missing-product-id");
+
+  const { tenant, error } = await withPrincipal("update", "store");
+  if (error) return permissionError("update", "store");
+
+  const files = form.getAll("images").filter((f): f is File => f instanceof File);
+  if (files.length === 0) return actionError("no-file", "images");
+  for (const f of files) {
+    if (f.size === 0) return actionError("no-file", "images");
+    if (f.size > 5 * 1024 * 1024) return actionError("too-large", "images");
+    if (!ALLOWED_IMAGE_TYPES.includes(f.type)) {
+      return actionError("invalid-type", "images");
+    }
+  }
+
+  const admin = createServiceRoleClient();
+  const { data: existing, error: readErr } = await admin
+    .from("products")
+    .select("image_path, image_paths")
+    .eq("id", id)
+    .eq("org_id", tenant!.org_id)
+    .maybeSingle();
+  if (readErr || !existing) return actionError("product-not-found");
+
+  const currentPaths = Array.isArray(existing.image_paths)
+    ? (existing.image_paths as string[])
+    : [];
+  if (currentPaths.length + files.length > MAX_PRODUCT_IMAGES) {
+    return actionError("too-many-images");
+  }
+
+  const uploaded: string[] = [];
+  for (const [i, file] of files.entries()) {
+    const path = `${tenant!.org_id}/${id}-${Date.now()}-${i}.${imageExt(file.type)}`;
+    const { error: upErr } = await admin.storage
+      .from("product-images")
+      .upload(path, file, { contentType: file.type, upsert: false });
+    if (upErr) return actionError(upErr.message, "images");
+    uploaded.push(path);
+  }
+
+  const merged = [...currentPaths, ...uploaded];
+  const cover = existing.image_path ?? merged[0] ?? null;
+
+  const { error: updErr } = await admin
+    .from("products")
+    .update({ image_paths: merged, image_path: cover })
+    .eq("id", id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/store", "page");
+  revalidatePath(`/[locale]/(dashboard)/store/${id}`, "page");
+  revalidatePath("/[locale]/shop", "page");
+  revalidatePath(`/[locale]/shop/${id}`, "page");
+  return actionOk({ paths: uploaded });
+}
+
+export async function reorderProductImages(
+  input: ProductImageReorderInput,
+): Promise<ActionResult<void>> {
+  const parsed = ProductImageReorderSchema.safeParse(input);
+  if (!parsed.success) return actionError("invalid");
+  const { tenant, error } = await withPrincipal("update", "store");
+  if (error) return permissionError("update", "store");
+
+  const orgPrefix = `${tenant!.org_id}/`;
+  for (const p of parsed.data.paths) {
+    if (!p.startsWith(orgPrefix) && !/^https?:\/\//.test(p)) {
+      return actionError("path-out-of-tenant");
+    }
+  }
+
+  const admin = createServiceRoleClient();
+  const { error: updErr } = await admin
+    .from("products")
+    .update({
+      image_paths: parsed.data.paths,
+      image_path: parsed.data.paths[0] ?? null,
+    })
+    .eq("id", parsed.data.product_id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/store", "page");
+  revalidatePath(`/[locale]/(dashboard)/store/${parsed.data.product_id}`, "page");
+  revalidatePath("/[locale]/shop", "page");
+  revalidatePath(`/[locale]/shop/${parsed.data.product_id}`, "page");
+  return actionOk(undefined);
+}
+
+export async function removeProductImage(
+  input: ProductImageRemoveInput,
+): Promise<ActionResult<void>> {
+  const parsed = ProductImageRemoveSchema.safeParse(input);
+  if (!parsed.success) return actionError("invalid");
+  const { tenant, error } = await withPrincipal("update", "store");
+  if (error) return permissionError("update", "store");
+
+  const admin = createServiceRoleClient();
+  const { data: existing, error: readErr } = await admin
+    .from("products")
+    .select("image_paths")
+    .eq("id", parsed.data.product_id)
+    .eq("org_id", tenant!.org_id)
+    .maybeSingle();
+  if (readErr || !existing) return actionError("product-not-found");
+
+  const current = Array.isArray(existing.image_paths)
+    ? (existing.image_paths as string[])
+    : [];
+  const next = current.filter((p) => p !== parsed.data.path);
+
+  // Storage delete first. If it fails for an external URL or because the
+  // object never existed, keep going — the DB rewrite is the source of truth.
+  if (parsed.data.path.startsWith(`${tenant!.org_id}/`)) {
+    await admin.storage.from("product-images").remove([parsed.data.path]);
+  }
+
+  const { error: updErr } = await admin
+    .from("products")
+    .update({ image_paths: next, image_path: next[0] ?? null })
+    .eq("id", parsed.data.product_id)
+    .eq("org_id", tenant!.org_id);
+  if (updErr) return actionError(updErr.message);
+
+  revalidatePath("/[locale]/(dashboard)/store", "page");
+  revalidatePath(`/[locale]/(dashboard)/store/${parsed.data.product_id}`, "page");
+  revalidatePath("/[locale]/shop", "page");
+  revalidatePath(`/[locale]/shop/${parsed.data.product_id}`, "page");
+  return actionOk(undefined);
+}
+
+// Returns the discount metadata for a member matching the buyer email — used
+// at checkout to project the final price BEFORE submit. Privacy: returns
+// metadata only, never confirms member identity beyond that a discount exists.
+export async function lookupMemberDiscount(
+  input: MemberDiscountLookupInput,
+): Promise<
+  ActionResult<{ discount_pct: number; has_override: boolean } | null>
+> {
+  const parsed = MemberDiscountLookupSchema.safeParse(input);
+  if (!parsed.success) return actionError("invalid");
+
+  const admin = createServiceRoleClient();
+  const { data: member } = await admin
+    .from("members")
+    .select(
+      "id, status, subscriptions:subscriptions(status, plan:plans(member_only_store_discount_pct))",
+    )
+    .eq("org_id", parsed.data.org_id)
+    .eq("email", parsed.data.email)
+    .maybeSingle();
+  if (!member || member.status !== "active") return actionOk(null);
+
+  const subs = (Array.isArray(member.subscriptions)
+    ? member.subscriptions
+    : [member.subscriptions]
+  ).filter(Boolean) as Array<{
+    status?: string;
+    plan?: { member_only_store_discount_pct?: number | string } | null;
+  }>;
+  const activeSub = subs.find((s) => s && s.status === "active");
+  const discountPct = activeSub?.plan?.member_only_store_discount_pct
+    ? Number(activeSub.plan.member_only_store_discount_pct)
+    : 0;
+
+  // We don't return per-variant overrides here — checkout already applies
+  // them at order intent. has_override is a hint for UI ("Member discount
+  // may apply on selected items") without leaking which variant.
+  return actionOk({ discount_pct: discountPct, has_override: false });
 }
 
 // ─────────────────────────────────────────────
@@ -387,6 +579,7 @@ export async function createOrderIntent(
     .insert({
       org_id: parsed.data.org_id,
       buyer_member_id: memberId,
+      buyer_name: parsed.data.buyer_name,
       buyer_email: parsed.data.buyer_email,
       buyer_phone: parsed.data.buyer_phone ?? null,
       shipping_address: parsed.data.shipping_address ?? null,
