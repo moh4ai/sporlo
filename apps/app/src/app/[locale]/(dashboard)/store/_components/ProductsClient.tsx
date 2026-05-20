@@ -47,6 +47,8 @@ export type ProductRow = {
   name_ar: string;
   name_en: string;
   category: string | null;
+  category_ar: string | null;
+  category_en: string | null;
   active: boolean;
   image_url: string | null;
   images: ProductImage[];
@@ -207,7 +209,8 @@ function ProductFormDrawer({
   const [nameEn, setNameEn] = useState("");
   const [descAr, setDescAr] = useState("");
   const [descEn, setDescEn] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryAr, setCategoryAr] = useState("");
+  const [categoryEn, setCategoryEn] = useState("");
   const [active, setActive] = useState(true);
   const [images, setImages] = useState<ProductImage[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -222,7 +225,8 @@ function ProductFormDrawer({
       setNameEn("");
       setDescAr("");
       setDescEn("");
-      setCategory("");
+      setCategoryAr("");
+      setCategoryEn("");
       setActive(true);
       setImages([]);
     } else {
@@ -230,7 +234,8 @@ function ProductFormDrawer({
       setNameEn(state.product.name_en);
       setDescAr("");
       setDescEn("");
-      setCategory(state.product.category ?? "");
+      setCategoryAr(state.product.category_ar ?? "");
+      setCategoryEn(state.product.category_en ?? state.product.category ?? "");
       setActive(state.product.active);
       setImages(state.product.images);
     }
@@ -319,7 +324,11 @@ function ProductFormDrawer({
       name_en: nameEn.trim(),
       description_ar: descAr,
       description_en: descEn,
-      category,
+      // Legacy single column kept in sync with the English value so old
+      // queries that don't know about the bilingual pair still render.
+      category: categoryEn || categoryAr,
+      category_ar: categoryAr,
+      category_en: categoryEn,
       active,
     };
     const res = isEdit && editing
@@ -360,9 +369,22 @@ function ProductFormDrawer({
             <Textarea rows={2} value={descEn} onChange={(e) => setDescEn(e.target.value)} dir="ltr" />
           </FormGroup>
         </div>
-        <FormGroup label={t("products.form.category")}>
-          <Input value={category} onChange={(e) => setCategory(e.target.value)} />
-        </FormGroup>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <FormGroup label={t("products.form.categoryAr")}>
+            <Input
+              value={categoryAr}
+              onChange={(e) => setCategoryAr(e.target.value)}
+              dir="rtl"
+            />
+          </FormGroup>
+          <FormGroup label={t("products.form.categoryEn")}>
+            <Input
+              value={categoryEn}
+              onChange={(e) => setCategoryEn(e.target.value)}
+              dir="ltr"
+            />
+          </FormGroup>
+        </div>
         <Switch checked={active} onChange={setActive} label={t("products.form.active")} />
 
         {isEdit && editing && (

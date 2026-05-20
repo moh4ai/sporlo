@@ -20,7 +20,7 @@ export default async function ProductsPage({
   const { data: products } = await supabase
     .from("products")
     .select(
-      "id, name_ar, name_en, category, active, image_path, image_paths, variants:product_variants(id, stock)",
+      "id, name_ar, name_en, category, category_ar, category_en, active, image_path, image_paths, variants:product_variants(id, stock)",
     )
     .order("created_at", { ascending: false });
 
@@ -46,6 +46,8 @@ export default async function ProductsPage({
       name_ar: p.name_ar,
       name_en: p.name_en,
       category: p.category,
+      category_ar: (p.category_ar as string | null) ?? null,
+      category_en: (p.category_en as string | null) ?? null,
       active: p.active,
       image_url: images[0]?.url ?? null,
       images,

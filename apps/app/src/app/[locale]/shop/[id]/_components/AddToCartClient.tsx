@@ -20,8 +20,14 @@ import {
 export interface VariantOption {
   id: string;
   sku: string | null;
+  // Canonical axis values used as the option identifier in the swatch
+  // picker — stays stable across locales so intersection lookup works.
   size: string | null;
   color: string | null;
+  // Locale-aware display labels for the same axes. Fall back to the
+  // canonical value when the server didn't provide a translation.
+  sizeLabel: string | null;
+  colorLabel: string | null;
   label: string;
   price_sar: number;
   member_price_sar: number | null;
@@ -89,6 +95,27 @@ export function AddToCartClient({
   const sizes = useMemo(() => unique(variants.map((v) => v.size)), [variants]);
   const colors = useMemo(() => unique(variants.map((v) => v.color)), [variants]);
 
+  // Build canonical-value → localized-label maps so the swatch picker can
+  // group by stable identifiers while displaying translated text.
+  const sizeLabelByValue = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const v of variants) {
+      if (v.size && !map.has(v.size)) {
+        map.set(v.size, v.sizeLabel ?? v.size);
+      }
+    }
+    return map;
+  }, [variants]);
+  const colorLabelByValue = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const v of variants) {
+      if (v.color && !map.has(v.color)) {
+        map.set(v.color, v.colorLabel ?? v.color);
+      }
+    }
+    return map;
+  }, [variants]);
+
   // Initial selection: first variant with stock, else first variant.
   const initial = useMemo(() => {
     const inStock = variants.find((v) => v.stock > 0);
@@ -125,7 +152,7 @@ export function AddToCartClient({
     () =>
       sizes.map((size) => ({
         value: size,
-        label: size,
+        label: sizeLabelByValue.get(size) ?? size,
         disabled: !variants.some(
           (v) =>
             v.size === size &&
@@ -133,13 +160,13 @@ export function AddToCartClient({
             (selectedColor == null || v.color === selectedColor),
         ),
       })),
-    [sizes, variants, selectedColor],
+    [sizes, variants, selectedColor, sizeLabelByValue],
   );
   const colorOptions = useMemo(
     () =>
       colors.map((color) => ({
         value: color,
-        label: color,
+        label: colorLabelByValue.get(color) ?? color,
         disabled: !variants.some(
           (v) =>
             v.color === color &&
@@ -147,7 +174,7 @@ export function AddToCartClient({
             (selectedSize == null || v.size === selectedSize),
         ),
       })),
-    [colors, variants, selectedSize],
+    [colors, variants, selectedSize, colorLabelByValue],
   );
 
   const sarFmt = useMemo(

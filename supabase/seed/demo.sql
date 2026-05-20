@@ -352,35 +352,35 @@ begin
     return;
   end if;
 
-  insert into public.products (org_id, name_ar, name_en, category, active)
-  values (v_org, 'القميص الرسمي', 'Official home jersey 25/26', 'Apparel', true)
+  insert into public.products (org_id, name_ar, name_en, category, category_ar, category_en, active)
+  values (v_org, 'القميص الرسمي', 'Official home jersey 25/26', 'Apparel', 'الملابس', 'Apparel', true)
   returning id into v_product_jersey;
 
-  insert into public.products (org_id, name_ar, name_en, category, active)
-  values (v_org, 'وشاح المشجعين', 'Supporter scarf', 'Apparel', true)
+  insert into public.products (org_id, name_ar, name_en, category, category_ar, category_en, active)
+  values (v_org, 'وشاح المشجعين', 'Supporter scarf', 'Apparel', 'الملابس', 'Apparel', true)
   returning id into v_product_scarf;
 
-  insert into public.products (org_id, name_ar, name_en, category, active)
-  values (v_org, 'قبعة النادي', 'Club cap', 'Apparel', true)
+  insert into public.products (org_id, name_ar, name_en, category, category_ar, category_en, active)
+  values (v_org, 'قبعة النادي', 'Club cap', 'Apparel', 'الملابس', 'Apparel', true)
   returning id into v_product_cap;
 
-  insert into public.products (org_id, name_ar, name_en, category, active)
-  values (v_org, 'كوب القهوة', 'Coffee mug', 'Accessories', true)
+  insert into public.products (org_id, name_ar, name_en, category, category_ar, category_en, active)
+  values (v_org, 'كوب القهوة', 'Coffee mug', 'Accessories', 'الإكسسوارات', 'Accessories', true)
   returning id into v_product_mug;
 
-  insert into public.products (org_id, name_ar, name_en, category, active)
-  values (v_org, 'زجاجة المياه', 'Sports water bottle', 'Accessories', true)
+  insert into public.products (org_id, name_ar, name_en, category, category_ar, category_en, active)
+  values (v_org, 'زجاجة المياه', 'Sports water bottle', 'Accessories', 'الإكسسوارات', 'Accessories', true)
   returning id into v_product_bottle;
 
-  insert into public.product_variants (org_id, product_id, sku, size, color, price_sar, member_price_sar, stock, active) values
-    (v_org, v_product_jersey, 'JRS-S',  'S',  'Green', 250, 212, 14, true),
-    (v_org, v_product_jersey, 'JRS-M',  'M',  'Green', 250, 212, 22, true),
-    (v_org, v_product_jersey, 'JRS-L',  'L',  'Green', 250, 212, 18, true),
-    (v_org, v_product_jersey, 'JRS-XL', 'XL', 'Green', 250, 212,  9, true),
-    (v_org, v_product_scarf,  'SCF-G',  null, 'Green',  80,  68, 30, true),
-    (v_org, v_product_cap,    'CAP-G',  null, 'Green',  60,  51, 25, true),
-    (v_org, v_product_mug,    'MUG-G',  null, 'Green',  35,  30, 50, true),
-    (v_org, v_product_bottle, 'BOT-G',  null, 'Green',  45,  38, 40, true);
+  insert into public.product_variants (org_id, product_id, sku, size, size_ar, size_en, color, color_ar, color_en, price_sar, member_price_sar, stock, active) values
+    (v_org, v_product_jersey, 'JRS-S',  'S',  'S',  'S',  'Green', 'أخضر', 'Green', 250, 212, 14, true),
+    (v_org, v_product_jersey, 'JRS-M',  'M',  'M',  'M',  'Green', 'أخضر', 'Green', 250, 212, 22, true),
+    (v_org, v_product_jersey, 'JRS-L',  'L',  'L',  'L',  'Green', 'أخضر', 'Green', 250, 212, 18, true),
+    (v_org, v_product_jersey, 'JRS-XL', 'XL', 'XL', 'XL', 'Green', 'أخضر', 'Green', 250, 212,  9, true),
+    (v_org, v_product_scarf,  'SCF-G',  null, null, null, 'Green', 'أخضر', 'Green',  80,  68, 30, true),
+    (v_org, v_product_cap,    'CAP-G',  null, null, null, 'Green', 'أخضر', 'Green',  60,  51, 25, true),
+    (v_org, v_product_mug,    'MUG-G',  null, null, null, 'Green', 'أخضر', 'Green',  35,  30, 50, true),
+    (v_org, v_product_bottle, 'BOT-G',  null, null, null, 'Green', 'أخضر', 'Green',  45,  38, 40, true);
 
   insert into public.orders (org_id, buyer_email, buyer_member_id, status, subtotal_sar, discount_sar, total_sar, paid_at) values
     (v_org, 'ahmad@example.com',   v_member_ahmad, 'paid',    250, 38, 212, now() - interval '20 days'),

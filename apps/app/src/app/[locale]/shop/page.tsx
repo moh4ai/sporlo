@@ -25,7 +25,7 @@ export default async function ShopPage({
   let query = admin
     .from("products")
     .select(
-      "id, name_ar, name_en, category, image_path, image_paths, created_at, variants:product_variants(price_sar, member_price_sar, stock, active)",
+      "id, name_ar, name_en, category, category_ar, category_en, image_path, image_paths, created_at, variants:product_variants(price_sar, member_price_sar, stock, active)",
     )
     .eq("active", true)
     .order("created_at", { ascending: false })
@@ -52,10 +52,18 @@ export default async function ShopPage({
       ? (p.image_paths as string[])
       : [];
     const coverPath = paths[0] ?? (p.image_path as string | null) ?? null;
+    const categoryLocalized =
+      locale === "ar"
+        ? ((p.category_ar as string | null) ??
+          (p.category_en as string | null) ??
+          (p.category as string | null))
+        : ((p.category_en as string | null) ??
+          (p.category as string | null) ??
+          (p.category_ar as string | null));
     return {
       id: p.id as string,
       name: locale === "ar" ? (p.name_ar as string) : (p.name_en as string),
-      category: (p.category as string | null) ?? null,
+      category: categoryLocalized ?? null,
       image_url: resolvePublicMediaSrc(coverPath, admin, "product-images"),
       min_price: prices.length > 0 ? Math.min(...prices) : null,
       has_member_price: hasMemberPrice,

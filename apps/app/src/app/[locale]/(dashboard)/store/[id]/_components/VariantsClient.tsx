@@ -34,7 +34,11 @@ export type VariantRow = {
   id: string;
   sku: string | null;
   size: string | null;
+  size_ar: string | null;
+  size_en: string | null;
   color: string | null;
+  color_ar: string | null;
+  color_en: string | null;
   price_sar: number;
   member_price_sar: number | null;
   stock: number;
@@ -191,7 +195,11 @@ function VariantFormDrawer({
 
   const [sku, setSku] = useState("");
   const [size, setSize] = useState("");
+  const [sizeAr, setSizeAr] = useState("");
+  const [sizeEn, setSizeEn] = useState("");
   const [color, setColor] = useState("");
+  const [colorAr, setColorAr] = useState("");
+  const [colorEn, setColorEn] = useState("");
   const [price, setPrice] = useState("0");
   const [memberPrice, setMemberPrice] = useState("");
   const [stock, setStock] = useState("0");
@@ -204,14 +212,22 @@ function VariantFormDrawer({
     if (state.mode === "create") {
       setSku("");
       setSize("");
+      setSizeAr("");
+      setSizeEn("");
       setColor("");
+      setColorAr("");
+      setColorEn("");
       setPrice("0");
       setMemberPrice("");
       setStock("0");
     } else {
       setSku(state.variant.sku ?? "");
       setSize(state.variant.size ?? "");
+      setSizeAr(state.variant.size_ar ?? "");
+      setSizeEn(state.variant.size_en ?? "");
       setColor(state.variant.color ?? "");
+      setColorAr(state.variant.color_ar ?? "");
+      setColorEn(state.variant.color_en ?? "");
       setPrice(String(state.variant.price_sar));
       setMemberPrice(state.variant.member_price_sar != null ? String(state.variant.member_price_sar) : "");
       setStock(String(state.variant.stock));
@@ -228,7 +244,11 @@ function VariantFormDrawer({
       product_id: productId,
       sku,
       size,
+      size_ar: sizeAr,
+      size_en: sizeEn,
       color,
+      color_ar: colorAr,
+      color_en: colorEn,
       price_sar: Number(price),
       member_price_sar: memberPrice === "" ? undefined : Number(memberPrice),
       stock: Number(stock),
@@ -260,13 +280,59 @@ function VariantFormDrawer({
         <FormGroup label={t("variants.form.sku")}>
           <Input value={sku} onChange={(e) => setSku(e.target.value)} dir="ltr" />
         </FormGroup>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <FormGroup label={t("variants.form.size")}>
-            <Input value={size} onChange={(e) => setSize(e.target.value)} />
+        <div className="space-y-3 rounded-card border border-spo-line bg-spo-paper/40 p-3">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
+            {t("variants.form.size")}
+          </h4>
+          <FormGroup
+            label={t("variants.form.sizeKey")}
+            hint={t("variants.form.sizeKeyHint")}
+          >
+            <Input value={size} onChange={(e) => setSize(e.target.value)} dir="ltr" />
           </FormGroup>
-          <FormGroup label={t("variants.form.color")}>
-            <Input value={color} onChange={(e) => setColor(e.target.value)} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormGroup label={t("variants.form.sizeAr")}>
+              <Input
+                value={sizeAr}
+                onChange={(e) => setSizeAr(e.target.value)}
+                dir="rtl"
+              />
+            </FormGroup>
+            <FormGroup label={t("variants.form.sizeEn")}>
+              <Input
+                value={sizeEn}
+                onChange={(e) => setSizeEn(e.target.value)}
+                dir="ltr"
+              />
+            </FormGroup>
+          </div>
+        </div>
+        <div className="space-y-3 rounded-card border border-spo-line bg-spo-paper/40 p-3">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
+            {t("variants.form.color")}
+          </h4>
+          <FormGroup
+            label={t("variants.form.colorKey")}
+            hint={t("variants.form.colorKeyHint")}
+          >
+            <Input value={color} onChange={(e) => setColor(e.target.value)} dir="ltr" />
           </FormGroup>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <FormGroup label={t("variants.form.colorAr")}>
+              <Input
+                value={colorAr}
+                onChange={(e) => setColorAr(e.target.value)}
+                dir="rtl"
+              />
+            </FormGroup>
+            <FormGroup label={t("variants.form.colorEn")}>
+              <Input
+                value={colorEn}
+                onChange={(e) => setColorEn(e.target.value)}
+                dir="ltr"
+              />
+            </FormGroup>
+          </div>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           <FormGroup label={t("variants.form.price")} required>

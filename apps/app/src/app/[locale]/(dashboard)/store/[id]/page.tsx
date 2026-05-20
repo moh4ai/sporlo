@@ -30,7 +30,9 @@ export default async function ProductDetailPage({
 
   const { data: variantsData } = await supabase
     .from("product_variants")
-    .select("id, sku, size, color, price_sar, member_price_sar, stock")
+    .select(
+      "id, sku, size, size_ar, size_en, color, color_ar, color_en, price_sar, member_price_sar, stock",
+    )
     .eq("product_id", id)
     .order("created_at", { ascending: true });
 
@@ -38,7 +40,11 @@ export default async function ProductDetailPage({
     id: v.id,
     sku: v.sku,
     size: v.size,
+    size_ar: (v.size_ar as string | null) ?? null,
+    size_en: (v.size_en as string | null) ?? null,
     color: v.color,
+    color_ar: (v.color_ar as string | null) ?? null,
+    color_en: (v.color_en as string | null) ?? null,
     price_sar: Number(v.price_sar),
     member_price_sar: v.member_price_sar != null ? Number(v.member_price_sar) : null,
     stock: Number(v.stock),

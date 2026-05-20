@@ -18,7 +18,11 @@ export const ProductCreateSchema = z.object({
   name_en: z.string().trim().min(1).max(120),
   description_ar: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
   description_en: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
+  // Legacy single-text column — kept writable so admins can still seed it,
+  // but bilingual pairs below take precedence on the public pages.
   category: z.preprocess(emptyToUndef, z.string().max(60).optional()),
+  category_ar: z.preprocess(emptyToUndef, z.string().max(60).optional()),
+  category_en: z.preprocess(emptyToUndef, z.string().max(60).optional()),
   active: z.boolean().default(true),
 });
 
@@ -42,8 +46,14 @@ export type ProductArchiveInput = z.infer<typeof ProductArchiveSchema>;
 export const VariantCreateSchema = z.object({
   product_id: UuidSchema,
   sku: z.preprocess(emptyToUndef, z.string().max(60).optional()),
+  // Canonical axis values — used as the option key in the swatch picker.
   size: z.preprocess(emptyToUndef, z.string().max(40).optional()),
   color: z.preprocess(emptyToUndef, z.string().max(40).optional()),
+  // Locale-specific display labels for the same axes.
+  size_ar: z.preprocess(emptyToUndef, z.string().max(40).optional()),
+  size_en: z.preprocess(emptyToUndef, z.string().max(40).optional()),
+  color_ar: z.preprocess(emptyToUndef, z.string().max(40).optional()),
+  color_en: z.preprocess(emptyToUndef, z.string().max(40).optional()),
   price_sar: SarAmountSchema,
   member_price_sar: z.preprocess(emptyToUndef, SarAmountSchema.optional()),
   stock: z.number().int().min(0).default(0),

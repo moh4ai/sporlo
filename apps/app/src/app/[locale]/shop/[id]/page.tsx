@@ -25,7 +25,7 @@ export default async function ProductDetailPublicPage({
   const { data: product } = await admin
     .from("products")
     .select(
-      "id, org_id, name_ar, name_en, description_ar, description_en, category, image_path, image_paths, active",
+      "id, org_id, name_ar, name_en, description_ar, description_en, category, category_ar, category_en, image_path, image_paths, active",
     )
     .eq("id", id)
     .maybeSingle();
@@ -33,7 +33,9 @@ export default async function ProductDetailPublicPage({
 
   const { data: variants } = await admin
     .from("product_variants")
-    .select("id, sku, size, color, price_sar, member_price_sar, stock, active")
+    .select(
+      "id, sku, size, size_ar, size_en, color, color_ar, color_en, price_sar, member_price_sar, stock, active",
+    )
     .eq("product_id", id)
     .eq("active", true);
 
@@ -43,7 +45,14 @@ export default async function ProductDetailPublicPage({
 
   const name = locale === "ar" ? product.name_ar : product.name_en;
   const description = locale === "ar" ? product.description_ar : product.description_en;
-  const category = (product.category as string | null) ?? null;
+  const category =
+    locale === "ar"
+      ? ((product.category_ar as string | null) ??
+        (product.category_en as string | null) ??
+        (product.category as string | null))
+      : ((product.category_en as string | null) ??
+        (product.category as string | null) ??
+        (product.category_ar as string | null));
 
   const rawPaths: string[] = Array.isArray(product.image_paths)
     ? (product.image_paths as string[])
@@ -59,18 +68,40 @@ export default async function ProductDetailPublicPage({
     .filter((url): url is string => url != null);
   const coverPath = effectivePaths[0] ?? null;
 
-  const mappedVariants = (variants ?? []).map((v) => ({
-    id: v.id,
-    sku: (v.sku as string | null) ?? null,
-    size: (v.size as string | null) ?? null,
-    color: (v.color as string | null) ?? null,
-    label:
-      [v.size, v.color].filter(Boolean).join(" / ") || (v.sku as string | null) || "",
-    price_sar: Number(v.price_sar),
-    member_price_sar:
-      v.member_price_sar != null ? Number(v.member_price_sar) : null,
-    stock: Number(v.stock),
-  }));
+  const mappedVariants = (variants ?? []).map((v) => {
+    const sizeLocalized =
+      locale === "ar"
+        ? ((v.size_ar as string | null) ??
+          (v.size_en as string | null) ??
+          (v.size as string | null))
+        : ((v.size_en as string | null) ??
+          (v.size as string | null) ??
+          (v.size_ar as string | null));
+    const colorLocalized =
+      locale === "ar"
+        ? ((v.color_ar as string | null) ??
+          (v.color_en as string | null) ??
+          (v.color as string | null))
+        : ((v.color_en as string | null) ??
+          (v.color as string | null) ??
+          (v.color_ar as string | null));
+    return {
+      id: v.id,
+      sku: (v.sku as string | null) ?? null,
+      size: (v.size as string | null) ?? null,
+      color: (v.color as string | null) ?? null,
+      sizeLabel: sizeLocalized,
+      colorLabel: colorLocalized,
+      label:
+        [sizeLocalized, colorLocalized].filter(Boolean).join(" / ") ||
+        (v.sku as string | null) ||
+        "",
+      price_sar: Number(v.price_sar),
+      member_price_sar:
+        v.member_price_sar != null ? Number(v.member_price_sar) : null,
+      stock: Number(v.stock),
+    };
+  });
   const showMemberBanner =
     !isMember &&
     mappedVariants.some((v) => hasMemberDiscount(v, planDiscountPct));
