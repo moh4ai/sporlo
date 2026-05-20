@@ -116,12 +116,15 @@ const CURATED = {
     },
   ],
 
-  // Hospitality package covers — VIP / premium hospitality settings.
+  // Hospitality package covers — stadium-themed, not generic restaurant
+  // shots. Each one is unambiguously about football/match-day hospitality
+  // rather than a hotel lobby. Sourced from Unsplash with HEAD-probe at
+  // seed time; swap any line if a photo looks off.
   hospitality: [
-    "1414235077428-338989a2e8c0", // hospitality dining
-    "1517248135467-4c7edcad34c4", // lounge / club interior
-    "1564501049412-61c2a3083791", // premium seats
-    "1551918120-9739cb430c6d", // sports box / suite
+    "1677752793570-acb0b3c54542", // packed crowd at a soccer match — matchday dining vibe
+    "1658262537524-bcb660b5371e", // stadium overview — box / suite view
+    "1650826201320-c35f1a461390", // tiered premium seats with red/blue chairs
+    "1643700700063-5e28d813d88e", // stadium with scoreboard — elevated VIP angle
   ],
 
   // Merchandise — each product gets 2-3 photos for the gallery. First entry
