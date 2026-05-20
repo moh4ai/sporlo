@@ -279,6 +279,25 @@ function svgClubLogo(initials, bgColor, fgColor) {
 </svg>`;
 }
 
+// Circular crest with initials on a striped/two-tone field. Used for
+// opposing-team logos on fixtures so the matchup block has visual weight
+// without infringing real club trademarks.
+function svgOpponentCrest(initials, primaryColor, accentColor) {
+  const fg = isLightColor(primaryColor) ? "#0f172a" : "#ffffff";
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${primaryColor}"/>
+      <stop offset="100%" stop-color="${shade(primaryColor, -18)}"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="46" fill="url(#bg)" stroke="${accentColor}" stroke-width="3"/>
+  <circle cx="50" cy="50" r="38" fill="none" stroke="${fg}" stroke-width="1.2" stroke-opacity="0.4"/>
+  <path d="M50 12 L50 88 M12 50 L88 50" stroke="${accentColor}" stroke-width="2" stroke-opacity="0.18"/>
+  <text x="50" y="61" font-family="'Arial Black', Helvetica, sans-serif" font-weight="900" font-size="30" text-anchor="middle" fill="${fg}" letter-spacing="1">${initials}</text>
+</svg>`;
+}
+
 function svgSponsorLogo(name, bgColor) {
   const fg = isLightColor(bgColor) ? "#0f172a" : "#ffffff";
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
@@ -429,6 +448,60 @@ async function main() {
       ]);
     }
     console.log(`  ✓ ${players.length} player photos`);
+  }
+
+  // ─── 3.5. Opponent crests on fixtures ───────────────────────────
+  // Each unique opponent gets a generated round badge with its initials
+  // and the club's colour scheme. Real Saudi Pro League clubs are referenced
+  // by name only in the demo seed; the SVG crests are generic letter-on-
+  // colour badges, not the real trademarked club logos.
+  {
+    const crestByOpponent = {
+      "Al-Ittihad": {
+        initials: "IFC",
+        primary: "#000000",
+        accent: "#f7c000",
+      },
+      "Al-Hilal":   {
+        initials: "AH",
+        primary: "#0033a0",
+        accent: "#ffffff",
+      },
+      "Al-Nassr":   {
+        initials: "AN",
+        primary: "#f7c000",
+        accent: "#0033a0",
+      },
+    };
+
+    const { rows: fixtures } = await pg.query(
+      "select id, opponent_en from fixtures where org_id=$1",
+      [orgId],
+    );
+    let n = 0;
+    const uploadedByName = new Map();
+    for (const f of fixtures) {
+      const recipe = crestByOpponent[f.opponent_en];
+      if (!recipe) continue;
+      let path = uploadedByName.get(f.opponent_en);
+      if (!path) {
+        const svg = svgOpponentCrest(recipe.initials, recipe.primary, recipe.accent);
+        path = `${orgId}/opponent-${f.opponent_en.toLowerCase().replace(/\s+/g, "-")}.svg`;
+        await uploadFile(
+          "org-branding",
+          path,
+          Buffer.from(svg, "utf8"),
+          "image/svg+xml",
+        );
+        uploadedByName.set(f.opponent_en, path);
+      }
+      await pg.query(
+        "update fixtures set opponent_logo_path=$1 where id=$2",
+        [path, f.id],
+      );
+      n++;
+    }
+    console.log(`  ✓ ${n} fixture opponent crests`);
   }
 
   // ─── 4. Sponsors (logos generated inline) ────────────────────────

@@ -22,7 +22,7 @@ export default async function PublicFixturesPage({
   let query = admin
     .from("fixtures")
     .select(
-      "id, opponent_ar, opponent_en, kickoff_at, venue, status, organization:organizations(name_ar, name_en, slug)",
+      "id, opponent_ar, opponent_en, opponent_logo_path, kickoff_at, venue, status, organization:organizations(name_ar, name_en, slug)",
     )
     .in("status", ["scheduled", "in_progress"])
     .gte("kickoff_at", new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString())
@@ -32,6 +32,11 @@ export default async function PublicFixturesPage({
   if (tenant) query = query.eq("org_id", tenant.org_id);
 
   const { data } = await query;
+
+  function opponentLogoUrl(path: string | null | undefined): string | null {
+    if (!path) return null;
+    return admin.storage.from("org-branding").getPublicUrl(path).data.publicUrl;
+  }
 
   const dateFmt = new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-GB", {
     weekday: "short",
@@ -98,20 +103,37 @@ export default async function PublicFixturesPage({
                         )}
                       </div>
                       {/* Match block */}
-                      <div className="flex flex-col justify-center gap-1 px-5 py-4">
-                        <p className="text-xs uppercase tracking-wide text-spo-muted">
-                          {orgName}
-                        </p>
-                        <h3
-                          className="text-xl font-semibold text-spo-ink"
-                          style={{ fontFamily: "var(--font-display)" }}
-                        >
-                          {orgName}{" "}
-                          <span className="text-spo-muted">vs</span> {opp}
-                        </h3>
-                        {f.venue && (
-                          <p className="text-sm text-spo-muted">{f.venue}</p>
-                        )}
+                      <div className="flex items-center gap-4 px-5 py-4">
+                        {(() => {
+                          const url = opponentLogoUrl(
+                            f.opponent_logo_path as string | null,
+                          );
+                          return url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={url}
+                              alt=""
+                              className="size-12 shrink-0 rounded-full border border-spo-line bg-white p-0.5 sm:size-14"
+                            />
+                          ) : (
+                            <div className="size-12 shrink-0 rounded-full border border-spo-line bg-spo-paper-warm sm:size-14" />
+                          );
+                        })()}
+                        <div className="flex flex-col justify-center gap-1">
+                          <p className="text-xs uppercase tracking-wide text-spo-muted">
+                            {orgName}
+                          </p>
+                          <h3
+                            className="text-xl font-semibold text-spo-ink"
+                            style={{ fontFamily: "var(--font-display)" }}
+                          >
+                            {orgName}{" "}
+                            <span className="text-spo-muted">vs</span> {opp}
+                          </h3>
+                          {f.venue && (
+                            <p className="text-sm text-spo-muted">{f.venue}</p>
+                          )}
+                        </div>
                       </div>
                       {/* CTA */}
                       <div className="flex items-center justify-center border-t border-spo-line p-4 sm:border-s sm:border-t-0">

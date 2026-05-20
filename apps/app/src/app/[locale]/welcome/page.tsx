@@ -60,7 +60,7 @@ export default async function ClubLandingPage({
       .maybeSingle(),
     admin
       .from("fixtures")
-      .select("id, opponent_ar, opponent_en, kickoff_at, venue, status")
+      .select("id, opponent_ar, opponent_en, opponent_logo_path, kickoff_at, venue, status")
       .eq("org_id", tenant.org_id)
       .eq("status", "scheduled")
       .gte("kickoff_at", nowIso)
@@ -68,7 +68,7 @@ export default async function ClubLandingPage({
       .limit(1),
     admin
       .from("fixtures")
-      .select("id, opponent_ar, opponent_en, kickoff_at, venue, status, home_score, away_score")
+      .select("id, opponent_ar, opponent_en, opponent_logo_path, kickoff_at, venue, status, home_score, away_score")
       .eq("org_id", tenant.org_id)
       .eq("status", "completed")
       .lt("kickoff_at", nowIso)
@@ -76,7 +76,7 @@ export default async function ClubLandingPage({
       .limit(1),
     admin
       .from("fixtures")
-      .select("id, opponent_ar, opponent_en, kickoff_at, venue, status, home_score, away_score")
+      .select("id, opponent_ar, opponent_en, opponent_logo_path, kickoff_at, venue, status, home_score, away_score")
       .eq("org_id", tenant.org_id)
       .order("kickoff_at", { ascending: false })
       .limit(8),
@@ -200,11 +200,19 @@ export default async function ClubLandingPage({
     return admin.storage.from("sponsor-logos").getPublicUrl(path).data.publicUrl;
   }
 
+  // Resolve an opponent_logo_path (storage path under org-branding) to a
+  // public URL. Same pattern as the org logo above.
+  function opponentLogoUrl(path: string | null | undefined): string | null {
+    if (!path) return null;
+    return admin.storage.from("org-branding").getPublicUrl(path).data.publicUrl;
+  }
+
   // Last 3 results + next 3 scheduled for the Match Center mini-table.
   const seasonRows = (seasonFixtureRows ?? []) as Array<{
     id: string;
     opponent_ar: string;
     opponent_en: string;
+    opponent_logo_path: string | null;
     kickoff_at: string;
     venue: string | null;
     status: string;
@@ -386,20 +394,35 @@ export default async function ClubLandingPage({
       {show.nextMatch && nextFixture && (
         <section className="bg-spo-green-soft">
           <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:py-10">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
-                {t("nextMatch.eyebrow")}
-              </p>
-              <h2
-                className="text-2xl font-semibold text-spo-ink sm:text-3xl"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {orgName} <span className="text-spo-muted">vs</span>{" "}
-                {locale === "ar" ? nextFixture.opponent_ar : nextFixture.opponent_en}
-              </h2>
-              {nextFixture.venue && (
-                <p className="text-sm text-spo-muted">{nextFixture.venue}</p>
-              )}
+            <div className="flex items-center gap-4">
+              {(() => {
+                const url = opponentLogoUrl(
+                  nextFixture.opponent_logo_path as string | null,
+                );
+                return url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={url}
+                    alt=""
+                    className="size-14 shrink-0 rounded-full border border-spo-line bg-white p-1 shadow-[var(--shadow-1)] sm:size-16"
+                  />
+                ) : null;
+              })()}
+              <div className="space-y-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+                  {t("nextMatch.eyebrow")}
+                </p>
+                <h2
+                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {orgName} <span className="text-spo-muted">vs</span>{" "}
+                  {locale === "ar" ? nextFixture.opponent_ar : nextFixture.opponent_en}
+                </h2>
+                {nextFixture.venue && (
+                  <p className="text-sm text-spo-muted">{nextFixture.venue}</p>
+                )}
+              </div>
             </div>
             <div className="flex flex-col items-end gap-2">
               <MatchCountdown
@@ -440,7 +463,20 @@ export default async function ClubLandingPage({
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
                   {t("matchCenter.lastResult")}
                 </p>
-                <div className="mt-3 flex flex-wrap items-baseline gap-4">
+                <div className="mt-3 flex flex-wrap items-center gap-4">
+                  {(() => {
+                    const url = opponentLogoUrl(
+                      lastFixture.opponent_logo_path as string | null,
+                    );
+                    return url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={url}
+                        alt=""
+                        className="size-12 shrink-0 rounded-full border border-spo-line bg-white p-0.5"
+                      />
+                    ) : null;
+                  })()}
                   <div className="text-xl font-semibold text-spo-ink sm:text-2xl">
                     {orgName}{" "}
                     <span className="font-mono text-spo-green-deep">
@@ -482,16 +518,32 @@ export default async function ClubLandingPage({
                       {t("matchCenter.recentResults")}
                     </p>
                     <ul className="divide-y divide-spo-line">
-                      {recentResults.map((f) => (
-                        <li key={f.id} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
-                          <span className="truncate text-spo-ink-2">
-                            {locale === "ar" ? f.opponent_ar : f.opponent_en}
-                          </span>
-                          <span className="font-mono text-xs text-spo-ink">
-                            {f.home_score ?? 0}–{f.away_score ?? 0}
-                          </span>
-                        </li>
-                      ))}
+                      {recentResults.map((f) => {
+                        const logo = opponentLogoUrl(f.opponent_logo_path);
+                        return (
+                          <li
+                            key={f.id}
+                            className="flex items-center justify-between gap-2 px-4 py-2 text-sm"
+                          >
+                            <span className="flex min-w-0 items-center gap-2 truncate text-spo-ink-2">
+                              {logo && (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={logo}
+                                  alt=""
+                                  className="size-6 shrink-0 rounded-full border border-spo-line bg-white"
+                                />
+                              )}
+                              <span className="truncate">
+                                {locale === "ar" ? f.opponent_ar : f.opponent_en}
+                              </span>
+                            </span>
+                            <span className="font-mono text-xs text-spo-ink">
+                              {f.home_score ?? 0}–{f.away_score ?? 0}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 )}
@@ -501,19 +553,35 @@ export default async function ClubLandingPage({
                       {t("matchCenter.upcoming")}
                     </p>
                     <ul className="divide-y divide-spo-line">
-                      {upcomingSeason.map((f) => (
-                        <li key={f.id} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
-                          <span className="truncate text-spo-ink-2">
-                            {locale === "ar" ? f.opponent_ar : f.opponent_en}
-                          </span>
-                          <span className="text-xs text-spo-muted">
-                            {new Date(f.kickoff_at as string).toLocaleDateString(
-                              locale === "ar" ? "ar-SA" : "en-GB",
-                              { month: "short", day: "numeric" },
-                            )}
-                          </span>
-                        </li>
-                      ))}
+                      {upcomingSeason.map((f) => {
+                        const logo = opponentLogoUrl(f.opponent_logo_path);
+                        return (
+                          <li
+                            key={f.id}
+                            className="flex items-center justify-between gap-2 px-4 py-2 text-sm"
+                          >
+                            <span className="flex min-w-0 items-center gap-2 truncate text-spo-ink-2">
+                              {logo && (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={logo}
+                                  alt=""
+                                  className="size-6 shrink-0 rounded-full border border-spo-line bg-white"
+                                />
+                              )}
+                              <span className="truncate">
+                                {locale === "ar" ? f.opponent_ar : f.opponent_en}
+                              </span>
+                            </span>
+                            <span className="text-xs text-spo-muted">
+                              {new Date(f.kickoff_at as string).toLocaleDateString(
+                                locale === "ar" ? "ar-SA" : "en-GB",
+                                { month: "short", day: "numeric" },
+                              )}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 )}
