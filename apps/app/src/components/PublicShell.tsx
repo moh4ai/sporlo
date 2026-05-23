@@ -38,7 +38,7 @@ export async function PublicShell({
 
   return (
     <PublicShellClient locale={locale as "ar" | "en"}>
-      <div className="flex min-h-screen flex-col bg-spo-paper-warm">
+      <div className="flex min-h-screen flex-col overflow-x-clip bg-spo-paper-warm">
         <header className="border-b border-spo-line bg-white">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-6">
             <Link href="/" className="flex items-center gap-2 text-spo-ink">

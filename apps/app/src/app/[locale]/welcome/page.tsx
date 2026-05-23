@@ -393,12 +393,11 @@ export default async function ClubLandingPage({
         </section>
       )}
 
-      {/* Next match — a slim accent band between the hero and the long
-          stack of content sections; tighter padding by design. */}
+      {/* Next match — vertically stacked on phone for easy reading, side-by-side from md+. */}
       {show.nextMatch && nextFixture && (
         <section className="bg-spo-green-soft">
-          <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between md:gap-4 md:py-10">
-            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+          <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 py-10 text-center sm:px-6 md:flex-row md:items-center md:justify-between md:gap-6 md:py-10 md:text-start">
+            <div className="flex w-full flex-col items-center gap-3 md:flex-row md:items-center md:gap-4 md:text-start">
               {(() => {
                 const url = opponentLogoUrl(
                   nextFixture.opponent_logo_path as string | null,
@@ -408,16 +407,16 @@ export default async function ClubLandingPage({
                   <img
                     src={url}
                     alt=""
-                    className="size-12 shrink-0 rounded-full border border-spo-line bg-white p-1 shadow-[var(--shadow-1)] sm:size-16"
+                    className="size-14 shrink-0 rounded-full border border-spo-line bg-white p-1 shadow-[var(--shadow-1)] sm:size-16"
                   />
                 ) : null;
               })()}
-              <div className="min-w-0 space-y-1">
-                <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
+              <div className="min-w-0 space-y-1.5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-spo-green-deep">
                   {t("nextMatch.eyebrow")}
                 </p>
                 <h2
-                  className="text-balance text-xl font-semibold leading-tight text-spo-ink sm:text-2xl md:text-3xl"
+                  className="text-balance text-xl font-semibold leading-snug text-spo-ink sm:text-2xl md:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {orgName} <span className="text-spo-muted">vs</span>{" "}
@@ -428,13 +427,13 @@ export default async function ClubLandingPage({
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-start gap-3 md:items-end">
+            <div className="flex w-full flex-col items-center gap-3 md:w-auto md:items-end">
               <MatchCountdown
                 kickoffIso={nextFixture.kickoff_at as string}
                 locale={locale as "ar" | "en"}
               />
-              <Link href={`/fixtures/${nextFixture.id}/buy`} className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto">{t("nextMatch.buyTickets")}</Button>
+              <Link href={`/fixtures/${nextFixture.id}/buy`} className="w-full md:w-auto">
+                <Button className="w-full md:w-auto">{t("nextMatch.buyTickets")}</Button>
               </Link>
             </div>
           </div>
@@ -463,39 +462,55 @@ export default async function ClubLandingPage({
             </div>
 
             {lastFixture && (
-              <div className="rounded-card-lg border border-spo-line bg-spo-paper-warm p-4 sm:p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
+              <div className="rounded-card-lg border border-spo-line bg-spo-paper-warm p-5 sm:p-6">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-spo-muted">
                   {t("matchCenter.lastResult")}
                 </p>
-                <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
-                  {(() => {
-                    const url = opponentLogoUrl(
-                      lastFixture.opponent_logo_path as string | null,
-                    );
-                    return url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={url}
-                        alt=""
-                        className="size-10 shrink-0 rounded-full border border-spo-line bg-white p-0.5 sm:size-12"
-                      />
-                    ) : null;
-                  })()}
-                  <div className="min-w-0 text-balance text-lg font-semibold leading-tight text-spo-ink sm:text-2xl">
-                    {orgName}{" "}
-                    <span className="font-mono text-spo-green-deep">
-                      {lastFixture.home_score ?? 0} - {lastFixture.away_score ?? 0}
-                    </span>{" "}
-                    {locale === "ar"
-                      ? (lastFixture.opponent_ar as string)
-                      : (lastFixture.opponent_en as string)}
+                {/* Scoreline — two team blocks separated by the score.
+                    Vertical-friendly: each team is its own column that wraps,
+                    score is the centerpiece. */}
+                <div className="mt-4 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-5">
+                  <div className="flex min-w-0 flex-col items-center gap-2 text-center">
+                    <span className="text-sm font-medium leading-tight text-spo-ink sm:text-base">
+                      {orgName}
+                    </span>
                   </div>
+                  <div
+                    className="font-mono text-3xl font-bold text-spo-green-deep sm:text-4xl"
+                    style={{ fontFamily: "var(--font-display)" }}
+                  >
+                    {lastFixture.home_score ?? 0}
+                    <span className="mx-2 text-spo-muted">–</span>
+                    {lastFixture.away_score ?? 0}
+                  </div>
+                  <div className="flex min-w-0 flex-col items-center gap-2 text-center">
+                    {(() => {
+                      const url = opponentLogoUrl(
+                        lastFixture.opponent_logo_path as string | null,
+                      );
+                      return url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={url}
+                          alt=""
+                          className="size-10 shrink-0 rounded-full border border-spo-line bg-white p-0.5 sm:size-12"
+                        />
+                      ) : null;
+                    })()}
+                    <span className="text-sm font-medium leading-tight text-spo-ink sm:text-base">
+                      {locale === "ar"
+                        ? (lastFixture.opponent_ar as string)
+                        : (lastFixture.opponent_en as string)}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-spo-line pt-3 text-xs text-spo-muted">
                   <ResultBadge
                     home={lastFixture.home_score}
                     away={lastFixture.away_score}
                     t={t}
                   />
-                  <span className="text-xs text-spo-muted">
+                  <span>
                     {new Date(lastFixture.kickoff_at as string).toLocaleDateString(
                       locale === "ar" ? "ar-SA" : "en-GB",
                       { year: "numeric", month: "short", day: "numeric" },
@@ -641,11 +656,11 @@ export default async function ClubLandingPage({
                         ) : null}
                       </div>
                       <div className="flex flex-1 flex-col gap-2 p-5">
-                        <h3 className="text-lg font-semibold text-spo-ink transition-colors group-hover:text-spo-green-deep">
+                        <h3 className="text-lg font-semibold leading-snug text-spo-ink transition-colors group-hover:text-spo-green-deep">
                           {title}
                         </h3>
                         {excerpt && (
-                          <p className="line-clamp-2 text-sm text-spo-ink-2">{excerpt}</p>
+                          <p className="line-clamp-2 text-sm leading-relaxed text-spo-ink-2 sm:text-base">{excerpt}</p>
                         )}
                       </div>
                     </Link>
@@ -837,11 +852,11 @@ export default async function ClubLandingPage({
                   >
                     {h.win_count}
                   </span>
-                  <span className="text-xs font-medium leading-tight text-white/90">
+                  <span className="text-sm font-medium leading-snug text-white/90">
                     {locale === "ar" ? h.competition_ar : h.competition_en}
                   </span>
                   {h.last_won_year && (
-                    <span className="text-[10px] uppercase tracking-wider text-white/40">
+                    <span className="text-[11px] uppercase tracking-wider text-white/50">
                       {t("honours.lastWon", { year: h.last_won_year })}
                     </span>
                   )}
@@ -958,12 +973,9 @@ export default async function ClubLandingPage({
                 {t("galleries.viewAll")} →
               </Link>
             </header>
-            <ul className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible lg:grid-cols-3">
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
               {galleries.slice(0, 6).map((g) => (
-                <li
-                  key={g.id}
-                  className="min-w-[80%] flex-shrink-0 snap-start px-1 sm:min-w-0 sm:px-0"
-                >
+                <li key={g.id}>
                   <Link
                     href={`/galleries/${g.id}`}
                     className="group block overflow-hidden rounded-card border border-spo-line bg-white transition-all hover:-translate-y-0.5 hover:border-spo-green/40 hover:shadow-[var(--shadow-2)]"
@@ -986,7 +998,7 @@ export default async function ClubLandingPage({
                       )}
                     </div>
                     <div className="space-y-1 p-3">
-                      <h3 className="line-clamp-2 text-sm font-medium text-spo-ink">
+                      <h3 className="line-clamp-2 text-sm font-medium leading-snug text-spo-ink sm:text-base">
                         {locale === "ar" ? g.title_ar : g.title_en}
                       </h3>
                     </div>
@@ -1008,7 +1020,7 @@ export default async function ClubLandingPage({
             >
               {locale === "ar" ? aboutPage.title_ar : aboutPage.title_en}
             </h2>
-            <div className="prose prose-sm max-w-none whitespace-pre-line text-spo-ink-2">
+            <div className="prose prose-base max-w-none whitespace-pre-line leading-relaxed text-spo-ink-2">
               {locale === "ar" ? aboutPage.body_ar : aboutPage.body_en}
             </div>
           </div>
