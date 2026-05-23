@@ -329,50 +329,15 @@ export default async function ClubLandingPage({
           )}
           <div
             className={
-              "relative mx-auto flex max-w-6xl flex-col items-start gap-8 px-4 py-16 sm:px-6 md:flex-row md:items-center md:justify-between md:py-24 " +
+              "relative mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-12 text-center sm:gap-8 sm:px-6 sm:py-16 md:flex-row md:items-center md:justify-between md:py-24 md:text-start " +
               (heroImageUrl ? "text-white" : "")
             }
           >
-            <div className="max-w-2xl space-y-4">
-              <p
-                className={
-                  "text-xs font-semibold uppercase tracking-wider " +
-                  (heroImageUrl ? "text-white/85" : "text-spo-green-deep")
-                }
-              >
-                {t("hero.eyebrow")}
-              </p>
-              <h1
-                className={
-                  "text-4xl font-semibold sm:text-5xl md:text-6xl " +
-                  (heroImageUrl ? "text-white drop-shadow-lg" : "text-spo-ink")
-                }
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                {orgName}
-              </h1>
-              {tagline && (
-                <p
-                  className={
-                    "max-w-xl text-lg sm:text-xl " +
-                    (heroImageUrl ? "text-white/90" : "text-spo-ink-2")
-                  }
-                >
-                  {tagline}
-                </p>
-              )}
-              <div className="flex flex-wrap gap-2 pt-2">
-                <Link href="/membership">
-                  <Button size="lg">{t("hero.becomeMember")}</Button>
-                </Link>
-                <Link href="/sign-in">
-                  <Button size="lg" variant="secondary">{t("hero.memberPortal")}</Button>
-                </Link>
-              </div>
-            </div>
+            {/* Logo first on mobile so the brand mark anchors the page;
+                order:2 on md+ keeps it on the trailing side of the row. */}
             {logoUrl && (
               <div
-                className="relative flex h-44 w-44 shrink-0 items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white shadow-[var(--shadow-2)] sm:h-56 sm:w-56"
+                className="relative order-1 flex size-28 shrink-0 items-center justify-center overflow-hidden rounded-card border border-spo-line bg-white shadow-[var(--shadow-2)] sm:size-36 md:order-2 md:size-56"
                 style={
                   primaryColor
                     ? { boxShadow: `0 12px 32px -12px ${primaryColor}50` }
@@ -387,6 +352,43 @@ export default async function ClubLandingPage({
                 />
               </div>
             )}
+            <div className="order-2 w-full max-w-2xl space-y-4 md:order-1">
+              <p
+                className={
+                  "text-xs font-semibold uppercase tracking-wider " +
+                  (heroImageUrl ? "text-white/85" : "text-spo-green-deep")
+                }
+              >
+                {t("hero.eyebrow")}
+              </p>
+              <h1
+                className={
+                  "text-balance text-3xl font-semibold leading-tight sm:text-5xl md:text-6xl " +
+                  (heroImageUrl ? "text-white drop-shadow-lg" : "text-spo-ink")
+                }
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {orgName}
+              </h1>
+              {tagline && (
+                <p
+                  className={
+                    "mx-auto max-w-xl text-balance text-base sm:text-lg md:mx-0 md:text-xl " +
+                    (heroImageUrl ? "text-white/90" : "text-spo-ink-2")
+                  }
+                >
+                  {tagline}
+                </p>
+              )}
+              <div className="flex flex-wrap justify-center gap-2 pt-2 md:justify-start">
+                <Link href="/membership">
+                  <Button size="lg">{t("hero.becomeMember")}</Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button size="lg" variant="secondary">{t("hero.memberPortal")}</Button>
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
       )}
@@ -395,8 +397,8 @@ export default async function ClubLandingPage({
           stack of content sections; tighter padding by design. */}
       {show.nextMatch && nextFixture && (
         <section className="bg-spo-green-soft">
-          <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 px-4 py-8 sm:px-6 md:flex-row md:items-center md:py-10">
-            <div className="flex items-center gap-4">
+          <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between md:gap-4 md:py-10">
+            <div className="flex min-w-0 items-center gap-3 sm:gap-4">
               {(() => {
                 const url = opponentLogoUrl(
                   nextFixture.opponent_logo_path as string | null,
@@ -406,16 +408,16 @@ export default async function ClubLandingPage({
                   <img
                     src={url}
                     alt=""
-                    className="size-14 shrink-0 rounded-full border border-spo-line bg-white p-1 shadow-[var(--shadow-1)] sm:size-16"
+                    className="size-12 shrink-0 rounded-full border border-spo-line bg-white p-1 shadow-[var(--shadow-1)] sm:size-16"
                   />
                 ) : null;
               })()}
-              <div className="space-y-1">
+              <div className="min-w-0 space-y-1">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("nextMatch.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-xl font-semibold leading-tight text-spo-ink sm:text-2xl md:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {orgName} <span className="text-spo-muted">vs</span>{" "}
@@ -426,13 +428,13 @@ export default async function ClubLandingPage({
                 )}
               </div>
             </div>
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex flex-col items-start gap-3 md:items-end">
               <MatchCountdown
                 kickoffIso={nextFixture.kickoff_at as string}
                 locale={locale as "ar" | "en"}
               />
-              <Link href={`/fixtures/${nextFixture.id}/buy`}>
-                <Button>{t("nextMatch.buyTickets")}</Button>
+              <Link href={`/fixtures/${nextFixture.id}/buy`} className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto">{t("nextMatch.buyTickets")}</Button>
               </Link>
             </div>
           </div>
@@ -442,30 +444,30 @@ export default async function ClubLandingPage({
       {/* Match Center — last result + season at a glance */}
       {show.matchCenter && (lastFixture || recentResults.length > 0 || upcomingSeason.length > 0) && (
         <section className="bg-white">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
-            <div className="flex items-end justify-between gap-3">
-              <div>
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("matchCenter.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("matchCenter.title")}
                 </h2>
               </div>
-              <Link href="/fixtures" className="text-sm text-spo-green-deep hover:underline">
+              <Link href="/fixtures" className="shrink-0 text-sm text-spo-green-deep hover:underline">
                 {t("common.viewAll")}
               </Link>
             </div>
 
             {lastFixture && (
-              <div className="rounded-card-lg border border-spo-line bg-spo-paper-warm p-6">
+              <div className="rounded-card-lg border border-spo-line bg-spo-paper-warm p-4 sm:p-6">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-muted">
                   {t("matchCenter.lastResult")}
                 </p>
-                <div className="mt-3 flex flex-wrap items-center gap-4">
+                <div className="mt-3 flex flex-wrap items-center gap-3 sm:gap-4">
                   {(() => {
                     const url = opponentLogoUrl(
                       lastFixture.opponent_logo_path as string | null,
@@ -475,11 +477,11 @@ export default async function ClubLandingPage({
                       <img
                         src={url}
                         alt=""
-                        className="size-12 shrink-0 rounded-full border border-spo-line bg-white p-0.5"
+                        className="size-10 shrink-0 rounded-full border border-spo-line bg-white p-0.5 sm:size-12"
                       />
                     ) : null;
                   })()}
-                  <div className="text-xl font-semibold text-spo-ink sm:text-2xl">
+                  <div className="min-w-0 text-balance text-lg font-semibold leading-tight text-spo-ink sm:text-2xl">
                     {orgName}{" "}
                     <span className="font-mono text-spo-green-deep">
                       {lastFixture.home_score ?? 0} - {lastFixture.away_score ?? 0}
@@ -596,20 +598,20 @@ export default async function ClubLandingPage({
       {/* News */}
       {show.news && news.length > 0 && (
         <section className="bg-spo-paper-warm">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
-            <div className="flex items-end justify-between gap-3">
-              <div>
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("news.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("news.title")}
                 </h2>
               </div>
-              <Link href="/news" className="text-sm text-spo-green-deep hover:underline">
+              <Link href="/news" className="shrink-0 text-sm text-spo-green-deep hover:underline">
                 {t("common.viewAll")}
               </Link>
             </div>
@@ -658,20 +660,20 @@ export default async function ClubLandingPage({
       {/* Squad */}
       {show.squad && roster.length > 0 && (
         <section className="bg-white">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
-            <div className="flex items-end justify-between gap-3">
-              <div>
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("squad.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("squad.title")}
                 </h2>
               </div>
-              <Link href="/squads" className="text-sm text-spo-green-deep hover:underline">
+              <Link href="/squads" className="shrink-0 text-sm text-spo-green-deep hover:underline">
                 {t("common.viewAll")}
               </Link>
             </div>
@@ -726,24 +728,24 @@ export default async function ClubLandingPage({
       {/* Shop */}
       {show.shop && products.length > 0 && (
         <section className="bg-spo-paper-warm">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
-            <div className="flex items-end justify-between gap-3">
-              <div>
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
+            <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("shop.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("shop.title")}
                 </h2>
               </div>
-              <Link href="/shop" className="text-sm text-spo-green-deep hover:underline">
+              <Link href="/shop" className="shrink-0 text-sm text-spo-green-deep hover:underline">
                 {t("common.viewAll")}
               </Link>
             </div>
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
               {products.map((p) => {
                 const name = locale === "ar" ? p.name_ar : p.name_en;
                 const paths: string[] = Array.isArray(p.image_paths)
@@ -803,13 +805,13 @@ export default async function ClubLandingPage({
             aria-hidden
             className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-spo-amber/10 to-transparent"
           />
-          <div className="relative mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
+          <div className="relative mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-spo-amber">
                 {t("honours.eyebrow")}
               </p>
               <h2
-                className="text-2xl font-semibold sm:text-3xl"
+                className="text-balance text-2xl font-semibold sm:text-3xl"
                 style={{ fontFamily: "var(--font-display)" }}
               >
                 {t("honours.titleWith", { club: orgName })}
@@ -859,20 +861,20 @@ export default async function ClubLandingPage({
           "strategic" | "main" | "official" | "supporter",
           { h: string; cols: string }
         > = {
-          strategic: { h: "h-32 sm:h-36", cols: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" },
-          main: { h: "h-24 sm:h-28", cols: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" },
-          official: { h: "h-20 sm:h-24", cols: "grid-cols-2 sm:grid-cols-4 lg:grid-cols-5" },
-          supporter: { h: "h-16 sm:h-20", cols: "grid-cols-3 sm:grid-cols-5 lg:grid-cols-8" },
+          strategic: { h: "h-24 sm:h-32 md:h-36", cols: "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3" },
+          main: { h: "h-20 sm:h-24 md:h-28", cols: "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4" },
+          official: { h: "h-16 sm:h-20 md:h-24", cols: "grid-cols-2 sm:grid-cols-4 lg:grid-cols-5" },
+          supporter: { h: "h-14 sm:h-16 md:h-20", cols: "grid-cols-3 sm:grid-cols-5 lg:grid-cols-8" },
         };
         return (
           <section className="bg-white">
-            <div className="mx-auto max-w-6xl space-y-10 px-4 py-16 sm:px-6 sm:py-20">
+            <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6 sm:py-20">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("sponsors.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("sponsors.title")}
@@ -936,14 +938,14 @@ export default async function ClubLandingPage({
       {/* Galleries — behind-the-scenes */}
       {show.galleries && galleries.length > 0 && (
         <section className="bg-spo-paper-warm">
-          <div className="mx-auto max-w-6xl space-y-8 px-4 py-16 sm:px-6 sm:py-20">
-            <header className="flex flex-wrap items-end justify-between gap-3">
-              <div>
+          <div className="mx-auto max-w-6xl space-y-8 px-4 py-12 sm:px-6 sm:py-20">
+            <header className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-spo-green-deep">
                   {t("galleries.eyebrow")}
                 </p>
                 <h2
-                  className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+                  className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {t("galleries.title")}
@@ -951,7 +953,7 @@ export default async function ClubLandingPage({
               </div>
               <Link
                 href="/galleries"
-                className="text-sm font-medium text-spo-green-deep hover:underline"
+                className="shrink-0 text-sm font-medium text-spo-green-deep hover:underline"
               >
                 {t("galleries.viewAll")} →
               </Link>
@@ -999,9 +1001,9 @@ export default async function ClubLandingPage({
       {/* About */}
       {show.about && aboutPage && (
         <section className="bg-white">
-          <div className="mx-auto max-w-3xl space-y-4 px-4 py-16 sm:px-6 sm:py-20">
+          <div className="mx-auto max-w-3xl space-y-4 px-4 py-12 sm:px-6 sm:py-20">
             <h2
-              className="text-2xl font-semibold text-spo-ink sm:text-3xl"
+              className="text-balance text-2xl font-semibold text-spo-ink sm:text-3xl"
               style={{ fontFamily: "var(--font-display)" }}
             >
               {locale === "ar" ? aboutPage.title_ar : aboutPage.title_en}
